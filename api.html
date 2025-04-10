@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pokémon Inventory</title>
+  <style>
+    .card {
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      width: 200px;
+      padding: 10px;
+      margin: 10px;
+      text-align: center;
+      font-family: sans-serif;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    img {
+      width: 100px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="inventory"></div>
+
+<script>
+  async function fetchPokemon(name) {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    const data = await response.json();
+
+    const cardHTML = `
+      <div class="card">
+        <h3>${data.name.toUpperCase()}</h3>
+        <img src="${data.sprites.front_default}" alt="${data.name}" />
+        <p>ID: ${data.id}</p>
+        <p>Type: ${data.types.map(t => t.type.name).join(', ')}</p>
+      </div>
+    `;
+
+    document.getElementById('inventory').innerHTML += cardHTML;
+  }
+
+  // Example usage
+  fetchPokemon('ceruledge');
+  fetchPokemon('timburr');
+  fetchPokemon('magmar');
+</script>
+
+</body>
+</html>
