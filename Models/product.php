@@ -2,6 +2,8 @@
 
 namespace models;
 
+use database\DBConnectionManager;
+
 class Product {
 
   //Properties
