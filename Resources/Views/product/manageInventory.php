@@ -81,7 +81,7 @@ $db = $dbManager->getConnection();
                         <tbody id="productTableBody">
                             <?php
                             try {
-                                $query = "SELECT productID, productName, category, listedPrice as price, quantity FROM products WHERE archived = 0";
+                                $query = "SELECT productID, productName, category, listedPrice as price, quantity FROM products WHERE isArchived = 0";
                                 $stmt = $db->prepare($query);
                                 $stmt->execute();
                                 
