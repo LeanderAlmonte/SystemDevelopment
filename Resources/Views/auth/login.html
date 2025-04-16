@@ -2,33 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Eyesightcollectibles - Login</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eyesightcollectibles Login</title>
+    <link rel="stylesheet" href="\..\assets\css\login.css">
 </head>
 <body>
     <div class="container">
-        <div class="left-panel">
-            <img src="assets\css\images\logo.jpg" alt="Character" class="hero-image">
+        <div class="logo">
+            <div class="image-container">
+            <img src="\..\assets\css\images\logo.jpg" alt="Character">
         </div>
-        <div class="right-panel">
-            <h1 class="title">Eyesightcollectibles</h1>
-            <div class="login-box">
-                <h2>Login</h2>
-                <div class="role-buttons">
-                    <button class="role-btn">Employee</button>
-                    <button class="role-btn">Admin</button>
-                </div>
-                <form>
-                    <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter your username">
-
-                    <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password">
-
-                    <a href="#" class="forgot-password">Forgot Password?</a>
-                    <button type="submit" class="login-btn">Login</button>
-                </form>
+        </div>
+        <div class="login-form">
+            <h1>Eyesightcollectibles</h1>
+            <h2>Login</h2>
+            <div class="login-options">
+                <button class="login-button">Employee</button>
+                <button class="login-button">Admin</button>
             </div>
+            <form>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password">
+                <a href="#" class="forgot-password">Forgot Password?</a>
+                <button type="submit" class="submit-button">Login</button>
+            </form>
         </div>
     </div>
 </body>
