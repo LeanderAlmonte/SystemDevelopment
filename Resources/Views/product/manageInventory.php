@@ -1,10 +1,13 @@
 <?php
 require_once __DIR__ . '/../../../Core/db/dbconnectionmanager.php';
+require_once __DIR__ . '/../../../Controllers/ProductController.php';
+require_once __DIR__ . '/../../../Models/product.php';
 
-use database\DBConnectionManager;
+use controllers\ProductController;
 
-$dbManager = new DBConnectionManager();
-$db = $dbManager->getConnection();
+$productController = new ProductController();
+$products = $productController->index();
+$categories = $productController->getCategories();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,18 +54,9 @@ $db = $dbManager->getConnection();
 
                 <!-- Category Filters -->
                 <div class="category-filters">
-                    <button class="category-btn active" data-category="all">All Products</button>
-                    <button class="category-btn" data-category="pokemon-japanese">Pokemon Japanese</button>
-                    <button class="category-btn" data-category="pokemon-korean">Pokemon Korean</button>
-                    <button class="category-btn" data-category="pokemon-chinese">Pokemon Chinese</button>
-                    <button class="category-btn" data-category="card-accessories">Card Accessories</button>
-                    <button class="category-btn" data-category="weiss-schwarz">Weiss Schwarz</button>
-                    <button class="category-btn" data-category="kayou-naruto">Kayou Naruto</button>
-                    <button class="category-btn" data-category="kayou">Kayou</button>
-                    <button class="category-btn" data-category="dragon-ball-japanese">Dragon Ball Japanese</button>
-                    <button class="category-btn" data-category="one-piece-japanese">One Piece Japanese</button>
-                    <button class="category-btn" data-category="carreda-demon-slayer">Carreda Demon Slayer</button>
-                    <button class="category-btn" data-category="pokemon-plush">Pokemon Plush</button>
+                    <?php foreach ($categories as $key => $value): ?>
+                        <button class="category-btn <?php echo $key === 'all' ? 'active' : ''; ?>" data-category="<?php echo $key; ?>"><?php echo $value; ?></button>
+                    <?php endforeach; ?>
                 </div>
 
                 <!-- Products Table -->
@@ -79,26 +73,20 @@ $db = $dbManager->getConnection();
                             </tr>
                         </thead>
                         <tbody id="productTableBody">
-                            <?php
-                            try {
-                                $query = "SELECT productID, productName, category, listedPrice as price, quantity FROM products WHERE isArchived = 0";
-                                $stmt = $db->prepare($query);
-                                $stmt->execute();
-                                
-                                while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-                                    echo "<tr>";
-                                    echo "<td>#{$row['productID']}</td>";
-                                    echo "<td>{$row['productName']}</td>";
-                                    echo "<td>{$row['category']}</td>";
-                                    echo "<td>\${$row['price']}</td>";
-                                    echo "<td>{$row['quantity']}/100</td>";
-                                    echo "<td><button class='action-btn'><i class='fas fa-ellipsis-h'></i></button></td>";
-                                    echo "</tr>";
-                                }
-                            } catch (\PDOException $e) {
-                                echo "<tr><td colspan='6'>Error loading products: " . $e->getMessage() . "</td></tr>";
-                            }
-                            ?>
+                            <?php if (isset($products['error'])): ?>
+                                <tr><td colspan="6">Error loading products: <?php echo $products['error']; ?></td></tr>
+                            <?php else: ?>
+                                <?php foreach ($products as $product): ?>
+                                    <tr>
+                                        <td>#<?php echo $product['productID']; ?></td>
+                                        <td><?php echo $product['productName']; ?></td>
+                                        <td><?php echo $product['category']; ?></td>
+                                        <td>$<?php echo $product['price']; ?></td>
+                                        <td><?php echo $product['quantity']; ?>/100</td>
+                                        <td><button class='action-btn'><i class='fas fa-ellipsis-h'></i></button></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
