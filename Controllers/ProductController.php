@@ -23,6 +23,28 @@ class ProductController {
         return $this->productModel->getProductById($id);
     }
 
+    public function addProduct($data) {
+        // Validate input
+        if (empty($data['productName']) || empty($data['category']) || 
+            empty($data['listedPrice']) || empty($data['paidPrice']) || 
+            !isset($data['quantity'])) {
+            return ['error' => 'All fields are required'];
+        }
+
+        // Validate price and quantity
+        if (!is_numeric($data['listedPrice']) || $data['listedPrice'] <= 0) {
+            return ['error' => 'Invalid listed price'];
+        }
+        if (!is_numeric($data['paidPrice']) || $data['paidPrice'] <= 0) {
+            return ['error' => 'Invalid paid price'];
+        }
+        if (!is_numeric($data['quantity']) || $data['quantity'] < 0 || $data['quantity'] > 100) {
+            return ['error' => 'Quantity must be between 0 and 100'];
+        }
+
+        return $this->productModel->addProduct($data);
+    }
+
     public function updateProduct($data) {
         return $this->productModel->updateProduct($data);
     }

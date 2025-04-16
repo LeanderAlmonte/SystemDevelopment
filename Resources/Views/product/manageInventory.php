@@ -94,7 +94,9 @@ $categories = $productController->getCategories();
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button class="action-btn" id="processOrderBtn">Process Order</button>
-                    <button class="action-btn" id="addProductBtn">Add Product</button>
+                    <form action="Resources/Views/product/addProduct.php" method="GET" style="display: inline;">
+                        <button type="submit" class="action-btn">Add Product</button>
+                    </form>
                 </div>
             </div>
         </div>

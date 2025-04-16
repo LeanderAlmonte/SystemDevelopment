@@ -10,11 +10,12 @@ class Product {
     private $productID;
     private $productType;
     private $productName;
-    private $language;
     private $listedPrice;
     private $paidPrice;
     private $quantity;
     private $category;
+    private $isSold;
+    private $isArchived;
 
     public function __construct() {
         $dbManager = new DBConnectionManager();
@@ -44,14 +45,6 @@ class Product {
 
     public function setProductName($productName) {
         $this->productName = $productName;
-    }
-
-    public function getLanguage() {
-        return $this->language;
-    }
-
-    public function setLanguage($language) {
-        $this->language = $language;
     }
 
     public function getListedPrice() {
@@ -86,10 +79,45 @@ class Product {
         $this->category = $category;
     }
 
+    public function getIsSold() {
+        return $this->isSold;
+    }
+
+    public function setIsSold($isSold) {
+        $this->isSold = $isSold;
+    }
+
+    public function getIsArchived() {
+        return $this->isArchived;
+    }
+
+    public function setIsArchived($isArchived) {
+        $this->isArchived = $isArchived;
+    }
+
     // Database Operations
+    public function addProduct($data) {
+        try {
+            $query = "INSERT INTO products (productName, category, listedPrice, paidPrice, quantity, isArchived, isSold) 
+                     VALUES (:name, :category, :listedPrice, :paidPrice, :quantity, 0, 0)";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([
+                ':name' => $data['productName'],
+                ':category' => $data['category'],
+                ':listedPrice' => $data['listedPrice'],
+                ':paidPrice' => $data['paidPrice'],
+                ':quantity' => $data['quantity']
+            ]);
+            return ['success' => true];
+        } catch (\PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
     public function getAllProducts() {
         try {
-            $query = "SELECT productID, productName, category, listedPrice as price, quantity FROM products WHERE isArchived = 0";
+            $query = "SELECT productID, productName, category, listedPrice as price, quantity FROM products WHERE isArchived = 0 AND isSold = 0";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
