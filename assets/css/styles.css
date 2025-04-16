@@ -200,6 +200,8 @@ body {
     cursor: pointer;
     transition: 0.3s;
     font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .action-btn:hover {
@@ -214,6 +216,15 @@ body {
 
 .inventory-table .action-btn:hover {
     background: rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons form {
+    margin: 0;
+    padding: 0;
+}
+
+.action-buttons form button {
+    margin: 0;
 }
 
 /* Settings Page Styles */
@@ -255,6 +266,88 @@ body {
     background-color: #654321;
 }
 
+/* Add Product Form Styles */
+.add-product-container {
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    padding: 40px;
+    margin-bottom: 20px;
+}
+
+.add-product-container h2 {
+    color: #000;
+    margin-bottom: 40px;
+    font-size: 28px;
+    font-weight: normal;
+}
+
+.add-product-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 15px;
+    color: #000;
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 12px 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 16px;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #000;
+}
+
+.btn:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
     .category-filters {
@@ -287,6 +380,24 @@ body {
         align-items: flex-start;
         gap: 10px;
     }
+
+    .add-product-container {
+        padding: 20px;
+    }
+
+    .add-product-form {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group input,
+    .form-group select {
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -304,5 +415,14 @@ body {
     
     .search-bar {
         font-size: 14px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
     }
 } 

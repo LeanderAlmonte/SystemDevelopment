@@ -3,89 +3,163 @@
 namespace models;
 
 use database\DBConnectionManager;
+use PDO;
 
 class Product {
+    private $db;
+    private $productID;
+    private $productType;
+    private $productName;
+    private $listedPrice;
+    private $paidPrice;
+    private $quantity;
+    private $category;
+    private $isSold;
+    private $isArchived;
 
-  //Properties
-  private $productID;
-  private $productType;
-  private $productName;
-  private $language;
-  private $listedPrice;
-  private $paidPrice;
-  private $quantity;
+    public function __construct() {
+        $dbManager = new DBConnectionManager();
+        $this->db = $dbManager->getConnection();
+    }
 
-  //Constructor
-  public function _construct($productID, $productType, $productName, $language, $listedPrice, $paidPrice, $quantity) {
-    $this->productID = $productID;
-    $this->productType = $productType;
-    $this->productName = $productName;
-    $this->language = $language;
-    $this->listedPrice = $listedPrice;
-    $this->paidPrice = $paidPrice;
-    $this->quantity = $quantity;
-  }
+    // Getters and Setters
+    public function getProductID() {
+        return $this->productID;
+    }
 
-  //Getters and Setters
-  public function getProductID() {
-    return $this->productID;
-  }
+    public function setProductID($productID) {
+        $this->productID = $productID;
+    }
 
-  public function setProductID($productID) {
-    $this->productID = $productID;
-  }
+    public function getProductType() {
+        return $this->productType;
+    }
 
-  public function getProductType() {
-    return $this->productType;
-  }
+    public function setProductType($productType) {
+        $this->productType = $productType;
+    }
 
-  public function setProductType($productType) {
-    $this->productType = $productType;
-  }
+    public function getProductName() {
+        return $this->productName;
+    }
 
-  public function getProductName() {
-    return $this->productName;
-  }
+    public function setProductName($productName) {
+        $this->productName = $productName;
+    }
 
-  public function setProductName($productName) {
-    $this->productName = $productName;
-  }
+    public function getListedPrice() {
+        return $this->listedPrice;
+    }
 
-  public function getLanguage() {
-    return $this->language;
-  }
+    public function setListedPrice($listedPrice) {
+        $this->listedPrice = $listedPrice;
+    }
 
-  public function setLanguage($language) {
-    $this->language = $language;
-  }
+    public function getPaidPrice() {
+        return $this->paidPrice;
+    }
 
-  public function getListedPrice() {
-    return $this->listedPrice;
-  }
+    public function setPaidPrice($paidPrice) {
+        $this->paidPrice = $paidPrice;
+    }
 
-  public function setListedPrice($listedPrice) {
-    $this->listedPrice = $listedPrice;
-  }
+    public function getQuantity() {
+        return $this->quantity;
+    }
 
-  public function getPaidPrice() {
-    return $this->paidPrice;
-  }
+    public function setQuantity($quantity) {
+        $this->quantity = $quantity;
+    }
 
-  public function setPaidPrice($paidPrice) {
-    $this->paidPrice = $paidPrice;
-  }
+    public function getCategory() {
+        return $this->category;
+    }
 
-  public function getQuantity() {
-    return $this->quantity;
-  }
+    public function setCategory($category) {
+        $this->category = $category;
+    }
 
-  public function setQuantity($quantity) {
-    $this->quantity = $quantity;
-  }
+    public function getIsSold() {
+        return $this->isSold;
+    }
 
+    public function setIsSold($isSold) {
+        $this->isSold = $isSold;
+    }
 
+    public function getIsArchived() {
+        return $this->isArchived;
+    }
 
+    public function setIsArchived($isArchived) {
+        $this->isArchived = $isArchived;
+    }
 
+    // Database Operations
+    public function addProduct($data) {
+        try {
+            $query = "INSERT INTO products (productName, category, listedPrice, paidPrice, quantity, isArchived, isSold) 
+                     VALUES (:name, :category, :listedPrice, :paidPrice, :quantity, 0, 0)";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([
+                ':name' => $data['productName'],
+                ':category' => $data['category'],
+                ':listedPrice' => $data['listedPrice'],
+                ':paidPrice' => $data['paidPrice'],
+                ':quantity' => $data['quantity']
+            ]);
+            return ['success' => true];
+        } catch (\PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function getAllProducts() {
+        try {
+            $query = "SELECT productID, productName, category, listedPrice as price, quantity FROM products WHERE isArchived = 0 AND isSold = 0";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function getProductById($id) {
+        try {
+            $query = "SELECT * FROM products WHERE productID = :id AND isArchived = 0";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function updateProduct($data) {
+        try {
+            $query = "UPDATE products SET 
+                     productName = :name,
+                     category = :category,
+                     listedPrice = :price,
+                     quantity = :quantity
+                     WHERE productID = :id";
+            
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([
+                ':name' => $data['productName'],
+                ':category' => $data['category'],
+                ':price' => $data['price'],
+                ':quantity' => $data['quantity'],
+                ':id' => $data['productID']
+            ]);
+            return true;
+        } catch (\PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
 }
 
 
