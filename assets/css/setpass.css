@@ -69,15 +69,15 @@ label {
 }
 
 input {
-    width: 70%;
+    width: 60%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
-.confirm-pass {
-    width: 20%;
+.submit-button {
+    width: 65%;
     background-color: wheat;
     border: none;
     padding: 10px;
@@ -87,7 +87,7 @@ input {
     font-size: 16px;
 }
 
-.confirm-pass:hover {
+.submit-button:hover {
     background-color: #FF7F50;
 }
 
