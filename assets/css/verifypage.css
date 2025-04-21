@@ -50,6 +50,35 @@ body {
     margin-bottom: 20px;
 }
 
+.login-form h5 {
+    text-align: left;
+    font-size: 13px;
+    margin-bottom: 20px;
+    color: gray;
+}
+
+.login-form h3 {
+    text-align: left;
+    font-size: 13px;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    color: grey;
+}
+
+.resend {
+    background: none; /* Removes the background */
+    border: none; /* Removes the border */
+    color: blue; /* Sets the font color */
+    font-size: 13px;
+    text-decoration: underline; /* Underlines the button */
+    cursor: pointer;
+}
+
+.resend:hover {
+    color: darkblue; /* Slight color change on hover */
+}
+
+
 .instructions {
     font-size: 14px;
     margin-bottom: 20px;
@@ -59,26 +88,27 @@ body {
 /* Code input boxes */
 .code-input-container {
     display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin: 20px 0;
+    gap: 10px; /* Space between inputs */
+    margin: 5px 0;
 }
 
 .code-input {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     text-align: center;
     font-size: 24px;
-    border: 2px solid #FFA500;
-    border-radius: 5px;
+    border: 2px solid grey;
+    border-radius: 10px;
+    background-color: white;
 }
 
+
 .verify-code {
-    width: 75%;
+    width: 50%;
     background-color: wheat;
     border: none;
     padding: 10px 60px;
-    margin-top: 30px;
+    margin-top: 40px;
     cursor: pointer;
     border-radius: 5px;
     font-size: 16px;
