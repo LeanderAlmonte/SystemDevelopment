@@ -135,7 +135,7 @@ input {
     height: 100%;
     border: 5px solid orange;
     border-radius: 70%;
-    box-shadow: 0 0 10px orange;
+    box-shadow: 0 0 20px 10px rgba(255, 165, 0, 0.8);;
     animation: circleEffect 5s linear forwards;
 }
 
