@@ -50,6 +50,12 @@ body {
     margin-bottom: 20px;
 }
 
+.login-form h5 {
+    text-align: left;
+    color: grey;
+    margin-bottom: 13px;
+}
+
 .login-options {
     display: flex;
     justify-content: center;
