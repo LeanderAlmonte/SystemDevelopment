@@ -19,81 +19,63 @@ require_once __DIR__ . '/../layouts/base.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Eyesightcollectibles</title>
-    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="/../assets/css/dashboard.css">
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar Menu -->
-        <aside class="sidebar">
-            <h2>Admin Menu</h2>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">View Manual</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">Manage Users</a></li>
-                <li><a href="#">Manage Inventory</a></li>
-                <li><a href="#">View Sold Products</a></li>
-                <li><a href="#">Archived Items</a></li>
-                <li><a href="#">History</a></li>
-                <li><a href="#">Sales/Costs</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
-        </aside>
+        <!-- Title Bar at Top Left -->
+        <header class="dashboard-header">
+            <h1>Eyesightcollectibles Admin Panel</h1>
+        </header>
 
-        <!-- Main Content -->
-        <main class="dashboard-main">
-            <h1>Welcome Admin!</h1>
+        <!-- Main Dashboard Content -->
+        <div class="dashboard-content">
+            <!-- Sidebar Menu inside container -->
+            <aside class="sidebar">
+                <ul>
+                    <li><i class="icon-home"></i><a href="#">Home</a></li>
+                    <li><i class="icon-manual"></i><a href="#">View Manual</a></li>
+                    <li><i class="icon-settings"></i><a href="#">Settings</a></li>
+                    <li><i class="icon-users"></i><a href="#">Manage Users</a></li>
+                    <li><i class="icon-inventory"></i><a href="#">Manage Inventory</a></li>
+                    <li><i class="icon-sold"></i><a href="#">View Sold Products</a></li>
+                    <li><i class="icon-archive"></i><a href="#">Archived Items</a></li>
+                    <li><i class="icon-history"></i><a href="#">History</a></li>
+                    <li><i class="icon-sales"></i><a href="#">Sales/Costs</a></li>
+                    <li><i class="icon-logout"></i><a href="#">Logout</a></li>
+                </ul>
+            </aside>
 
+            <!-- Admin Welcome Section -->
+            <div class="admin-info">
+                <h2>Welcome Admin!</h2>
+                <img src="../assets/css/images/admin-avatar.png" alt="Admin Avatar">
+            </div>
+
+            <!-- Home Container -->
+            <div class="home-container">
+                <h2>Home</h2>
+            </div>
+
+            <!-- Dashboard Panels -->
             <div class="dashboard-panels">
-                <!-- Best Sellers -->
                 <div class="panel">
-                    <h2>Best Sellers</h2>
+                    <h3>Best Sellers</h3>
                     <ul>
                         <li>Terastal Festival ex (JP) - Sold: 500</li>
-                        <li>Terastal Festival ex (KR) - Sold: 559</li>
                         <li>Gem Pack Volume 1 (CH) - Sold: 320</li>
-                        <li>Shining Treasures ex (JP) - Sold: 500</li>
-                        <li>Naruto Tier 2 Wave 7 (CH) - Sold: 700</li>
                     </ul>
                 </div>
 
-                <!-- Worst Sellers -->
                 <div class="panel">
-                    <h2>Worst Sellers</h2>
+                    <h3>Worst Sellers</h3>
                     <ul>
-                        <li>Naruto Kayou Tier 4 Wave 6 (CH) - Sold: 200</li>
                         <li>Supercharged Breaker (KR) - Sold: 100</li>
                         <li>Blue Sky Stream (KR) - Sold: 50</li>
-                        <li>Stellar Miracle (JP) - Sold: 350</li>
-                        <li>Naruto Kayou Tier 3 Wave 3 (CH) - Sold: 300</li>
-                    </ul>
-                </div>
-
-                <!-- Most Stock -->
-                <div class="panel">
-                    <h2>Most Stock</h2>
-                    <ul>
-                        <li>Naruto Kayou Tier 4 Wave 6 (CH) - 750 Units</li>
-                        <li>Stellar Miracle (JP) - 350 Units</li>
-                        <li>Naruto Kayou Tier 3 Wave 3 (CH) - 350 Units</li>
-                        <li>Supercharged Breaker (KR) - 300 Units</li>
-                        <li>Naruto Tier 2 Wave 7 (CH) - 200 Units</li>
-                    </ul>
-                </div>
-
-                <!-- Lowest Stock -->
-                <div class="panel">
-                    <h2>Lowest Stock</h2>
-                    <ul>
-                        <li>Terastal Festival ex (JP) - 0 Units</li>
-                        <li>Terastal Festival ex (KR) - 1 Unit</li>
-                        <li>Naruto Kayou Tier 3 Wave 5 (CH) - 3 Units</li>
-                        <li>VSTAR Universe (JP) - 5 Units</li>
-                        <li>Crimson Haze (JP) - 7 Units</li>
                     </ul>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 </body>
 </html>

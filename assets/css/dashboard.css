@@ -1,4 +1,4 @@
-/* General Styles */
+/* General Page Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -9,21 +9,32 @@ body {
 /* Dashboard Layout */
 .dashboard-container {
     display: flex;
+    flex-direction: column;
+}
+
+/* Header (Title at Top Left) */
+.dashboard-header {
+    background-color: #333;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-size: 20px;
+}
+
+/* Main Content Layout */
+.dashboard-content {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
 }
 
 /* Sidebar Menu */
 .sidebar {
     width: 250px;
-    background-color: #333;
+    background-color: #444;
     color: white;
-    padding: 20px;
-    height: 100vh;
-}
-
-.sidebar h2 {
-    text-align: center;
-    font-size: 22px;
-    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 10px;
 }
 
 .sidebar ul {
@@ -32,29 +43,45 @@ body {
 }
 
 .sidebar ul li {
+    display: flex;
+    align-items: center;
     padding: 10px;
     border-bottom: 1px solid #555;
+}
+
+.sidebar ul li i {
+    margin-right: 10px;
+    font-size: 18px;
 }
 
 .sidebar ul li a {
     text-decoration: none;
     color: white;
-    display: block;
 }
 
-.sidebar ul li a:hover {
-    background-color: #444;
+/* Admin Welcome Section */
+.admin-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: absolute;
+    right: 20px;
+    top: 15px;
 }
 
-/* Main Dashboard Content */
-.dashboard-main {
-    flex: 1;
+.admin-info img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+/* Home Container */
+.home-container {
+    width: 100%;
+    background-color: #FFC38E;
     padding: 20px;
-}
-
-.dashboard-main h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
+    border-radius: 10px;
+    text-align: center;
 }
 
 /* Dashboard Panels */
@@ -68,31 +95,9 @@ body {
     background-color: #FFA07A;
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.panel h2 {
-    font-size: 20px;
+.panel h3 {
+    font-size: 18px;
     margin-bottom: 10px;
-}
-
-.panel ul {
-    list-style: none;
-    padding: 0;
-}
-
-.panel ul li {
-    padding: 5px 0;
-    font-size: 16px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .dashboard-panels {
-        grid-template-columns: 1fr;
-    }
-
-    .sidebar {
-        width: 200px;
-    }
 }
