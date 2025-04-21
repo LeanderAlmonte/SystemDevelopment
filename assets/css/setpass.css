@@ -1,0 +1,162 @@
+body {
+    background-color: #F86F05;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 1000px;
+    margin: auto;
+    gap: 20px;
+}
+
+.logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo img {
+    width: 500px;
+    height: auto;
+}
+
+.login-form {
+    flex: 1;
+    width: 200px;
+    height: 450px;
+    background-color: #FFC38E;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-form h1 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 40px;
+    margin-top: 6px;
+}
+
+.login-form h2 {
+    text-align: left;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.login-form h5 {
+    text-align: left;
+    color: grey;
+    margin-bottom: 13px;
+}
+
+.login-options {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: 30px;
+    gap: 30px;
+}
+
+.login-button {
+    background-color: wheat;
+    border: none;
+    border-radius: 50px;
+    padding: 15px 15px;
+    margin: 0 10px;
+    cursor: pointer;
+    border-radius: 30px;
+    font-size: 16px;
+    width: 150px;
+}
+
+.login-button:hover {
+    background-color: #FF7F50;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+label {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+input {
+    width: 70%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.forgot-password {
+    text-align: left;
+    font-size: 12px;
+    color: black;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.submit-button {
+    width: 30%;
+    background-color: wheat;
+    border: none;
+    padding: 10px;
+    margin-top: 30px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.submit-button:hover {
+    background-color: #FF7F50;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.image-container::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 100%;
+    height: 100%;
+    border: 5px solid orange;
+    border-radius: 70%;
+    box-shadow: 0 0 20px 10px rgba(255, 165, 0, 0.8);;
+    animation: circleEffect 5s linear forwards;
+}
+
+@keyframes circleEffect {
+    0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(360deg) scale(1.2);
+        opacity: 0;
+    }
+}
+
+.image-container::before {
+    animation: circleEffect 2s linear forwards;
+}
+
