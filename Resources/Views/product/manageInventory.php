@@ -18,47 +18,7 @@ $categories = $productController->getCategories();
     <!-- <base href="/ecommerce/Project/SystemDevelopment/"> -->
     <link rel="stylesheet" href="../../../assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* ... existing styles ... */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #fff;
-            min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            z-index: 1;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background-color 0.3s;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-
-        .dropdown-content a.delete {
-            color: #ff0000;
-        }
-
-        .show {
-            display: block;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -124,15 +84,19 @@ $categories = $productController->getCategories();
                                         <td><?php echo htmlspecialchars($product['category']); ?></td>
                                         <td>$<?php echo htmlspecialchars($product['price']); ?></td>
                                         <td><?php echo htmlspecialchars($product['quantity']); ?>/100</td>
-                                        <td>
+                                        <td class="actions-cell">
                                             <div class="dropdown">
-                                                <button class='action-btn' onclick="toggleDropdown(this, <?php echo $product['productID']; ?>)">
-                                                    <i class='fas fa-ellipsis-h'></i>
+                                                <button class="action-btn" onclick="toggleDropdown(this, <?php echo $product['productID']; ?>)">
+                                                    <i class="fas fa-ellipsis-h"></i>
                                                 </button>
                                                 <div id="dropdown-<?php echo $product['productID']; ?>" class="dropdown-content">
-                                                    <a href="#"><i class="fas fa-archive"></i> Archive</a>
-                                                    <a href="#"><i class="fas fa-edit"></i> Edit</a>
-                                                    <a href="#" class="delete" onclick="deleteProduct(<?php echo $product['productID']; ?>)">
+                                                    <a href="#" class="dropdown-item">
+                                                        <i class="fas fa-archive"></i> Archive
+                                                    </a>
+                                                    <a href="#" class="dropdown-item">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </a>
+                                                    <a href="#" class="dropdown-item delete" onclick="deleteProduct(<?php echo $product['productID']; ?>)">
                                                         <i class="fas fa-trash"></i> Delete
                                                     </a>
                                                 </div>
@@ -148,7 +112,7 @@ $categories = $productController->getCategories();
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button class="action-btn" id="processOrderBtn">Process Order</button>
-                    <form action="addProduct.php" method="GET" style="display: inline;">
+                    <form action="addProduct.php" method="GET">
                         <button type="submit" class="action-btn">Add Product</button>
                     </form>
                 </div>
@@ -207,29 +171,46 @@ $categories = $productController->getCategories();
         });
 
         // Close dropdowns when clicking outside
-        window.onclick = function(event) {
-            if (!event.target.matches('.action-btn') && !event.target.matches('.fa-ellipsis-h')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                const dropdowns = document.querySelectorAll('.dropdown-content');
+                dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
             }
-        }
+        });
+
+        // Close dropdowns when scrolling
+        document.querySelector('.table-container').addEventListener('scroll', function() {
+            const dropdowns = document.querySelectorAll('.dropdown-content');
+            dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
+        });
 
         function toggleDropdown(button, productId) {
-            var dropdown = document.getElementById("dropdown-" + productId);
-            // Close all other dropdowns
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            for (var i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown !== dropdown && openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
+            const dropdowns = document.querySelectorAll('.dropdown-content');
+            dropdowns.forEach(dropdown => {
+                if (dropdown.id !== `dropdown-${productId}`) {
+                    dropdown.classList.remove('show');
+                }
+            });
+            
+            const dropdown = document.getElementById(`dropdown-${productId}`);
+            if (!dropdown.classList.contains('show')) {
+                const rect = button.getBoundingClientRect();
+                dropdown.style.left = `${rect.left}px`;
+                
+                // Calculate if there's enough space above
+                const spaceAbove = rect.top;
+                const spaceBelow = window.innerHeight - rect.bottom;
+                const dropdownHeight = 150; // Approximate height of dropdown
+                
+                if (spaceAbove > dropdownHeight || spaceAbove > spaceBelow) {
+                    // Show above
+                    dropdown.style.top = `${rect.top}px`;
+                } else {
+                    // Show below
+                    dropdown.style.top = `${rect.bottom}px`;
                 }
             }
-            dropdown.classList.toggle("show");
+            dropdown.classList.toggle('show');
         }
 
         function deleteProduct(productId) {
