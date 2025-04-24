@@ -1,0 +1,104 @@
+<!-- <?php
+require_once __DIR__ . '/../../../Core/db/dbconnectionmanager.php';
+
+use database\DBConnectionManager;
+
+$dbManager = new DBConnectionManager();
+$db = $dbManager->getConnection();
+
+$pageTitle = 'Home';
+$activePage = 'home';
+$content = ''; // Add your home page specific content here
+
+require_once __DIR__ . '/../layouts/base.php';
+?> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Eyesightcollectibles Dashboard</title>
+  <link rel="stylesheet" href="\..\assets\css\dashboard.css" />
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h1>Eyesightcollectibles</h1>
+      <nav class="menu">
+        <p class="menu-title">Menu Panel</p>
+        <ul>
+          <li>🏠 Home</li>
+          <li>📘 View Manual</li>
+          <li>⚙️ Settings</li>
+          <li>👤 Manage Users</li>
+          <li>📦 Manage Inventory</li>
+          <li>🧾 View sold products</li>
+          <li>📁 Archived Items</li>
+          <li>🔄 History</li>
+          <li>💰 Sales/Costs</li>
+          <li>↩️ Logout</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <h2>Home</h2>
+        <div class="admin-greeting">Welcome Admin! <span>👤</span></div>
+      </header>
+
+      <section class="dashboard">
+        <div class="box">
+          <h3>Best Sellers</h3>
+          <table>
+            <tr><th>Product Name</th><th>Last Restock</th><th>Total Sold</th></tr>
+            <tr><td>1. Terastal Festival ex (JP)</td><td>500</td><td>500</td></tr>
+            <tr><td>2. Terastal Festival ex (KR)</td><td>600</td><td>559</td></tr>
+            <tr><td>3. Gem Pack Volume 1 (CH)</td><td>400</td><td>320</td></tr>
+            <tr><td>4. Shining Treasures ex (JP)</td><td>700</td><td>500</td></tr>
+            <tr><td>5. Naruto Tier 2 Wave 7 (CH)</td><td>900</td><td>700</td></tr>
+          </table>
+        </div>
+
+        <div class="box">
+          <h3>Worst Sellers</h3>
+          <table>
+            <tr><th>Product Name</th><th>Last Restock</th><th>Total Sold</th></tr>
+            <tr><td>1. Naruto Kayou Tier 4 Wave 6 (CH)</td><td>950</td><td>200</td></tr>
+            <tr><td>2. Supercharged Breaker (KR)</td><td>400</td><td>100</td></tr>
+            <tr><td>3. Blue Sky Stream (KR)</td><td>200</td><td>50</td></tr>
+            <tr><td>4. Stellar Miracle (JP)</td><td>700</td><td>350</td></tr>
+            <tr><td>5. Naruto Kayou Tier 3 Wave 3 (CH)</td><td>750</td><td>300</td></tr>
+          </table>
+        </div>
+
+        <div class="box">
+          <h3>Most Stock</h3>
+          <table>
+            <tr><th>Product Name</th><th>Units</th></tr>
+            <tr><td>1. Naruto Kayou Tier 4 Wave 6 (CH)</td><td>750</td></tr>
+            <tr><td>2. Stellar Miracle (JP)</td><td>350</td></tr>
+            <tr><td>3. Naruto Kayou Tier 3 Wave 3 (CH)</td><td>350</td></tr>
+            <tr><td>4. Supercharged Breaker (KR)</td><td>300</td></tr>
+            <tr><td>5. Naruto Tier 2 Wave 7 (CH)</td><td>200</td></tr>
+          </table>
+        </div>
+
+        <div class="box">
+          <h3>Lowest Stock</h3>
+          <table>
+            <tr><th>Product Name</th><th>Units</th></tr>
+            <tr><td>1. Terastal Festival ex (JP)</td><td>0</td></tr>
+            <tr><td>2. Terastal Festival ex (KR)</td><td>1</td></tr>
+            <tr><td>3. Naruto Kayou Tier 3 Wave 5 (CH)</td><td>3</td></tr>
+            <tr><td>4. VSTAR Universe (JP)</td><td>5</td></tr>
+            <tr><td>5. Crimson Haze (JP)</td><td>7</td></tr>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
