@@ -51,7 +51,7 @@ class ManageUsers {
                         <div class="category-filters">
                             <button class="category-btn active" data-category="all">All Users</button>
                             <button class="category-btn" data-category="admin">Admins</button>
-                            <button class="category-btn" data-category="user">Regular Users</button>
+                            <button class="category-btn" data-category="employee">Employees</button>
                         </div>
 
                         <!-- Users Table -->

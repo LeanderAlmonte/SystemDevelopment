@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="error-message"><?php echo $error; ?></div>
                 <?php endif; ?>
                 
-                <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=users/create" class="add-user-form">
+                <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=users" class="add-user-form">
                     <div class="form-group">
                         <label for="firstName">First Name</label>
                         <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <select id="userType" name="userType" required>
                             <option value="" disabled selected>Select User Type</option>
                             <option value="admin">Admin</option>
-                            <option value="user">Regular User</option>
+                            <option value="employee">Employee</option>
                         </select>
                     </div>
 

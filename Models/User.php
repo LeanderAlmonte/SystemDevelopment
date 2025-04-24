@@ -4,6 +4,7 @@ namespace models;
 
 use database\DBConnectionManager;
 use PDO;
+use PDOException;
 
 require_once(dirname(__DIR__) . '/core/db/DBConnectionManager.php');
 
@@ -104,7 +105,16 @@ class User{
         }
     }
 
-    public function create() {
+    public function create($data = null) {
+        if ($data) {
+            $this->setFirstName($data['firstName']);
+            $this->setLastName($data['lastName']);
+            $this->setPassword(password_hash($data['password'], PASSWORD_DEFAULT));
+            $this->setEmail($data['email']);
+            $this->setUserType($data['userType']);
+            $this->setTheme($data['theme']);
+        }
+
         $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme) 
                  VALUES (:firstName, :lastName, :password, :email, :userType, :theme)";
         
@@ -116,7 +126,15 @@ class User{
         $stmt->bindParam(':userType', $this->userType);
         $stmt->bindParam(':theme', $this->theme);
         
-        return $stmt->execute();
+        try {
+            if ($stmt->execute()) {
+                return ['success' => true];
+            } else {
+                return ['error' => 'Failed to create user'];
+            }
+        } catch (PDOException $e) {
+            return ['error' => 'Database error: ' . $e->getMessage()];
+        }
     }
 
     public function update() {
