@@ -15,9 +15,50 @@ $categories = $productController->getCategories();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Inventory - Eyesightcollectibles</title>
-    <base href="/ecommerce/Project/SystemDevelopment/">
-    <link rel="stylesheet" href="/../assets/css/styles.css">
+    <!-- <base href="/ecommerce/Project/SystemDevelopment/"> -->
+    <link rel="stylesheet" href="../../../assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ... existing styles ... */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-content a.delete {
+            color: #ff0000;
+        }
+
+        .show {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -78,12 +119,25 @@ $categories = $productController->getCategories();
                             <?php else: ?>
                                 <?php foreach ($products as $product): ?>
                                     <tr>
-                                        <td>#<?php echo $product['productID']; ?></td>
-                                        <td><?php echo $product['productName']; ?></td>
-                                        <td><?php echo $product['category']; ?></td>
-                                        <td>$<?php echo $product['price']; ?></td>
-                                        <td><?php echo $product['quantity']; ?>/100</td>
-                                        <td><button class='action-btn'><i class='fas fa-ellipsis-h'></i></button></td>
+                                        <td><?php echo htmlspecialchars($product['productID']); ?></td>
+                                        <td><?php echo htmlspecialchars($product['productName']); ?></td>
+                                        <td><?php echo htmlspecialchars($product['category']); ?></td>
+                                        <td>$<?php echo htmlspecialchars($product['price']); ?></td>
+                                        <td><?php echo htmlspecialchars($product['quantity']); ?>/100</td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class='action-btn' onclick="toggleDropdown(this, <?php echo $product['productID']; ?>)">
+                                                    <i class='fas fa-ellipsis-h'></i>
+                                                </button>
+                                                <div id="dropdown-<?php echo $product['productID']; ?>" class="dropdown-content">
+                                                    <a href="#"><i class="fas fa-archive"></i> Archive</a>
+                                                    <a href="#"><i class="fas fa-edit"></i> Edit</a>
+                                                    <a href="#" class="delete" onclick="deleteProduct(<?php echo $product['productID']; ?>)">
+                                                        <i class="fas fa-trash"></i> Delete
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -94,7 +148,7 @@ $categories = $productController->getCategories();
                 <!-- Action Buttons -->
                 <div class="action-buttons">
                     <button class="action-btn" id="processOrderBtn">Process Order</button>
-                    <form action="Resources/Views/product/addProduct.php" method="GET" style="display: inline;">
+                    <form action="addProduct.php" method="GET" style="display: inline;">
                         <button type="submit" class="action-btn">Add Product</button>
                     </form>
                 </div>
@@ -151,6 +205,58 @@ $categories = $productController->getCategories();
             // Initial filter
             filterProducts('all', '');
         });
+
+        // Close dropdowns when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.action-btn') && !event.target.matches('.fa-ellipsis-h')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function toggleDropdown(button, productId) {
+            var dropdown = document.getElementById("dropdown-" + productId);
+            // Close all other dropdowns
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown !== dropdown && openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+            dropdown.classList.toggle("show");
+        }
+
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                var formData = new FormData();
+                formData.append('productId', productId);
+
+                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/deleteProduct.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove the row from the table
+                        var row = document.querySelector(`button[onclick="toggleDropdown(this, ${productId})"]`).closest('tr');
+                        row.remove();
+                    } else {
+                        alert('Error deleting product: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error deleting product. Please check the console for details.');
+                });
+            }
+        }
     </script>
 </body>
 </html>

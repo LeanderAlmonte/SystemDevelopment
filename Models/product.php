@@ -160,7 +160,17 @@ class Product {
             return ['error' => $e->getMessage()];
         }
     }
-}
 
+    public function deleteProduct($id) {
+        try {
+            $query = "DELETE FROM products WHERE productID = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([':id' => $id]);
+            return ['success' => true];
+        } catch (\PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+}
 
 ?>
