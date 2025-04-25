@@ -8,7 +8,7 @@ use controllers\ProductController;
 $productController = new ProductController();
 $categories = $productController->getCategories();
 
-// Handle archive/unarchive requests
+// Handle unarchive and delete requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['productId']) && isset($_POST['action'])) {
         $action = $_POST['action'];
@@ -16,6 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($action === 'unarchive') {
             $result = $productController->unarchiveProduct($productId);
+            if (isset($result['error'])) {
+                echo "<script>alert('Error: " . $result['error'] . "');</script>";
+            } else {
+                // Refresh the page to show updated list
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+        } elseif ($action === 'delete') {
+            $result = $productController->deleteProduct($productId);
             if (isset($result['error'])) {
                 echo "<script>alert('Error: " . $result['error'] . "');</script>";
             } else {
@@ -120,9 +129,13 @@ $products = $productController->getArchivedProducts();
                                                             <i class="fas fa-box"></i> Unarchive
                                                         </button>
                                                     </form>
-                                                    <a href="#" class="dropdown-item delete" onclick="deleteProduct(<?php echo $product['productID']; ?>)">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </a>
+                                                    <form method="POST" action="" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
+                                                        <button type="submit" class="dropdown-item delete" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </td>
@@ -139,6 +152,10 @@ $products = $productController->getArchivedProducts();
     <script>
         function confirmUnarchive(productName) {
             return confirm('Are you sure you want to unarchive "' + productName + '"?');
+        }
+
+        function confirmDelete(productName) {
+            return confirm('Are you sure you want to delete "' + productName + '"? This action cannot be undone.');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
