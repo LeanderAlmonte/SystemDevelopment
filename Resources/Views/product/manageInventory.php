@@ -126,7 +126,7 @@ $categories = $productController->getCategories();
                                                             <i class="fas fa-archive"></i> Archive
                                                         </button>
                                                     </form>
-                                                    <a href="#" class="dropdown-item">
+                                                    <a href="editProduct.php?id=<?php echo $product['productID']; ?>" class="dropdown-item">
                                                         <i class="fas fa-edit"></i> Edit
                                                     </a>
                                                     <form method="POST" action="" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
