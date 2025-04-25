@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($result['error'])) {
         $error = $result['error'];
     } else {
-        header('Location: users.php');
+        header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
         exit();
     }
 }
@@ -102,16 +102,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="menu-panel">
             <h2 class="menu-title">Menu Panel</h2>
             <ul class="menu-items">
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/dashboard/home.php"><i class="fas fa-home"></i><span>Home</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/dashboard/manual.php"><i class="fas fa-book"></i><span>View Manual</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/settings/settings.php"><i class="fas fa-cog"></i><span>Settings</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/users/users.php" class="active"><i class="fas fa-users"></i><span>Manage Users</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/product/manageInventory.php"><i class="fas fa-box"></i><span>Manage Inventory</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/product/soldProducts.php"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/product/archivedItems.php"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/history/history.php"><i class="fas fa-history"></i><span>History</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/sales/sales.php"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/Resources/Views/auth/logout.php"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboard/home"><i class="fas fa-home"></i><span>Home</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboard/manual"><i class="fas fa-book"></i><span>View Manual</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users" class="active"><i class="fas fa-users"></i><span>Manage Users</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=product/manageInventory"><i class="fas fa-box"></i><span>Manage Inventory</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=product/soldProducts"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=product/archivedItems"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=history"><i class="fas fa-history"></i><span>History</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=sales"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auth/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
             </ul>
         </div>
 
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="error-message"><?php echo $error; ?></div>
                 <?php endif; ?>
                 
-                <form method="POST" class="add-user-form">
+                <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=users" class="add-user-form">
                     <div class="form-group">
                         <label for="firstName">First Name</label>
                         <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
@@ -153,8 +153,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="userType">User Type</label>
                         <select id="userType" name="userType" required>
                             <option value="" disabled selected>Select User Type</option>
-                            <option value="admin">Admin</option>
-                            <option value="user">Regular User</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Employee">Employee</option>
                         </select>
                     </div>
 
@@ -162,13 +162,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="theme">Theme</label>
                         <select id="theme" name="theme" required>
                             <option value="" disabled selected>Select Theme</option>
-                            <option value="light">Light</option>
-                            <option value="dark">Dark</option>
+                            <option value="Light">Light</option>
+                            <option value="Dark">Dark</option>
                         </select>
                     </div>
 
                     <div class="form-actions">
-                        <button type="button" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/Resources/Views/users/users.php'">Back</button>
+                        <button type="button" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=users'">Back</button>
                         <button type="submit">Add User</button>
                     </div>
                 </form>

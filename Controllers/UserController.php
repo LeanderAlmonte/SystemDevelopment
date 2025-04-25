@@ -39,7 +39,7 @@ class UserController {
     }
 
     private function showAddForm($error = null) {
-        require(dirname(__DIR__) . '/resources/views/users/addUser.php');
+        require(dirname(__DIR__) . '/resources/views/user/addUser.php');
         exit();
     }
 }
