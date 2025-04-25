@@ -4,205 +4,229 @@ namespace models;
 
 use database\DBConnectionManager;
 use PDO;
+use PDOException;
+
+require_once(dirname(__DIR__) . '/core/db/DBConnectionManager.php');
 
 class Product {
-    private $db;
     private $productID;
-    private $productType;
     private $productName;
+    private $category;
     private $listedPrice;
     private $paidPrice;
     private $quantity;
-    private $category;
-    private $isSold;
     private $isArchived;
+    private $isSold;
+
+    private $dbConnection;
 
     public function __construct() {
-        $dbManager = new DBConnectionManager();
-        $this->db = $dbManager->getConnection();
+        $this->dbConnection = (new DBConnectionManager())->getConnection();
     }
 
-    // Getters and Setters
+    // Getters
     public function getProductID() {
         return $this->productID;
-    }
-
-    public function setProductID($productID) {
-        $this->productID = $productID;
-    }
-
-    public function getProductType() {
-        return $this->productType;
-    }
-
-    public function setProductType($productType) {
-        $this->productType = $productType;
     }
 
     public function getProductName() {
         return $this->productName;
     }
 
-    public function setProductName($productName) {
-        $this->productName = $productName;
+    public function getCategory() {
+        return $this->category;
     }
 
     public function getListedPrice() {
         return $this->listedPrice;
     }
 
-    public function setListedPrice($listedPrice) {
-        $this->listedPrice = $listedPrice;
-    }
-
     public function getPaidPrice() {
         return $this->paidPrice;
-    }
-
-    public function setPaidPrice($paidPrice) {
-        $this->paidPrice = $paidPrice;
     }
 
     public function getQuantity() {
         return $this->quantity;
     }
 
-    public function setQuantity($quantity) {
-        $this->quantity = $quantity;
-    }
-
-    public function getCategory() {
-        return $this->category;
-    }
-
-    public function setCategory($category) {
-        $this->category = $category;
-    }
-
-    public function getIsSold() {
-        return $this->isSold;
-    }
-
-    public function setIsSold($isSold) {
-        $this->isSold = $isSold;
-    }
-
     public function getIsArchived() {
         return $this->isArchived;
     }
 
-    public function setIsArchived($isArchived) {
-        $this->isArchived = $isArchived;
+    // Setters
+    public function setProductID($productID) {
+        $this->productID = $productID;
+        return $this;
     }
 
-    // Database Operations
-    public function addProduct($data) {
-        try {
-            $query = "INSERT INTO products (productName, category, listedPrice, paidPrice, quantity, isArchived, isSold) 
-                     VALUES (:name, :category, :listedPrice, :paidPrice, :quantity, 0, 0)";
-            
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([
-                ':name' => $data['productName'],
-                ':category' => $data['category'],
-                ':listedPrice' => $data['listedPrice'],
-                ':paidPrice' => $data['paidPrice'],
-                ':quantity' => $data['quantity']
-            ]);
-            return ['success' => true];
-        } catch (\PDOException $e) {
-            return ['error' => $e->getMessage()];
+    public function setProductName($productName) {
+        $this->productName = $productName;
+        return $this;
+    }
+
+    public function setCategory($category) {
+        $this->category = $category;
+        return $this;
+    }
+
+    public function setListedPrice($listedPrice) {
+        $this->listedPrice = $listedPrice;
+        return $this;
+    }
+
+    public function setPaidPrice($paidPrice) {
+        $this->paidPrice = $paidPrice;
+        return $this;
+    }
+
+    public function setQuantity($quantity) {
+        $this->quantity = $quantity;
+        return $this;
+    }
+
+    public function setIsArchived($isArchived) {
+        $this->isArchived = $isArchived;
+        return $this;
+    }
+
+    // CRUD Operations
+    public function read($id = null) {
+        if ($id) {
+            $query = "SELECT * FROM products WHERE productID = :productID";
+            $stmt = $this->dbConnection->prepare($query);
+            $stmt->bindParam(':productID', $id);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } else {
+            $query = "SELECT * FROM products WHERE isArchived = 0";
+            $stmt = $this->dbConnection->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     }
 
-    public function getAllProducts() {
+    public function create($data = null) {
+        if ($data) {
+            $this->setProductName($data['productName']);
+            $this->setCategory($data['category']);
+            $this->setListedPrice($data['listedPrice']);
+            $this->setPaidPrice($data['paidPrice']);
+            $this->setQuantity($data['quantity']);
+            $this->setIsArchived(0);
+        }
+
+        $query = "INSERT INTO products (productName, category, listedPrice, paidPrice, quantity, isArchived) 
+                 VALUES (:productName, :category, :listedPrice, :paidPrice, :quantity, :isArchived)";
+        
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':productName', $this->productName);
+        $stmt->bindParam(':category', $this->category);
+        $stmt->bindParam(':listedPrice', $this->listedPrice);
+        $stmt->bindParam(':paidPrice', $this->paidPrice);
+        $stmt->bindParam(':quantity', $this->quantity);
+        $stmt->bindParam(':isArchived', $this->isArchived);
+        
         try {
-            $query = "SELECT productID, productName, category, listedPrice as price, quantity FROM products WHERE isArchived = 0 AND isSold = 0";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            return ['error' => $e->getMessage()];
+            if ($stmt->execute()) {
+                return ['success' => true];
+            } else {
+                return ['error' => 'Failed to create product'];
+            }
+        } catch (PDOException $e) {
+            return ['error' => 'Database error: ' . $e->getMessage()];
+        }
+    }
+
+    public function update($data = null) {
+        if ($data) {
+            $this->setProductID($data['productID']);
+            $this->setProductName($data['productName']);
+            $this->setCategory($data['category']);
+            $this->setListedPrice($data['listedPrice']);
+            $this->setPaidPrice($data['paidPrice']);
+            $this->setQuantity($data['quantity']);
+        }
+
+        $query = "UPDATE products 
+                 SET productName = :productName, 
+                     category = :category, 
+                     listedPrice = :listedPrice, 
+                     paidPrice = :paidPrice, 
+                     quantity = :quantity 
+                 WHERE productID = :productID";
+        
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':productID', $this->productID);
+        $stmt->bindParam(':productName', $this->productName);
+        $stmt->bindParam(':category', $this->category);
+        $stmt->bindParam(':listedPrice', $this->listedPrice);
+        $stmt->bindParam(':paidPrice', $this->paidPrice);
+        $stmt->bindParam(':quantity', $this->quantity);
+        
+        try {
+            if ($stmt->execute()) {
+                return ['success' => true];
+            } else {
+                return ['error' => 'Failed to update product'];
+            }
+        } catch (PDOException $e) {
+            return ['error' => 'Database error: ' . $e->getMessage()];
+        }
+    }
+
+    public function delete($id) {
+        $query = "DELETE FROM products WHERE productID = :productID";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':productID', $id);
+        
+        try {
+            if ($stmt->execute()) {
+                return ['success' => true];
+            } else {
+                return ['error' => 'Failed to delete product'];
+            }
+        } catch (PDOException $e) {
+            return ['error' => 'Database error: ' . $e->getMessage()];
+        }
+    }
+
+    public function archive($id) {
+        $query = "UPDATE products SET isArchived = 1 WHERE productID = :productID";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':productID', $id);
+        
+        try {
+            if ($stmt->execute()) {
+                return ['success' => true];
+            } else {
+                return ['error' => 'Failed to archive product'];
+            }
+        } catch (PDOException $e) {
+            return ['error' => 'Database error: ' . $e->getMessage()];
+        }
+    }
+
+    public function unarchive($id) {
+        $query = "UPDATE products SET isArchived = 0 WHERE productID = :productID";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':productID', $id);
+        
+        try {
+            if ($stmt->execute()) {
+                return ['success' => true];
+            } else {
+                return ['error' => 'Failed to unarchive product'];
+            }
+        } catch (PDOException $e) {
+            return ['error' => 'Database error: ' . $e->getMessage()];
         }
     }
 
     public function getArchivedProducts() {
-        try {
-            $query = "SELECT productID, productName, category, listedPrice as price, quantity FROM products WHERE isArchived = 1";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            return ['error' => $e->getMessage()];
-        }
-    }
-
-    public function archiveProduct($id) {
-        try {
-            $query = "UPDATE products SET isArchived = 1 WHERE productID = :id";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([':id' => $id]);
-            return ['success' => true];
-        } catch (\PDOException $e) {
-            return ['error' => $e->getMessage()];
-        }
-    }
-
-    public function unarchiveProduct($id) {
-        try {
-            $query = "UPDATE products SET isArchived = 0 WHERE productID = :id";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([':id' => $id]);
-            return ['success' => true];
-        } catch (\PDOException $e) {
-            return ['error' => $e->getMessage()];
-        }
-    }
-
-    public function getProductById($id) {
-        try {
-            $query = "SELECT * FROM products WHERE productID = :id AND isArchived = 0";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            return ['error' => $e->getMessage()];
-        }
-    }
-
-    public function updateProduct($data) {
-        try {
-            $query = "UPDATE products SET 
-                     productName = :name,
-                     category = :category,
-                     listedPrice = :price,
-                     quantity = :quantity
-                     WHERE productID = :id";
-            
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([
-                ':name' => $data['productName'],
-                ':category' => $data['category'],
-                ':price' => $data['price'],
-                ':quantity' => $data['quantity'],
-                ':id' => $data['productID']
-            ]);
-            return true;
-        } catch (\PDOException $e) {
-            return ['error' => $e->getMessage()];
-        }
-    }
-
-    public function deleteProduct($id) {
-        try {
-            $query = "DELETE FROM products WHERE productID = :id";
-            $stmt = $this->db->prepare($query);
-            $stmt->execute([':id' => $id]);
-            return ['success' => true];
-        } catch (\PDOException $e) {
-            return ['error' => $e->getMessage()];
-        }
+        $query = "SELECT * FROM products WHERE isArchived = 1";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 
