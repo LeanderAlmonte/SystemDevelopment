@@ -550,3 +550,35 @@ tr:nth-child(n+4) .dropdown-content {
     font-size: 14px;
     opacity: 0.9;
   }
+
+/* Dropdown Menu Item Styles */
+.dropdown-menu-item {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.dropdown-menu-item i {
+    width: 16px;
+}
+
+.dropdown-menu-item.delete {
+    color: #dc3545;
+}
+
+.dropdown-menu-item:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown-menu-item.delete:hover {
+    background-color: #fff5f5;
+}
