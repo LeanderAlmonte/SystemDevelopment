@@ -135,11 +135,101 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
-        // ... Same filtering and dropdown code as manageInventory.php ...
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            const productTableBody = document.getElementById('productTableBody');
+
+            // Function to normalize category names for comparison
+            function normalizeCategory(category) {
+                return category.toLowerCase().replace(/\s+/g, '-');
+            }
+
+            // Function to filter products based on category and search term
+            function filterProducts(category, searchTerm) {
+                const rows = productTableBody.querySelectorAll('tr');
+                
+                rows.forEach(row => {
+                    const productName = row.children[1].textContent.toLowerCase();
+                    const productCategory = normalizeCategory(row.children[2].textContent);
+                    const searchMatch = productName.includes(searchTerm.toLowerCase());
+                    const categoryMatch = category === 'all' || productCategory.includes(category);
+                    
+                    row.style.display = searchMatch && categoryMatch ? '' : 'none';
+                });
+            }
+
+            // Search functionality
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value;
+                const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+                filterProducts(activeCategory, searchTerm);
+            });
+
+            // Category filter functionality
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active state
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter products
+                    const category = this.dataset.category;
+                    const searchTerm = searchInput.value;
+                    filterProducts(category, searchTerm);
+                });
+            });
+
+            // Initial filter
+            filterProducts('all', '');
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                const dropdowns = document.querySelectorAll('.dropdown-content');
+                dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
+            }
+        });
+
+        // Close dropdowns when scrolling
+        document.querySelector('.table-container').addEventListener('scroll', function() {
+            const dropdowns = document.querySelectorAll('.dropdown-content');
+            dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
+        });
+
+        function toggleDropdown(button, productId) {
+            const dropdowns = document.querySelectorAll('.dropdown-content');
+            dropdowns.forEach(dropdown => {
+                if (dropdown.id !== `dropdown-${productId}`) {
+                    dropdown.classList.remove('show');
+                }
+            });
+            
+            const dropdown = document.getElementById(`dropdown-${productId}`);
+            if (!dropdown.classList.contains('show')) {
+                const rect = button.getBoundingClientRect();
+                dropdown.style.left = `${rect.left}px`;
+                
+                // Calculate if there's enough space above
+                const spaceAbove = rect.top;
+                const spaceBelow = window.innerHeight - rect.bottom;
+                const dropdownHeight = 150; // Approximate height of dropdown
+                
+                if (spaceAbove > dropdownHeight || spaceAbove > spaceBelow) {
+                    // Show above
+                    dropdown.style.top = `${rect.top}px`;
+                } else {
+                    // Show below
+                    dropdown.style.top = `${rect.bottom}px`;
+                }
+            }
+            dropdown.classList.toggle('show');
+        }
 
         function unarchiveProduct(productId) {
             if (confirm('Are you sure you want to unarchive this product?')) {
-                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/archiveProduct.php', {
+                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/archivedProducts.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
@@ -161,8 +251,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 });
             }
         }
-
-        // ... Rest of the JavaScript code ...
     </script>
 </body>
 </html>
