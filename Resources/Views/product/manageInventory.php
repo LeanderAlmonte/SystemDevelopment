@@ -122,17 +122,17 @@ $categories = $productController->getCategories();
                                                     <form method="POST" action="" style="display: inline;" onsubmit="return confirmArchive('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                         <input type="hidden" name="action" value="archive">
                                                         <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
-                                                        <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                        <button type="submit" class="dropdown-menu-item">
                                                             <i class="fas fa-archive"></i> Archive
                                                         </button>
                                                     </form>
-                                                    <a href="editProduct.php?id=<?php echo $product['productID']; ?>" class="dropdown-item">
+                                                    <a href="editProduct.php?id=<?php echo $product['productID']; ?>" class="dropdown-menu-item">
                                                         <i class="fas fa-edit"></i> Edit
                                                     </a>
                                                     <form method="POST" action="" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                         <input type="hidden" name="action" value="delete">
                                                         <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
-                                                        <button type="submit" class="dropdown-item delete" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                        <button type="submit" class="dropdown-menu-item delete">
                                                             <i class="fas fa-trash"></i> Delete
                                                         </button>
                                                     </form>
@@ -182,9 +182,10 @@ $categories = $productController->getCategories();
                 
                 rows.forEach(row => {
                     const productName = row.children[1].textContent.toLowerCase();
-                    const productCategory = normalizeCategory(row.children[2].textContent);
+                    const productCategory = row.children[2].textContent;
+                    const normalizedProductCategory = normalizeCategory(productCategory);
                     const searchMatch = productName.includes(searchTerm.toLowerCase());
-                    const categoryMatch = category === 'all' || productCategory.includes(category);
+                    const categoryMatch = category === 'all' || normalizedProductCategory === category;
                     
                     row.style.display = searchMatch && categoryMatch ? '' : 'none';
                 });
