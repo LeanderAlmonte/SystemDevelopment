@@ -165,8 +165,12 @@ class User{
         $stmt->bindParam(':userId', $this->userId);
         return $stmt->execute();
     }
-    
-    
-    
-    
+
+    public function findByEmail($email) {
+        $query = "SELECT * FROM users WHERE email = :email";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
