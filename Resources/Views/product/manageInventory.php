@@ -81,7 +81,7 @@ $categories = $productController->getCategories();
                                     <tr>
                                         <td><?php echo htmlspecialchars($product['productID']); ?></td>
                                         <td><?php echo htmlspecialchars($product['productName']); ?></td>
-                                        <td><?php echo htmlspecialchars($product['category']); ?></td>
+                                        <td><?php echo htmlspecialchars($categories[$product['category']] ?? $product['category']); ?></td>
                                         <td>$<?php echo htmlspecialchars($product['price']); ?></td>
                                         <td><?php echo htmlspecialchars($product['quantity']); ?>/100</td>
                                         <td class="actions-cell">
@@ -241,7 +241,7 @@ $categories = $productController->getCategories();
 
         function archiveProduct(productId) {
             if (confirm('Are you sure you want to archive this product?')) {
-                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/archiveProduct.php', {
+                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/archivedProducts.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',

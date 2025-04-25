@@ -6,8 +6,30 @@ require_once __DIR__ . '/../../../Models/product.php';
 use controllers\ProductController;
 
 $productController = new ProductController();
-$products = $productController->getArchivedProducts();
 $categories = $productController->getCategories();
+$products = $productController->getArchivedProducts();
+
+// Handle archive/unarchive requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json');
+    
+    if (isset($_POST['productId'])) {
+        $action = $_POST['action'] ?? 'archive';
+        $productId = $_POST['productId'];
+
+        if ($action === 'archive') {
+            $result = $productController->archiveProduct($productId);
+        } else {
+            $result = $productController->unarchiveProduct($productId);
+        }
+
+        echo json_encode($result);
+        exit();
+    }
+
+    echo json_encode(['error' => 'Invalid request']);
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,7 +106,7 @@ $categories = $productController->getCategories();
                                     <tr>
                                         <td><?php echo htmlspecialchars($product['productID']); ?></td>
                                         <td><?php echo htmlspecialchars($product['productName']); ?></td>
-                                        <td><?php echo htmlspecialchars($product['category']); ?></td>
+                                        <td><?php echo htmlspecialchars($categories[$product['category']] ?? $product['category']); ?></td>
                                         <td>$<?php echo htmlspecialchars($product['price']); ?></td>
                                         <td><?php echo htmlspecialchars($product['quantity']); ?>/100</td>
                                         <td class="actions-cell">
