@@ -158,6 +158,7 @@ body {
 }
 
 .table-container {
+    position: relative;
     background-color: var(--white);
     border-radius: 5px;
     overflow: auto;
@@ -168,6 +169,7 @@ body {
 .inventory-table {
     width: 100%;
     border-collapse: collapse;
+    position: relative;
 }
 
 .inventory-table th,
@@ -182,6 +184,7 @@ body {
     color: var(--white);
     position: sticky;
     top: 0;
+    z-index: 20;
 }
 
 .action-buttons {
@@ -219,8 +222,7 @@ body {
 }
 
 .action-buttons form {
-    margin: 0;
-    padding: 0;
+    display: inline-block;
 }
 
 .action-buttons form button {
@@ -426,6 +428,82 @@ body {
         margin-bottom: 10px;
     }
 }
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: fixed;
+    background-color: var(--white);
+    min-width: 180px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    border-radius: 8px;
+    z-index: 30;
+    transform: translateX(-100%);
+    margin-left: -10px;
+}
+
+/* Default position: show below for first few rows */
+tr:nth-child(-n+3) .dropdown-content {
+    margin-top: 5px;
+}
+
+/* For all other rows, show above */
+tr:nth-child(n+4) .dropdown-content {
+    transform: translate(-100%, -100%);
+    margin-top: -5px;
+}
+
+.dropdown-content.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: var(--text-color);
+    gap: 12px;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+    background-color: var(--white);
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown-item:first-child {
+    border-radius: 8px 8px 0 0;
+}
+
+.dropdown-item:last-child {
+    border-radius: 0 0 8px 8px;
+}
+
+.dropdown-item i {
+    width: 16px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.dropdown-item.delete {
+    color: #dc3545;
+}
+
+.dropdown-item.delete:hover {
+    background-color: #fff5f5;
+}
+
+/* Table Styles Update */
+.actions-cell {
+    position: relative;
+} 
 
 .home-banner {
     background-color: #E86C2C;
