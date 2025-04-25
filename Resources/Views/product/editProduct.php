@@ -109,9 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-group">
                         <label for="quantity">Product quantity</label>
-                        <input type="number" id="quantity" name="quantity" min="0" max="100" required 
+                        <input type="number" id="quantity" name="quantity" min="0" required 
                                value="<?php echo htmlspecialchars($product['quantity'] ?? ''); ?>"
-                               placeholder="Enter product quantity (0-100)">
+                               placeholder="Enter product quantity">
                     </div>
 
                     <div class="form-actions" style="display: flex; justify-content: space-between; gap: 10px;">

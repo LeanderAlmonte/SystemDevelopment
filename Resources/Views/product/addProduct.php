@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-group">
                         <label for="quantity">Product quantity</label>
-                        <input type="number" id="quantity" name="quantity" min="0" max="100" placeholder="Product quantity" required>
+                        <input type="number" id="quantity" name="quantity" min="0" placeholder="Product quantity" required>
                     </div>
 
                     <div class="form-group">

@@ -38,8 +38,8 @@ class ProductController {
         if (!is_numeric($data['paidPrice']) || $data['paidPrice'] <= 0) {
             return ['error' => 'Invalid paid price'];
         }
-        if (!is_numeric($data['quantity']) || $data['quantity'] < 0 || $data['quantity'] > 100) {
-            return ['error' => 'Quantity must be between 0 and 100'];
+        if (!is_numeric($data['quantity']) || $data['quantity'] < 0) {
+            return ['error' => 'Quantity must be 0 or greater'];
         }
 
         return $this->productModel->addProduct($data);

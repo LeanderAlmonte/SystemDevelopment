@@ -115,7 +115,7 @@ $products = $productController->getArchivedProducts();
                                         <td><?php echo htmlspecialchars($product['productName']); ?></td>
                                         <td><?php echo htmlspecialchars($categories[$product['category']] ?? $product['category']); ?></td>
                                         <td>$<?php echo htmlspecialchars($product['price']); ?></td>
-                                        <td><?php echo htmlspecialchars($product['quantity']); ?>/100</td>
+                                        <td><?php echo htmlspecialchars($product['quantity']); ?></td>
                                         <td class="actions-cell">
                                             <div class="dropdown">
                                                 <button class="action-btn" onclick="toggleDropdown(this, <?php echo $product['productID']; ?>)">
