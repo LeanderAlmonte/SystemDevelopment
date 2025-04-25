@@ -64,7 +64,15 @@ class ProductController {
         if (!is_numeric($id)) {
             return ['error' => 'Invalid product ID'];
         }
-        return $this->productModel->unarchiveProduct($id);
+        $result = $this->productModel->unarchiveProduct($id);
+        
+        if (isset($result['error'])) {
+            return $result;
+        }
+        
+        // Redirect back to archived products page
+        header('Location: /ecommerce/Project/SystemDevelopment/Resources/Views/product/archivedProducts.php');
+        exit();
     }
 
     public function getCategories() {

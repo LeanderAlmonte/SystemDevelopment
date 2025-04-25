@@ -7,29 +7,27 @@ use controllers\ProductController;
 
 $productController = new ProductController();
 $categories = $productController->getCategories();
-$products = $productController->getArchivedProducts();
 
 // Handle archive/unarchive requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    header('Content-Type: application/json');
-    
-    if (isset($_POST['productId'])) {
-        $action = $_POST['action'] ?? 'archive';
+    if (isset($_POST['productId']) && isset($_POST['action'])) {
+        $action = $_POST['action'];
         $productId = $_POST['productId'];
 
-        if ($action === 'archive') {
-            $result = $productController->archiveProduct($productId);
-        } else {
+        if ($action === 'unarchive') {
             $result = $productController->unarchiveProduct($productId);
+            if (isset($result['error'])) {
+                echo "<script>alert('Error: " . $result['error'] . "');</script>";
+            } else {
+                // Refresh the page to show updated list
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
         }
-
-        echo json_encode($result);
-        exit();
     }
-
-    echo json_encode(['error' => 'Invalid request']);
-    exit();
 }
+
+$products = $productController->getArchivedProducts();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,9 +113,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <i class="fas fa-ellipsis-h"></i>
                                                 </button>
                                                 <div id="dropdown-<?php echo $product['productID']; ?>" class="dropdown-content">
-                                                    <a href="#" class="dropdown-item" onclick="unarchiveProduct(<?php echo $product['productID']; ?>)">
-                                                        <i class="fas fa-box"></i> Unarchive
-                                                    </a>
+                                                    <form method="POST" action="" style="display: inline;">
+                                                        <input type="hidden" name="action" value="unarchive">
+                                                        <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
+                                                        <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                            <i class="fas fa-box"></i> Unarchive
+                                                        </button>
+                                                    </form>
                                                     <a href="#" class="dropdown-item delete" onclick="deleteProduct(<?php echo $product['productID']; ?>)">
                                                         <i class="fas fa-trash"></i> Delete
                                                     </a>
@@ -225,31 +227,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             dropdown.classList.toggle('show');
-        }
-
-        function unarchiveProduct(productId) {
-            if (confirm('Are you sure you want to unarchive this product?')) {
-                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/archivedProducts.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `action=unarchive&productId=${productId}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const row = document.querySelector(`button[onclick="toggleDropdown(this, ${productId})"]`).closest('tr');
-                        row.remove();
-                    } else {
-                        alert('Error unarchiving product: ' + (data.error || 'Unknown error'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error unarchiving product');
-                });
-            }
         }
     </script>
 </body>
