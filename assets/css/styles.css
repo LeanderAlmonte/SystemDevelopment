@@ -504,3 +504,36 @@ tr:nth-child(n+4) .dropdown-content {
 .actions-cell {
     position: relative;
 } 
+
+.home-banner {
+    background-color: #E86C2C;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .home-banner h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  /* Main-Content dasboard for all pages*/
+  .history-dashboard {
+    max-height: 300px;
+    overflow: auto;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    background-color: #FFDAB9;
+  }
+  
+  .his-section {
+    padding: 280px;
+    border-radius: 5px;
+    width: 400%;
+    background-color: #FFDAB9;
+  }

@@ -1,18 +1,3 @@
-<!-- <?php
-require_once __DIR__ . '/../../../Core/db/dbconnectionmanager.php';
-
-use database\DBConnectionManager;
-
-$dbManager = new DBConnectionManager();
-$db = $dbManager->getConnection();
-
-$pageTitle = 'Home';
-$activePage = 'home';
-$content = ''; // Add your home page specific content here
-
-require_once __DIR__ . '/../layouts/base.php';
-?> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +5,7 @@ require_once __DIR__ . '/../layouts/base.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($pageTitle) ? $pageTitle . ' - Eyesightcollectibles' : 'Eyesightcollectibles'; ?></title>
     <base href="/ecommerce/Project/SystemDevelopment/">
-    <link rel="stylesheet" href="/../assets/css/dashboard.css">
+    <link rel="stylesheet" href="/../assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -49,49 +34,16 @@ require_once __DIR__ . '/../layouts/base.php';
                 <div class="welcome-text">Welcome Admin! <i class="fas fa-user-circle"></i></div>
             </div>
             <div class="home-banner">
-              <h2>Home</h2>
+                <h2>History</h2>
             </div>
-            <div class="statistics-dashboard">
-              <div class="stat-section">
-                  <h2>Best Sellers</h2>
-                  <ul>
-                      <li>Terastal Festival ex (JP) - Last Restock: 500, Total Sold: 595</li>
-                      <li>Terastal Festival ex (KR) - Last Restock: 600, Total Sold: 559</li>
-                      <li>Dam Pack Volume 1 (CH) - Last Restock: 600, Total Sold: 530</li>
-                      <li>Shining Treasures ex (JP) - Last Restock: 700, Total Sold: 500</li>
-                      <li>Naruto Kayou Tier 2 Wave 7 (CH) - Last Restock: 900, Total Sold: 400</li>
-                  </ul>
-              </div>
-              <div class="stat-section">
-                  <h2>Worst Sellers</h2>
-                  <ul>
-                      <li>Naruto Kayou Tier 4 Wave 6 (CH) - Last Restock: 200, Total Sold: 200</li>
-                      <li>Supercharged Breaker (KR) - Last Restock: 400, Total Sold: 100</li>
-                      <li>Blue Sky Stream (KR) - Last Restock: 600, Total Sold: 50</li>
-                      <li>Stellar Miracle (JP) - Last Restock: 700, Total Sold: 30</li>
-                      <li>Naruto Kayou Tier 3 Wave 3 (CH) - Last Restock: 750, Total Sold: 30</li>
-                  </ul>
-              </div>
-              <div class="stat-section">
-                  <h2>Most Stock</h2>
-                  <ul>
-                      <li>Naruto Kayou Tier 4 Wave 6 (CH) - Units: 750</li>
-                      <li>Stellar Miracle (JP) - Units: 700</li>
-                      <li>Naruto Kayou Tier 3 Wave 3 (CH) - Units: 350</li>
-                      <li>Supercharged Breaker (KR) - Units: 300</li>
-                      <li>Naruto Tier 2 Wave 7 (CH) - Units: 200</li>
-                  </ul>
-              </div>
-              <div class="stat-section">
-                  <h2>Lowest Stock</h2>
-                  <ul>
-                      <li>Terastal Festival ex (JP) - Units: 0</li>
-                      <li>Terastal Festival ex (KR) - Units: 0</li>
-                      <li>Naruto Kayou Tier 3 Wave 5 (CH) - Units: 5</li>
-                      <li>VSTAR Universe (JP) - Units: 7</li>
-                      <li>Crimson Haze (JP) - Units: 7</li>
-                  </ul>
-              </div>
+            <div class="history-dashboard">
+                <div class="his-section">
+                    <ul>
+                        
+                    </ul>
+                </div>
+             </div>
+             <button id="show-more-btn">Show More</button>
         </div>
     </div>
 </body>
