@@ -114,9 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                placeholder="Enter product quantity (0-100)">
                     </div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="action-btn">Update Product</button>
-                        <a href="manageInventory.php" class="action-btn" style="background-color: #6c757d;">Back</a>
+                    <div class="form-actions" style="display: flex; justify-content: space-between; gap: 10px;">
+                        <a href="manageInventory.php" class="action-btn" style="background-color: transparent; color: #000; border: 1px solid #ddd;">Back</a>
+                        <button type="submit" class="action-btn" style="background-color: transparent; color: #000; border: 1px solid #ddd;">Update Product</button>
                     </div>
                 </form>
             </div>
