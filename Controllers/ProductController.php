@@ -65,4 +65,11 @@ class ProductController {
             'pokemon-plush' => 'Pokemon Plush'
         ];
     }
+
+    public function deleteProduct($id) {
+        if (!is_numeric($id)) {
+            return ['error' => 'Invalid product ID'];
+        }
+        return $this->productModel->deleteProduct($id);
+    }
 }
