@@ -113,7 +113,7 @@ $products = $productController->getArchivedProducts();
                                                     <i class="fas fa-ellipsis-h"></i>
                                                 </button>
                                                 <div id="dropdown-<?php echo $product['productID']; ?>" class="dropdown-content">
-                                                    <form method="POST" action="" style="display: inline;">
+                                                    <form method="POST" action="" style="display: inline;" onsubmit="return confirmUnarchive('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                         <input type="hidden" name="action" value="unarchive">
                                                         <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
                                                         <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
@@ -137,6 +137,10 @@ $products = $productController->getArchivedProducts();
     </div>
 
     <script>
+        function confirmUnarchive(productName) {
+            return confirm('Are you sure you want to unarchive "' + productName + '"?');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchInput');
             const categoryBtns = document.querySelectorAll('.category-btn');

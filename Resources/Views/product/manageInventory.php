@@ -6,6 +6,26 @@ require_once __DIR__ . '/../../../Models/product.php';
 use controllers\ProductController;
 
 $productController = new ProductController();
+
+// Handle archive requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['productId']) && isset($_POST['action'])) {
+        $action = $_POST['action'];
+        $productId = $_POST['productId'];
+
+        if ($action === 'archive') {
+            $result = $productController->archiveProduct($productId);
+            if (isset($result['error'])) {
+                echo "<script>alert('Error: " . $result['error'] . "');</script>";
+            } else {
+                // Refresh the page to show updated list
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+        }
+    }
+}
+
 $products = $productController->index();
 $categories = $productController->getCategories();
 ?>
@@ -90,9 +110,13 @@ $categories = $productController->getCategories();
                                                     <i class="fas fa-ellipsis-h"></i>
                                                 </button>
                                                 <div id="dropdown-<?php echo $product['productID']; ?>" class="dropdown-content">
-                                                    <a href="#" class="dropdown-item" onclick="archiveProduct(<?php echo $product['productID']; ?>)">
-                                                        <i class="fas fa-archive"></i> Archive
-                                                    </a>
+                                                    <form method="POST" action="" style="display: inline;" onsubmit="return confirmArchive('<?php echo htmlspecialchars($product['productName']); ?>')">
+                                                        <input type="hidden" name="action" value="archive">
+                                                        <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
+                                                        <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                            <i class="fas fa-archive"></i> Archive
+                                                        </button>
+                                                    </form>
                                                     <a href="#" class="dropdown-item">
                                                         <i class="fas fa-edit"></i> Edit
                                                     </a>
@@ -121,6 +145,10 @@ $categories = $productController->getCategories();
     </div>
 
     <script>
+        function confirmArchive(productName) {
+            return confirm('Are you sure you want to archive "' + productName + '"?');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchInput');
             const categoryBtns = document.querySelectorAll('.category-btn');
@@ -235,31 +263,6 @@ $categories = $productController->getCategories();
                 .catch(error => {
                     console.error('Error:', error);
                     alert('Error deleting product. Please check the console for details.');
-                });
-            }
-        }
-
-        function archiveProduct(productId) {
-            if (confirm('Are you sure you want to archive this product?')) {
-                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/archivedProducts.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: `action=archive&productId=${productId}`
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const row = document.querySelector(`button[onclick="toggleDropdown(this, ${productId})"]`).closest('tr');
-                        row.remove();
-                    } else {
-                        alert('Error archiving product: ' + (data.error || 'Unknown error'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error archiving product');
                 });
             }
         }
