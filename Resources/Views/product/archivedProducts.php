@@ -174,9 +174,10 @@ $products = $productController->getArchivedProducts();
                 
                 rows.forEach(row => {
                     const productName = row.children[1].textContent.toLowerCase();
-                    const productCategory = normalizeCategory(row.children[2].textContent);
+                    const productCategory = row.children[2].textContent;
+                    const normalizedProductCategory = normalizeCategory(productCategory);
                     const searchMatch = productName.includes(searchTerm.toLowerCase());
-                    const categoryMatch = category === 'all' || productCategory.includes(category);
+                    const categoryMatch = category === 'all' || normalizedProductCategory === category;
                     
                     row.style.display = searchMatch && categoryMatch ? '' : 'none';
                 });
