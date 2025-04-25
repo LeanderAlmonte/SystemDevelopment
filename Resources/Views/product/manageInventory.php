@@ -7,7 +7,7 @@ use controllers\ProductController;
 
 $productController = new ProductController();
 
-// Handle archive requests
+// Handle archive and delete requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['productId']) && isset($_POST['action'])) {
         $action = $_POST['action'];
@@ -15,6 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($action === 'archive') {
             $result = $productController->archiveProduct($productId);
+            if (isset($result['error'])) {
+                echo "<script>alert('Error: " . $result['error'] . "');</script>";
+            } else {
+                // Refresh the page to show updated list
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+        } elseif ($action === 'delete') {
+            $result = $productController->deleteProduct($productId);
             if (isset($result['error'])) {
                 echo "<script>alert('Error: " . $result['error'] . "');</script>";
             } else {
@@ -120,9 +129,13 @@ $categories = $productController->getCategories();
                                                     <a href="#" class="dropdown-item">
                                                         <i class="fas fa-edit"></i> Edit
                                                     </a>
-                                                    <a href="#" class="dropdown-item delete" onclick="deleteProduct(<?php echo $product['productID']; ?>)">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </a>
+                                                    <form method="POST" action="" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
+                                                        <button type="submit" class="dropdown-item delete" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </td>
@@ -147,6 +160,10 @@ $categories = $productController->getCategories();
     <script>
         function confirmArchive(productName) {
             return confirm('Are you sure you want to archive "' + productName + '"?');
+        }
+
+        function confirmDelete(productName) {
+            return confirm('Are you sure you want to delete "' + productName + '"? This action cannot be undone.');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -239,32 +256,6 @@ $categories = $productController->getCategories();
                 }
             }
             dropdown.classList.toggle('show');
-        }
-
-        function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                var formData = new FormData();
-                formData.append('productId', productId);
-
-                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/deleteProduct.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Remove the row from the table
-                        var row = document.querySelector(`button[onclick="toggleDropdown(this, ${productId})"]`).closest('tr');
-                        row.remove();
-                    } else {
-                        alert('Error deleting product: ' + (data.error || 'Unknown error'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting product. Please check the console for details.');
-                });
-            }
         }
     </script>
 </body>
