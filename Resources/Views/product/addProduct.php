@@ -27,66 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Add Product - Eyesightcollectibles</title>
     <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .main-content {
-            background-color: #f4f4f4;
-            min-height: 100vh;
-        }
-        
-        .add-product-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .add-product-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .form-group {
-            margin: 0;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: normal;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .form-actions button {
-            padding: 8px 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #fff;
-            cursor: pointer;
-        }
-
-        .form-actions button:hover {
-            background-color: #f0f0f0;
-        }
-
-        .header {
-            padding: 20px;
-            background-color: #fff;
-            margin-bottom: 20px;
-        }
-    </style>
 </head>
 <body>
     <div class="container">

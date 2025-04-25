@@ -6,6 +6,35 @@ require_once __DIR__ . '/../../../Models/product.php';
 use controllers\ProductController;
 
 $productController = new ProductController();
+
+// Handle archive and delete requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['productId']) && isset($_POST['action'])) {
+        $action = $_POST['action'];
+        $productId = $_POST['productId'];
+
+        if ($action === 'archive') {
+            $result = $productController->archiveProduct($productId);
+            if (isset($result['error'])) {
+                echo "<script>alert('Error: " . $result['error'] . "');</script>";
+            } else {
+                // Refresh the page to show updated list
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+        } elseif ($action === 'delete') {
+            $result = $productController->deleteProduct($productId);
+            if (isset($result['error'])) {
+                echo "<script>alert('Error: " . $result['error'] . "');</script>";
+            } else {
+                // Refresh the page to show updated list
+                header("Location: " . $_SERVER['PHP_SELF']);
+                exit();
+            }
+        }
+    }
+}
+
 $products = $productController->index();
 $categories = $productController->getCategories();
 ?>
@@ -81,7 +110,7 @@ $categories = $productController->getCategories();
                                     <tr>
                                         <td><?php echo htmlspecialchars($product['productID']); ?></td>
                                         <td><?php echo htmlspecialchars($product['productName']); ?></td>
-                                        <td><?php echo htmlspecialchars($product['category']); ?></td>
+                                        <td><?php echo htmlspecialchars($categories[$product['category']] ?? $product['category']); ?></td>
                                         <td>$<?php echo htmlspecialchars($product['price']); ?></td>
                                         <td><?php echo htmlspecialchars($product['quantity']); ?>/100</td>
                                         <td class="actions-cell">
@@ -90,15 +119,23 @@ $categories = $productController->getCategories();
                                                     <i class="fas fa-ellipsis-h"></i>
                                                 </button>
                                                 <div id="dropdown-<?php echo $product['productID']; ?>" class="dropdown-content">
-                                                    <a href="#" class="dropdown-item">
-                                                        <i class="fas fa-archive"></i> Archive
-                                                    </a>
-                                                    <a href="#" class="dropdown-item">
+                                                    <form method="POST" action="" style="display: inline;" onsubmit="return confirmArchive('<?php echo htmlspecialchars($product['productName']); ?>')">
+                                                        <input type="hidden" name="action" value="archive">
+                                                        <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
+                                                        <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                            <i class="fas fa-archive"></i> Archive
+                                                        </button>
+                                                    </form>
+                                                    <a href="editProduct.php?id=<?php echo $product['productID']; ?>" class="dropdown-item">
                                                         <i class="fas fa-edit"></i> Edit
                                                     </a>
-                                                    <a href="#" class="dropdown-item delete" onclick="deleteProduct(<?php echo $product['productID']; ?>)">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </a>
+                                                    <form method="POST" action="" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
+                                                        <button type="submit" class="dropdown-item delete" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                            <i class="fas fa-trash"></i> Delete
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </td>
@@ -121,6 +158,14 @@ $categories = $productController->getCategories();
     </div>
 
     <script>
+        function confirmArchive(productName) {
+            return confirm('Are you sure you want to archive "' + productName + '"?');
+        }
+
+        function confirmDelete(productName) {
+            return confirm('Are you sure you want to delete "' + productName + '"? This action cannot be undone.');
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchInput');
             const categoryBtns = document.querySelectorAll('.category-btn');
@@ -211,32 +256,6 @@ $categories = $productController->getCategories();
                 }
             }
             dropdown.classList.toggle('show');
-        }
-
-        function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                var formData = new FormData();
-                formData.append('productId', productId);
-
-                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/deleteProduct.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Remove the row from the table
-                        var row = document.querySelector(`button[onclick="toggleDropdown(this, ${productId})"]`).closest('tr');
-                        row.remove();
-                    } else {
-                        alert('Error deleting product: ' + (data.error || 'Unknown error'));
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error deleting product. Please check the console for details.');
-                });
-            }
         }
     </script>
 </body>

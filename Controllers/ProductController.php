@@ -49,6 +49,32 @@ class ProductController {
         return $this->productModel->updateProduct($data);
     }
 
+    public function getArchivedProducts() {
+        return $this->productModel->getArchivedProducts();
+    }
+
+    public function archiveProduct($id) {
+        if (!is_numeric($id)) {
+            return ['error' => 'Invalid product ID'];
+        }
+        return $this->productModel->archiveProduct($id);
+    }
+
+    public function unarchiveProduct($id) {
+        if (!is_numeric($id)) {
+            return ['error' => 'Invalid product ID'];
+        }
+        $result = $this->productModel->unarchiveProduct($id);
+        
+        if (isset($result['error'])) {
+            return $result;
+        }
+        
+        // Redirect back to archived products page
+        header('Location: /ecommerce/Project/SystemDevelopment/Resources/Views/product/archivedProducts.php');
+        exit();
+    }
+
     public function getCategories() {
         return [
             'all' => 'All Products',

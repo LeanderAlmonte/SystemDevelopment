@@ -126,6 +126,39 @@ class Product {
         }
     }
 
+    public function getArchivedProducts() {
+        try {
+            $query = "SELECT productID, productName, category, listedPrice as price, quantity FROM products WHERE isArchived = 1";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function archiveProduct($id) {
+        try {
+            $query = "UPDATE products SET isArchived = 1 WHERE productID = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([':id' => $id]);
+            return ['success' => true];
+        } catch (\PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
+    public function unarchiveProduct($id) {
+        try {
+            $query = "UPDATE products SET isArchived = 0 WHERE productID = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute([':id' => $id]);
+            return ['success' => true];
+        } catch (\PDOException $e) {
+            return ['error' => $e->getMessage()];
+        }
+    }
+
     public function getProductById($id) {
         try {
             $query = "SELECT * FROM products WHERE productID = :id AND isArchived = 0";
