@@ -523,3 +523,30 @@ tr:nth-child(n+4) .dropdown-content {
     width: 400%;
     background-color: #FFDAB9;
   }
+
+  /* Archive Banner */
+  .archive-banner {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .archive-banner h2 {
+    margin: 0;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .archive-banner p {
+    margin: 0;
+    margin-left: auto;
+    font-size: 14px;
+    opacity: 0.9;
+  }

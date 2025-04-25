@@ -90,7 +90,7 @@ $categories = $productController->getCategories();
                                                     <i class="fas fa-ellipsis-h"></i>
                                                 </button>
                                                 <div id="dropdown-<?php echo $product['productID']; ?>" class="dropdown-content">
-                                                    <a href="#" class="dropdown-item">
+                                                    <a href="#" class="dropdown-item" onclick="archiveProduct(<?php echo $product['productID']; ?>)">
                                                         <i class="fas fa-archive"></i> Archive
                                                     </a>
                                                     <a href="#" class="dropdown-item">
@@ -235,6 +235,31 @@ $categories = $productController->getCategories();
                 .catch(error => {
                     console.error('Error:', error);
                     alert('Error deleting product. Please check the console for details.');
+                });
+            }
+        }
+
+        function archiveProduct(productId) {
+            if (confirm('Are you sure you want to archive this product?')) {
+                fetch('/ecommerce/Project/SystemDevelopment/Resources/Views/product/archiveProduct.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `action=archive&productId=${productId}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const row = document.querySelector(`button[onclick="toggleDropdown(this, ${productId})"]`).closest('tr');
+                        row.remove();
+                    } else {
+                        alert('Error archiving product: ' + (data.error || 'Unknown error'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error archiving product');
                 });
             }
         }
