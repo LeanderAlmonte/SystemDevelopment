@@ -3,75 +3,123 @@
 namespace controllers;
 
 use models\Product;
-use database\DBConnectionManager;
+use \resources\views\product\manageInventory;
+use \resources\views\product\addProduct;
+use \resources\views\product\editProduct;
+use \resources\views\product\archivedProducts;
+
+require(dirname(__DIR__) . '/resources/views/product/manageInventory.php');
+require(dirname(__DIR__) . '/resources/views/product/addProduct.php');
+require(dirname(__DIR__) . '/resources/views/product/editProduct.php');
+require(dirname(__DIR__) . '/resources/views/product/archivedProducts.php');
+require(dirname(__DIR__) . '/models/Product.php');
 
 class ProductController {
-    private $db;
-    private $productModel;
+    private Product $product;
 
     public function __construct() {
-        $dbManager = new DBConnectionManager();
-        $this->db = $dbManager->getConnection();
-        $this->productModel = new Product();
+        $this->product = new Product();
     }
 
-    public function index() {
-        return $this->productModel->getAllProducts();
+    public function read() {
+        $data = $this->product->read();
+        $manageInventory = new ManageInventory();
+        $manageInventory->render($data);
     }
 
-    public function getProduct($id) {
-        return $this->productModel->getProductById($id);
+    public function create() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $result = $this->product->create($_POST);
+            if (isset($result['error'])) {
+                $error = $result['error'];
+                $this->showAddForm($error);
+            } else {
+                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products');
+                exit();
+            }
+        } else {
+            $this->showAddForm();
+        }
     }
 
-    public function addProduct($data) {
-        // Validate input
-        if (empty($data['productName']) || empty($data['category']) || 
-            empty($data['listedPrice']) || empty($data['paidPrice']) || 
-            !isset($data['quantity'])) {
-            return ['error' => 'All fields are required'];
+    public function update() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $result = $this->product->update($_POST);
+            if (isset($result['error'])) {
+                $error = $result['error'];
+                $this->showEditForm($_POST['productID'], $error);
+            } else {
+                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products');
+                exit();
+            }
+        } else {
+            $id = $_GET['id'] ?? null;
+            if ($id) {
+                $this->showEditForm($id);
+            }
         }
-
-        // Validate price and quantity
-        if (!is_numeric($data['listedPrice']) || $data['listedPrice'] <= 0) {
-            return ['error' => 'Invalid listed price'];
-        }
-        if (!is_numeric($data['paidPrice']) || $data['paidPrice'] <= 0) {
-            return ['error' => 'Invalid paid price'];
-        }
-        if (!is_numeric($data['quantity']) || $data['quantity'] < 0) {
-            return ['error' => 'Quantity must be 0 or greater'];
-        }
-
-        return $this->productModel->addProduct($data);
     }
 
-    public function updateProduct($data) {
-        return $this->productModel->updateProduct($data);
+    public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['productId'] ?? null;
+            if ($id) {
+                $result = $this->product->delete($id);
+                if (isset($result['error'])) {
+                    echo "<script>alert('Error: " . $result['error'] . "');</script>";
+                }
+            }
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products');
+            exit();
+        }
     }
 
-    public function getArchivedProducts() {
-        return $this->productModel->getArchivedProducts();
+    public function archive() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['productId'] ?? null;
+            if ($id) {
+                $result = $this->product->archive($id);
+                if (isset($result['error'])) {
+                    echo "<script>alert('Error: " . $result['error'] . "');</script>";
+                }
+            }
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products');
+            exit();
+        } else {
+            $data = $this->product->getArchivedProducts();
+            $archivedProducts = new ArchivedProducts();
+            $archivedProducts->render($data);
+        }
     }
 
-    public function archiveProduct($id) {
-        if (!is_numeric($id)) {
-            return ['error' => 'Invalid product ID'];
+    public function unarchive() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['productId'] ?? null;
+            if ($id) {
+                $result = $this->product->unarchive($id);
+                if (isset($result['error'])) {
+                    echo "<script>alert('Error: " . $result['error'] . "');</script>";
+                }
+            }
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/archive');
+            exit();
         }
-        return $this->productModel->archiveProduct($id);
     }
 
-    public function unarchiveProduct($id) {
-        if (!is_numeric($id)) {
-            return ['error' => 'Invalid product ID'];
+    private function showAddForm($error = null) {
+        $addProduct = new AddProduct();
+        $addProduct->render($error);
+        exit();
+    }
+
+    private function showEditForm($id, $error = null) {
+        $product = $this->product->read($id);
+        if ($product) {
+            $editProduct = new EditProduct();
+            $editProduct->render(['product' => $product], $error);
+        } else {
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products');
         }
-        $result = $this->productModel->unarchiveProduct($id);
-        
-        if (isset($result['error'])) {
-            return $result;
-        }
-        
-        // Redirect back to archived products page
-        header('Location: /ecommerce/Project/SystemDevelopment/Resources/Views/product/archivedProducts.php');
         exit();
     }
 
@@ -90,12 +138,5 @@ class ProductController {
             'carreda-demon-slayer' => 'Carreda Demon Slayer',
             'pokemon-plush' => 'Pokemon Plush'
         ];
-    }
-
-    public function deleteProduct($id) {
-        if (!is_numeric($id)) {
-            return ['error' => 'Invalid product ID'];
-        }
-        return $this->productModel->deleteProduct($id);
     }
 }

@@ -21,6 +21,7 @@ class App {
         $urlParams = $request->getParams();
 
         $resourceName = $urlParams[0];
+        $action = $urlParams[1] ?? '';
 
         $controllerClass = substr(ucfirst($resourceName), 0, strlen($resourceName) - 1) . "Controller";
 
@@ -33,6 +34,12 @@ class App {
             $requestMethod = $request->getMethod();
 
             echo $requestMethod;
+
+            // Handle specific actions first
+            if ($action === 'archive') {
+                $controller->archive();
+                return;
+            }
 
             switch($requestMethod) {
                 case "GET":
