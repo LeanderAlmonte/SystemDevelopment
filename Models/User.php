@@ -1,12 +1,12 @@
 <?php
 
-namespace models;
+namespace Models;
 
-use database\DBConnectionManager;
+use Database\DBConnectionManager;
 use PDO;
 use PDOException;
 
-require_once(dirname(__DIR__) . '/core/db/DBConnectionManager.php');
+require_once(dirname(__DIR__) . '/Core/Db/DBConnectionManager.php');
 
 class User{
 

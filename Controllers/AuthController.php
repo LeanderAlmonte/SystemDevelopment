@@ -1,12 +1,12 @@
 <?php
 
-namespace controllers;
+namespace Controllers;
 
-use models\User;
-use views\auth\Login;
+use Models\User;
+use Views\Auth\Login;
 
-require_once(dirname(__DIR__) . '/models/User.php');
-require_once(dirname(__DIR__) . '/resources/views/auth/login.php');
+require_once(dirname(__DIR__) . '/Models/User.php');
+require_once(dirname(__DIR__) . '/Resources/Views/Auth/Login.php');
 
 class AuthController {
     private User $user;
