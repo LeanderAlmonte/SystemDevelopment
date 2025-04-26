@@ -1,8 +1,8 @@
 <?php
 
-namespace core\http;
+namespace Core\Http;
 
-require("request.php");
+require("Request.php");
 
 // A factory class for requests
 class RequestBuilder{

@@ -1,18 +1,18 @@
 <?php
 
-namespace controllers;
+namespace Controllers;
 
-use models\Product;
-use \resources\views\product\manageInventory;
-use \resources\views\product\addProduct;
-use \resources\views\product\editProduct;
-use \resources\views\product\archivedProducts;
+use Models\Product;
+use Resources\Views\Product\ManageInventory;
+use Resources\Views\Product\AddProduct;
+use Resources\Views\Product\EditProduct;
+use Resources\Views\Product\ArchivedProducts;
 
-require(dirname(__DIR__) . '/resources/views/product/manageInventory.php');
-require(dirname(__DIR__) . '/resources/views/product/addProduct.php');
-require(dirname(__DIR__) . '/resources/views/product/editProduct.php');
-require(dirname(__DIR__) . '/resources/views/product/archivedProducts.php');
-require(dirname(__DIR__) . '/models/Product.php');
+require(dirname(__DIR__) . '/Resources/Views/Product/ManageInventory.php');
+require(dirname(__DIR__) . '/Resources/Views/Product/AddProduct.php');
+require(dirname(__DIR__) . '/Resources/Views/Product/EditProduct.php');
+require(dirname(__DIR__) . '/Resources/Views/Product/ArchivedProducts.php');
+require(dirname(__DIR__) . '/Models/Product.php');
 
 class ProductController {
     private Product $product;
