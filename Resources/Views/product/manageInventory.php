@@ -92,7 +92,7 @@ class ManageInventory {
                                                             <i class="fas fa-ellipsis-h"></i>
                                                         </button>
                                                         <div id="dropdown-<?php echo $product['productID']; ?>" class="dropdown-content">
-                                                            <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/archivedItems" style="display: inline;" onsubmit="return confirmArchive('<?php echo htmlspecialchars($product['productName']); ?>')">
+                                                            <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive" style="display: inline;" onsubmit="return confirmArchive('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                                 <input type="hidden" name="action" value="archive">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
                                                                 <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
@@ -102,7 +102,7 @@ class ManageInventory {
                                                             <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/update&id=<?php echo $product['productID']; ?>" class="dropdown-item">
                                                                 <i class="fas fa-edit"></i> Edit
                                                             </a>
-                                                            <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=product/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
+                                                            <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                                 <input type="hidden" name="action" value="delete">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
                                                                 <button type="submit" class="dropdown-item delete" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">

@@ -45,6 +45,11 @@ class App {
                         return;
                     }
 
+            if ($action === 'unarchive') {
+                $controller->unarchive();
+                return;
+            }
+
                     switch($requestMethod) {
                         case "GET":
                             $controller->read();
