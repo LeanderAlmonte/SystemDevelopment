@@ -15,7 +15,7 @@ class DBConnectionManager {
   //Constructor
   function __construct() {
     $this->username = "root";
-    $this->pasword = "";
+    $this->password = "";
     $this->server = "localhost";
     $this->dbname = "eyesightcollectibles";
 

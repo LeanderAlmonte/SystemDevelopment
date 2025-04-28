@@ -97,7 +97,7 @@ class ArchivedProducts {
                                                             <i class="fas fa-ellipsis-h"></i>
                                                         </button>
                                                         <div id="dropdown-<?php echo $product['productID']; ?>" class="dropdown-content">
-                                                            <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=product/unarchive" style="display: inline;" onsubmit="return confirmUnarchive('<?php echo htmlspecialchars($product['productName']); ?>')">
+                                                            <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/unarchive" style="display: inline;" onsubmit="return confirmUnarchive('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                                 <input type="hidden" name="action" value="unarchive">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
                                                                 <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
