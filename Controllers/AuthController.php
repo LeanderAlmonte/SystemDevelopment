@@ -45,13 +45,19 @@ class AuthController {
             }
 
             if ($authenticatedUser) {
-                // Start session and store user data
-                session_start();
-                $_SESSION['user_id'] = $authenticatedUser['userId'];
-                $_SESSION['user_name'] = $authenticatedUser['firstName'] . ' ' . $authenticatedUser['lastName'];
-                $_SESSION['user_type'] = $authenticatedUser['userType'];
+                // Store user data in session
+                $_SESSION['userID'] = $authenticatedUser['userID'];
+                $_SESSION['userName'] = $authenticatedUser['firstName'] . ' ' . $authenticatedUser['lastName'];
+                $_SESSION['userType'] = $authenticatedUser['userType'];
                 $_SESSION['theme'] = $authenticatedUser['theme'];
-
+                
+                // Debug output
+                echo "Session data set:<br>";
+                echo "UserID: " . $_SESSION['userId'] . "<br>";
+                echo "UserName: " . $_SESSION['userName'] . "<br>";
+                echo "UserType: " . $_SESSION['userType'] . "<br>";
+                echo "Theme: " . $_SESSION['theme'] . "<br>";
+                
                 // Redirect to users management page
                 header('Location: http://localhost/ecommerce/project/systemdevelopment/index.php?url=users');
                 exit();
@@ -64,7 +70,6 @@ class AuthController {
     }
 
     public function logout() {
-        session_start();
         session_destroy();
         header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
         exit();
