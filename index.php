@@ -1,7 +1,15 @@
 <?php
+session_start();
 
+// echo "Session Status:<br>";
+// echo "Session ID: " . session_id() . "<br>";
+// echo "Session Name: " . session_name() . "<br>";
+// echo "Session Variables: <pre>";
+// print_r($_SESSION);
+// echo "</pre><br>";
 
 class App {
+    private $publicRoutes = ['auths/login', 'auths/logout'];
 
     public function start() {
         spl_autoload_register(function($class) {
@@ -23,9 +31,23 @@ class App {
             $request = $requestBuilder->getRequest();
 
             if (isset($_GET['url'])) {
-                echo "URL = ".$_GET['url'];
-
+                echo "URL = ".$_GET['url'] . "<br>";
+                
                 $urlParams = $request->getParams();
+                $currentRoute = implode('/', $urlParams);
+
+                // Redirect logged-in users away from login page
+                if ($currentRoute === 'auths/login' && isset($_SESSION['userID'])) {
+                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
+                    exit();
+                }
+
+                // Check if user is authenticated for protected routes
+                if (!in_array($currentRoute, $this->publicRoutes) && !isset($_SESSION['userID'])) {
+                    echo "No session found, redirecting to login...<br>";
+                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
+                    exit();
+                }
 
                 $resourceName = $urlParams[0];
                 $action = $urlParams[1] ?? '';
@@ -37,18 +59,21 @@ class App {
                     $controller = new $controllerClass();
                     $requestMethod = $request->getMethod();
 
-                    echo $requestMethod;
-
                     // Handle specific actions first
                     if ($action === 'archive') {
                         $controller->archive();
                         return;
                     }
 
-            if ($action === 'unarchive') {
-                $controller->unarchive();
-                return;
-            }
+                    if ($action === 'unarchive') {
+                        $controller->unarchive();
+                        return;
+                    }
+
+                    if ($action === 'manual') {
+                        $controller->manual();
+                        return;
+                    }
 
                     switch($requestMethod) {
                         case "GET":

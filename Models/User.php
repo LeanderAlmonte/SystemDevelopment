@@ -10,7 +10,7 @@ require_once(dirname(__DIR__) . '/Core/Db/DBConnectionManager.php');
 
 class User{
 
-    private $userId;
+    private int $userID;
     private $firstName;
     private $lastName;
     private $password;
@@ -25,8 +25,8 @@ class User{
     }
 
     // Getters
-    public function getUserId() {
-        return $this->userId;
+    public function getUserID() {
+        return $this->userID;
     }
 
     public function getFirstName() {
@@ -54,8 +54,8 @@ class User{
     }
 
     // Setters
-    public function setUserId($userId) {
-        $this->userId = $userId;
+    public function setUserID($userID) {
+        $this->userID = $userID;
         return $this;
     }
 
@@ -92,9 +92,9 @@ class User{
     // CRUD Operations
     public function read($id = null) {
         if ($id) {
-            $query = "SELECT * FROM users WHERE userId = :userId";
+            $query = "SELECT * FROM users WHERE userID = :userID";
             $stmt = $this->dbConnection->prepare($query);
-            $stmt->bindParam(':userId', $id);
+            $stmt->bindParam(':userID', $id, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } else {
@@ -145,10 +145,10 @@ class User{
                      email = :email, 
                      userType = :userType, 
                      theme = :theme 
-                 WHERE userId = :userId";
+                 WHERE userID = :userID";
         
         $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':userId', $this->userId);
+        $stmt->bindParam(':userID', $this->userID);
         $stmt->bindParam(':firstName', $this->firstName);
         $stmt->bindParam(':lastName', $this->lastName);
         $stmt->bindParam(':password', $this->password);
@@ -160,9 +160,9 @@ class User{
     }
 
     public function delete() {
-        $query = "DELETE FROM users WHERE userId = :userId";
+        $query = "DELETE FROM users WHERE userID = :userID";
         $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':userId', $this->userId);
+        $stmt->bindParam(':userID', $this->userID);
         return $stmt->execute();
     }
 

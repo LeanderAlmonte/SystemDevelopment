@@ -1,15 +1,15 @@
 <?php
-namespace Resources\Views\Product;
+namespace Resources\Views\Dashboard;
 
-class SoldProducts {
-    public function render($data = null) {
+class Manual {
+    public function render() {
         ?>
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Sold Products - Eyesightcollectibles</title>
+            <title>User Manual - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
@@ -20,11 +20,11 @@ class SoldProducts {
                     <h2 class="menu-title">Menu Panel</h2>
                     <ul class="menu-items">
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span>Home</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span>View Manual</span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual" class="active"><i class="fas fa-book"></i><span>View Manual</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span>Manage Users</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span>Manage Inventory</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts" class="active"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=history"><i class="fas fa-history"></i><span>History</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=sales"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
@@ -39,9 +39,9 @@ class SoldProducts {
                         <div class="welcome-text">Welcome <?php echo explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
                     </div>
 
-                    <div class="sold-products-container">
-                        <h2>Sold Products</h2>
-                        <!-- Add sold products content here -->
+                    <div class="manual-container">
+                        <h2>User Manual</h2>
+                        <!-- Add manual content here -->
                     </div>
                 </div>
             </div>
@@ -49,4 +49,4 @@ class SoldProducts {
         </html>
         <?php
     }
-}
+} 
