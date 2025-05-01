@@ -53,18 +53,14 @@ class ArchivedProducts {
 
                         <!-- Category Filters -->
                         <div class="category-filters">
-                            <button class="category-btn active" data-category="all">All Products</button>
-                            <button class="category-btn" data-category="pokemon-japanese">Pokemon Japanese</button>
-                            <button class="category-btn" data-category="pokemon-korean">Pokemon Korean</button>
-                            <button class="category-btn" data-category="pokemon-chinese">Pokemon Chinese</button>
-                            <button class="category-btn" data-category="card-accessories">Card Accessories</button>
-                            <button class="category-btn" data-category="weiss-schwarz">Weiss Schwarz</button>
-                            <button class="category-btn" data-category="kayou-naruto">Kayou Naruto</button>
-                            <button class="category-btn" data-category="kayou">Kayou</button>
-                            <button class="category-btn" data-category="dragon-ball-japanese">Dragon Ball Japanese</button>
-                            <button class="category-btn" data-category="one-piece-japanese">One Piece Japanese</button>
-                            <button class="category-btn" data-category="carreda-demon-slayer">Carreda Demon Slayer</button>
-                            <button class="category-btn" data-category="pokemon-plush">Pokemon Plush</button>
+                            <?php
+                            $productController = new \Controllers\ProductController();
+                            $categories = $productController->getCategories();
+                            foreach ($categories as $value => $label) {
+                                $activeClass = $value === 'all' ? ' active' : '';
+                                echo "<button class=\"category-btn{$activeClass}\" data-category=\"{$value}\">{$label}</button>";
+                            }
+                            ?>
                         </div>
 
                         <!-- Products Table -->
@@ -88,7 +84,11 @@ class ArchivedProducts {
                                             <tr>
                                                 <td>#<?php echo $product['productID']; ?></td>
                                                 <td><?php echo $product['productName']; ?></td>
-                                                <td><?php echo $product['category']; ?></td>
+                                                <td><?php 
+                                                    $productController = new \Controllers\ProductController();
+                                                    $categories = $productController->getCategories();
+                                                    echo $categories[$product['category']] ?? $product['category'];
+                                                ?></td>
                                                 <td>$<?php echo $product['listedPrice']; ?></td>
                                                 <td><?php echo $product['quantity']; ?></td>
                                                 <td class="actions-cell">
@@ -151,7 +151,7 @@ class ArchivedProducts {
                             const productName = row.children[1].textContent.toLowerCase();
                             const productCategory = normalizeCategory(row.children[2].textContent);
                             const searchMatch = productName.includes(searchTerm.toLowerCase());
-                            const categoryMatch = category === 'all' || productCategory.includes(category);
+                            const categoryMatch = category === 'all' || productCategory === category;
                             
                             row.style.display = searchMatch && categoryMatch ? '' : 'none';
                         });
