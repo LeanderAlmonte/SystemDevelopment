@@ -124,17 +124,15 @@ class AddProduct {
                                 <label for="category">Category</label>
                                 <select id="category" name="category" required>
                                     <option value="" disabled selected>Select Category</option>
-                                    <option value="pokemon-japanese">Pokemon Japanese</option>
-                                    <option value="pokemon-korean">Pokemon Korean</option>
-                                    <option value="pokemon-chinese">Pokemon Chinese</option>
-                                    <option value="card-accessories">Card Accessories</option>
-                                    <option value="weiss-schwarz">Weiss Schwarz</option>
-                                    <option value="kayou-naruto">Kayou Naruto</option>
-                                    <option value="kayou">Kayou</option>
-                                    <option value="dragon-ball-japanese">Dragon Ball Japanese</option>
-                                    <option value="one-piece-japanese">One Piece Japanese</option>
-                                    <option value="carreda-demon-slayer">Carreda Demon Slayer</option>
-                                    <option value="pokemon-plush">Pokemon Plush</option>
+                                    <?php
+                                    $productController = new \Controllers\ProductController();
+                                    $categories = $productController->getCategories();
+                                    foreach ($categories as $value => $label) {
+                                        if ($value !== 'all') { // Skip 'all' category as it's not for selection
+                                            echo "<option value=\"$value\">$label</option>";
+                                        }
+                                    }
+                                    ?>
                                 </select>
                             </div>
 
