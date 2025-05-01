@@ -3,24 +3,38 @@
 namespace Controllers;
 
 use Models\Product;
+use Models\Sales;
+use Models\User;
+use Models\Client;
 use Resources\Views\Product\ManageInventory;
 use Resources\Views\Product\AddProduct;
 use Resources\Views\Product\EditProduct;
 use Resources\Views\Product\ArchivedProducts;
 use Resources\Views\Product\SoldProducts;
+use Resources\Views\Product\ProcessOrder;
 
 require(dirname(__DIR__) . '/Resources/Views/Product/ManageInventory.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/AddProduct.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/EditProduct.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/ArchivedProducts.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/SoldProducts.php');
+require(dirname(__DIR__) . '/Resources/Views/Product/ProcessOrder.php');
 require(dirname(__DIR__) . '/Models/Product.php');
+require(dirname(__DIR__) . '/Models/Sales.php');
+require(dirname(__DIR__) . '/Models/User.php');
+require(dirname(__DIR__) . '/Models/Client.php');
 
 class ProductController {
     private Product $product;
+    private Sales $sales;
+    private User $user;
+    private Client $client;
 
     public function __construct() {
         $this->product = new Product();
+        $this->sales = new Sales();
+        $this->user = new User();
+        $this->client = new Client();
     }
 
     public function read() {
@@ -143,8 +157,65 @@ class ProductController {
     }
 
     public function soldProducts() {
-        $data = $this->product->getSoldProducts();
+        $data = $this->sales->getAggregatedSales();
         $soldProducts = new SoldProducts();
         $soldProducts->render($data);
+    }
+
+    public function processOrder() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $productID = $_POST['productID'] ?? null;
+            $clientID = $_POST['clientID'] ?? null;
+            $quantitySold = $_POST['quantitySold'] ?? null;
+            $salePrice = $_POST['salePrice'] ?? null;
+
+            if (!$productID || !$clientID || !$quantitySold || !$salePrice) {
+                $_SESSION['error'] = "All fields are required";
+                header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder");
+                exit;
+            }
+
+            // Validate quantity
+            $product = $this->product->read($productID);
+            if (!$product) {
+                $_SESSION['error'] = "Product not found";
+                header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder");
+                exit;
+            }
+
+            if ($quantitySold > $product['quantity']) {
+                $_SESSION['error'] = "Quantity exceeds available stock";
+                header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder");
+                exit;
+            }
+
+            // Create sale record
+            $saleData = [
+                'productID' => $productID,
+                'clientID' => $clientID,
+                'quantitySold' => $quantitySold,
+                'salePrice' => $salePrice
+            ];
+
+            $result = $this->sales->create($saleData);
+
+            if (isset($result['error'])) {
+                $_SESSION['error'] = $result['error'];
+            } else {
+                $_SESSION['success'] = "Order processed successfully";
+                header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts");
+                exit;
+            }
+        }
+
+        // Get all products and clients for the form
+        $products = $this->product->read();
+        $clients = $this->client->read();
+        
+        $processOrder = new ProcessOrder();
+        $processOrder->render([
+            'products' => $products,
+            'clients' => $clients
+        ]);
     }
 }
