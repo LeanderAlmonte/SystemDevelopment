@@ -68,6 +68,9 @@ class ArchivedProducts {
                             <table class="inventory-table">
                                 <thead>
                                     <tr>
+                                        <th>
+                                            <input type="checkbox" id="selectAll" title="Select All">
+                                        </th>
                                         <th>ProductID</th>
                                         <th>Product</th>
                                         <th>Category</th>
@@ -78,10 +81,13 @@ class ArchivedProducts {
                                 </thead>
                                 <tbody id="productTableBody">
                                     <?php if (isset($data['error'])): ?>
-                                        <tr><td colspan="6">Error loading archived products: <?php echo $data['error']; ?></td></tr>
+                                        <tr><td colspan="7">Error loading archived products: <?php echo $data['error']; ?></td></tr>
                                     <?php else: ?>
                                         <?php foreach ($data as $product): ?>
                                             <tr>
+                                                <td>
+                                                    <input type="checkbox" class="product-checkbox" value="<?php echo $product['productID']; ?>" data-product-name="<?php echo htmlspecialchars($product['productName']); ?>">
+                                                </td>
                                                 <td>#<?php echo $product['productID']; ?></td>
                                                 <td><?php echo $product['productName']; ?></td>
                                                 <td><?php 
@@ -100,14 +106,14 @@ class ArchivedProducts {
                                                             <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/unarchive" style="display: inline;" onsubmit="return confirmUnarchive('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                                 <input type="hidden" name="action" value="unarchive">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
-                                                                <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                                <button type="submit" class="dropdown-item">
                                                                     <i class="fas fa-box-open"></i> Unarchive
                                                                 </button>
                                                             </form>
                                                             <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                                 <input type="hidden" name="action" value="delete">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
-                                                                <button type="submit" class="dropdown-item delete" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                                <button type="submit" class="dropdown-item delete">
                                                                     <i class="fas fa-trash"></i> Delete
                                                                 </button>
                                                             </form>
@@ -119,6 +125,24 @@ class ArchivedProducts {
                                     <?php endif; ?>
                                 </tbody>
                             </table>
+                        </div>
+
+                        <!-- Bulk Actions -->
+                        <div class="bulk-actions" style="display: none; margin-bottom: 20px;">
+                            <form id="bulkUnarchiveForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/unarchive" style="display: inline;">
+                                <input type="hidden" name="action" value="bulkUnarchive">
+                                <input type="hidden" name="productIds" id="bulkUnarchiveIds">
+                                <button type="submit" class="action-btn" onclick="return handleBulkUnarchive()">
+                                    <i class="fas fa-box-open"></i> Unarchive Selected
+                                </button>
+                            </form>
+                            <form id="bulkDeleteForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;">
+                                <input type="hidden" name="action" value="bulkDelete">
+                                <input type="hidden" name="productIds" id="bulkDeleteIds">
+                                <button type="submit" class="action-btn" onclick="return handleBulkDelete()">
+                                    <i class="fas fa-trash"></i> Delete Selected
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -148,8 +172,8 @@ class ArchivedProducts {
                         const rows = productTableBody.querySelectorAll('tr');
                         
                         rows.forEach(row => {
-                            const productName = row.children[1].textContent.toLowerCase();
-                            const productCategory = normalizeCategory(row.children[2].textContent);
+                            const productName = row.children[2].textContent.toLowerCase();
+                            const productCategory = normalizeCategory(row.children[3].textContent);
                             const searchMatch = productName.includes(searchTerm.toLowerCase());
                             const categoryMatch = category === 'all' || productCategory === category;
                             
@@ -223,6 +247,68 @@ class ArchivedProducts {
                         }
                     }
                     dropdown.classList.toggle('show');
+                }
+
+                // Select All functionality
+                document.getElementById('selectAll').addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.product-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                    updateBulkActionsVisibility();
+                });
+
+                // Individual checkbox change handler
+                document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        updateBulkActionsVisibility();
+                    });
+                });
+
+                // Update bulk actions visibility
+                function updateBulkActionsVisibility() {
+                    const checkedBoxes = document.querySelectorAll('.product-checkbox:checked');
+                    const bulkActions = document.querySelector('.bulk-actions');
+                    bulkActions.style.display = checkedBoxes.length > 0 ? 'block' : 'none';
+                }
+
+                // Handle bulk unarchive
+                function handleBulkUnarchive() {
+                    const selectedProducts = getSelectedProducts();
+                    if (selectedProducts.length === 0) return false;
+
+                    const productNames = selectedProducts.map(p => p.name).join('", "');
+                    const confirmMessage = `Are you sure you want to unarchive the following products?\n"${productNames}"`;
+                    
+                    if (confirm(confirmMessage)) {
+                        document.getElementById('bulkUnarchiveIds').value = JSON.stringify(selectedProducts.map(p => p.id));
+                        return true;
+                    }
+                    return false;
+                }
+
+                // Handle bulk delete
+                function handleBulkDelete() {
+                    const selectedProducts = getSelectedProducts();
+                    if (selectedProducts.length === 0) return false;
+
+                    const productNames = selectedProducts.map(p => p.name).join('", "');
+                    const confirmMessage = `Are you sure you want to delete the following products? This action cannot be undone.\n"${productNames}"`;
+                    
+                    if (confirm(confirmMessage)) {
+                        document.getElementById('bulkDeleteIds').value = JSON.stringify(selectedProducts.map(p => p.id));
+                        return true;
+                    }
+                    return false;
+                }
+
+                // Get selected products
+                function getSelectedProducts() {
+                    const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+                    return Array.from(checkboxes).map(checkbox => ({
+                        id: checkbox.value,
+                        name: checkbox.dataset.productName
+                    }));
                 }
             </script>
         </body>

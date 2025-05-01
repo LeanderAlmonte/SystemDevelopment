@@ -623,3 +623,39 @@ form .dropdown-item.delete {
     font-size: 14px;
     opacity: 0.9;
   }
+
+/* Bulk Actions */
+.bulk-actions {
+    padding: 10px;
+    background-color: var(--white);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 10px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.bulk-actions button {
+    margin-right: 10px;
+}
+
+/* Checkbox Styles */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    border: 2px solid var(--brown-color);
+    border-radius: 3px;
+    position: relative;
+    vertical-align: middle;
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--brown-color);
+    border-color: var(--brown-color);
+}
+
+#selectAll {
+    margin: 0;
+    padding: 0;
+}
