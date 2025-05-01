@@ -623,3 +623,130 @@ form .dropdown-item.delete {
     font-size: 14px;
     opacity: 0.9;
   }
+
+/* Bulk Actions */
+.bulk-actions {
+    padding: 15px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 10px 0;
+}
+
+.bulk-actions-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.selected-count {
+    font-size: 16px;
+    color: var(--text-color);
+    font-weight: 500;
+    background-color: #f8f9fa;
+    padding: 8px 15px;
+    border-radius: 4px;
+}
+
+.bulk-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.bulk-actions .action-btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.bulk-actions .archive-btn {
+    background-color: var(--brown-color);
+    color: var(--white);
+}
+
+.bulk-actions .archive-btn:hover {
+    background-color: #654321;
+}
+
+.bulk-actions .delete-btn {
+    background-color: #dc3545;
+    color: var(--white);
+}
+
+.bulk-actions .delete-btn:hover {
+    background-color: #5a0f16;
+}
+
+.bulk-actions .unarchive-btn {
+    background-color: #28a745;
+    color: var(--white);
+}
+
+.bulk-actions .unarchive-btn:hover {
+    background-color: #218838;
+}
+
+/* Checkbox Styles */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    border: 2px solid var(--brown-color);
+    border-radius: 3px;
+    position: relative;
+    vertical-align: middle;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--brown-color);
+    border-color: var(--brown-color);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#selectAll {
+    margin: 0;
+    padding: 0;
+}
+
+/* Alert Messages */
+.alert {
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}

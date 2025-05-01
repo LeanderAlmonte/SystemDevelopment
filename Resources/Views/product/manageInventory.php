@@ -40,6 +40,24 @@ class ManageInventory {
                     </div>
 
                     <div class="inventory-container">
+                        <?php if (isset($_SESSION['error'])): ?>
+                            <div class="alert alert-error">
+                                <?php 
+                                    echo $_SESSION['error'];
+                                    unset($_SESSION['error']);
+                                ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if (isset($_SESSION['success'])): ?>
+                            <div class="alert alert-success">
+                                <?php 
+                                    echo $_SESSION['success'];
+                                    unset($_SESSION['success']);
+                                ?>
+                            </div>
+                        <?php endif; ?>
+
                         <!-- Search Bar -->
                         <div class="search-wrapper">
                             <i class="fas fa-search search-icon"></i>
@@ -67,6 +85,9 @@ class ManageInventory {
                             <table class="inventory-table">
                                 <thead>
                                     <tr>
+                                        <th>
+                                            <input type="checkbox" id="selectAll" title="Select All">
+                                        </th>
                                         <th>ProductID</th>
                                         <th>Product</th>
                                         <th>Category</th>
@@ -77,10 +98,13 @@ class ManageInventory {
                                 </thead>
                                 <tbody id="productTableBody">
                                     <?php if (isset($data['error'])): ?>
-                                        <tr><td colspan="6">Error loading products: <?php echo $data['error']; ?></td></tr>
+                                        <tr><td colspan="7">Error loading products: <?php echo $data['error']; ?></td></tr>
                                     <?php else: ?>
                                         <?php foreach ($data as $product): ?>
                                             <tr>
+                                                <td>
+                                                    <input type="checkbox" class="product-checkbox" value="<?php echo $product['productID']; ?>" data-product-name="<?php echo htmlspecialchars($product['productName']); ?>">
+                                                </td>
                                                 <td>#<?php echo $product['productID']; ?></td>
                                                 <td><?php echo $product['productName']; ?></td>
                                                 <td><?php 
@@ -99,7 +123,7 @@ class ManageInventory {
                                                             <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive" style="display: inline;" onsubmit="return confirmArchive('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                                 <input type="hidden" name="action" value="archive">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
-                                                                <button type="submit" class="dropdown-item" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                                <button type="submit" class="dropdown-item">
                                                                     <i class="fas fa-archive"></i> Archive
                                                                 </button>
                                                             </form>
@@ -109,7 +133,7 @@ class ManageInventory {
                                                             <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                                 <input type="hidden" name="action" value="delete">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
-                                                                <button type="submit" class="dropdown-item delete" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                                <button type="submit" class="dropdown-item delete">
                                                                     <i class="fas fa-trash"></i> Delete
                                                                 </button>
                                                             </form>
@@ -123,9 +147,34 @@ class ManageInventory {
                             </table>
                         </div>
 
+                        <!-- Bulk Actions -->
+                        <div class="bulk-actions" style="display: none; margin-bottom: 20px;">
+                            <div class="bulk-actions-container">
+                                <div class="selected-count">
+                                    <span id="selectedCount">0</span> items selected
+                                </div>
+                                <div class="bulk-buttons">
+                                    <form id="bulkArchiveForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive" style="display: inline;">
+                                        <input type="hidden" name="action" value="bulkArchive">
+                                        <input type="hidden" name="productIds" id="bulkArchiveIds">
+                                        <button type="submit" class="action-btn archive-btn" onclick="return handleBulkArchive()">
+                                            <i class="fas fa-archive"></i> Archive Selected
+                                        </button>
+                                    </form>
+                                    <form id="bulkDeleteForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;">
+                                        <input type="hidden" name="action" value="bulkDelete">
+                                        <input type="hidden" name="productIds" id="bulkDeleteIds">
+                                        <button type="submit" class="action-btn delete-btn" onclick="return handleBulkDelete()">
+                                            <i class="fas fa-trash"></i> Delete Selected
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Action Buttons -->
                         <div class="action-buttons">
-                        <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder" class="action-btn">Process Order</a>
+                            <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder" class="action-btn">Process Order</a>
                             <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/create" class="action-btn">Add Product</a>
                         </div>
                     </div>
@@ -156,8 +205,8 @@ class ManageInventory {
                         const rows = productTableBody.querySelectorAll('tr');
                         
                         rows.forEach(row => {
-                            const productName = row.children[1].textContent.toLowerCase();
-                            const productCategory = normalizeCategory(row.children[2].textContent);
+                            const productName = row.children[2].textContent.toLowerCase();
+                            const productCategory = normalizeCategory(row.children[3].textContent);
                             const searchMatch = productName.includes(searchTerm.toLowerCase());
                             const categoryMatch = category === 'all' || productCategory === category;
                             
@@ -231,6 +280,82 @@ class ManageInventory {
                         }
                     }
                     dropdown.classList.toggle('show');
+                }
+
+                // Select All functionality
+                document.getElementById('selectAll').addEventListener('change', function() {
+                    const checkboxes = document.querySelectorAll('.product-checkbox');
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = this.checked;
+                    });
+                    updateBulkActionsVisibility();
+                    updateSelectedCount();
+                });
+
+                // Individual checkbox change handler
+                document.querySelectorAll('.product-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        updateBulkActionsVisibility();
+                        updateSelectedCount();
+                    });
+                });
+
+                // Update bulk actions visibility
+                function updateBulkActionsVisibility() {
+                    const checkedBoxes = document.querySelectorAll('.product-checkbox:checked');
+                    const bulkActions = document.querySelector('.bulk-actions');
+                    bulkActions.style.display = checkedBoxes.length > 0 ? 'block' : 'none';
+                }
+
+                // Update selected count
+                function updateSelectedCount() {
+                    const count = document.querySelectorAll('.product-checkbox:checked').length;
+                    document.getElementById('selectedCount').textContent = count;
+                }
+
+                // Handle bulk archive
+                function handleBulkArchive() {
+                    const selectedProducts = getSelectedProducts();
+                    if (selectedProducts.length === 0) {
+                        alert('Please select products to archive');
+                        return false;
+                    }
+
+                    const productNames = selectedProducts.map(p => p.name).join('", "');
+                    const confirmMessage = `Are you sure you want to archive the following products?\n"${productNames}"`;
+                    
+                    if (confirm(confirmMessage)) {
+                        document.getElementById('bulkArchiveIds').value = JSON.stringify(selectedProducts.map(p => p.id));
+                        return true;
+                    }
+                    return false;
+                }
+
+                // Handle bulk delete
+                function handleBulkDelete() {
+                    const selectedProducts = getSelectedProducts();
+                    if (selectedProducts.length === 0) {
+                        alert('Please select products to delete');
+                        return false;
+                    }
+
+                    const productNames = selectedProducts.map(p => p.name).join('", "');
+                    const confirmMessage = `Are you sure you want to delete the following products? This action cannot be undone.\n"${productNames}"`;
+                    
+                    if (confirm(confirmMessage)) {
+                        document.getElementById('bulkDeleteIds').value = JSON.stringify(selectedProducts.map(p => p.id));
+                        return true;
+                    }
+                    return false;
+                }
+
+                // Get selected products
+                function getSelectedProducts() {
+                    const checkboxes = document.querySelectorAll('.product-checkbox:checked');
+                    return Array.from(checkboxes).map(checkbox => ({
+                        id: checkbox.value,
+                        name: checkbox.dataset.productName
+                    }));
                 }
             </script>
         </body>
