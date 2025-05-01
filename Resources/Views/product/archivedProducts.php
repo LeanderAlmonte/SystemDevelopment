@@ -40,6 +40,24 @@ class ArchivedProducts {
                     </div>
 
                     <div class="inventory-container">
+                        <?php if (isset($_SESSION['error'])): ?>
+                            <div class="alert alert-error">
+                                <?php 
+                                    echo $_SESSION['error'];
+                                    unset($_SESSION['error']);
+                                ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php if (isset($_SESSION['success'])): ?>
+                            <div class="alert alert-success">
+                                <?php 
+                                    echo $_SESSION['success'];
+                                    unset($_SESSION['success']);
+                                ?>
+                            </div>
+                        <?php endif; ?>
+
                         <div class="archive-banner">
                             <h2><i class="fas fa-archive"></i> Archived Products</h2>
                             <p>These products are not visible in the main inventory</p>
@@ -113,6 +131,7 @@ class ArchivedProducts {
                                                             <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                                 <input type="hidden" name="action" value="delete">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
+                                                                <input type="hidden" name="fromArchive" value="true">
                                                                 <button type="submit" class="dropdown-item delete">
                                                                     <i class="fas fa-trash"></i> Delete
                                                                 </button>
@@ -129,20 +148,28 @@ class ArchivedProducts {
 
                         <!-- Bulk Actions -->
                         <div class="bulk-actions" style="display: none; margin-bottom: 20px;">
-                            <form id="bulkUnarchiveForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/unarchive" style="display: inline;">
-                                <input type="hidden" name="action" value="bulkUnarchive">
-                                <input type="hidden" name="productIds" id="bulkUnarchiveIds">
-                                <button type="submit" class="action-btn" onclick="return handleBulkUnarchive()">
-                                    <i class="fas fa-box-open"></i> Unarchive Selected
-                                </button>
-                            </form>
-                            <form id="bulkDeleteForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;">
-                                <input type="hidden" name="action" value="bulkDelete">
-                                <input type="hidden" name="productIds" id="bulkDeleteIds">
-                                <button type="submit" class="action-btn" onclick="return handleBulkDelete()">
-                                    <i class="fas fa-trash"></i> Delete Selected
-                                </button>
-                            </form>
+                            <div class="bulk-actions-container">
+                                <div class="selected-count">
+                                    <span id="selectedCount">0</span> items selected
+                                </div>
+                                <div class="bulk-buttons">
+                                    <form id="bulkUnarchiveForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/unarchive" style="display: inline;">
+                                        <input type="hidden" name="action" value="bulkUnarchive">
+                                        <input type="hidden" name="productIds" id="bulkUnarchiveIds">
+                                        <button type="submit" class="action-btn unarchive-btn" onclick="return handleBulkUnarchive()">
+                                            <i class="fas fa-box-open"></i> Unarchive Selected
+                                        </button>
+                                    </form>
+                                    <form id="bulkDeleteForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;">
+                                        <input type="hidden" name="action" value="bulkDelete">
+                                        <input type="hidden" name="productIds" id="bulkDeleteIds">
+                                        <input type="hidden" name="fromArchive" value="true">
+                                        <button type="submit" class="action-btn delete-btn" onclick="return handleBulkDelete()">
+                                            <i class="fas fa-trash"></i> Delete Selected
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -256,12 +283,14 @@ class ArchivedProducts {
                         checkbox.checked = this.checked;
                     });
                     updateBulkActionsVisibility();
+                    updateSelectedCount();
                 });
 
                 // Individual checkbox change handler
                 document.querySelectorAll('.product-checkbox').forEach(checkbox => {
                     checkbox.addEventListener('change', function() {
                         updateBulkActionsVisibility();
+                        updateSelectedCount();
                     });
                 });
 
@@ -272,10 +301,19 @@ class ArchivedProducts {
                     bulkActions.style.display = checkedBoxes.length > 0 ? 'block' : 'none';
                 }
 
+                // Update selected count
+                function updateSelectedCount() {
+                    const count = document.querySelectorAll('.product-checkbox:checked').length;
+                    document.getElementById('selectedCount').textContent = count;
+                }
+
                 // Handle bulk unarchive
                 function handleBulkUnarchive() {
                     const selectedProducts = getSelectedProducts();
-                    if (selectedProducts.length === 0) return false;
+                    if (selectedProducts.length === 0) {
+                        alert('Please select products to unarchive');
+                        return false;
+                    }
 
                     const productNames = selectedProducts.map(p => p.name).join('", "');
                     const confirmMessage = `Are you sure you want to unarchive the following products?\n"${productNames}"`;
@@ -290,7 +328,10 @@ class ArchivedProducts {
                 // Handle bulk delete
                 function handleBulkDelete() {
                     const selectedProducts = getSelectedProducts();
-                    if (selectedProducts.length === 0) return false;
+                    if (selectedProducts.length === 0) {
+                        alert('Please select products to delete');
+                        return false;
+                    }
 
                     const productNames = selectedProducts.map(p => p.name).join('", "');
                     const confirmMessage = `Are you sure you want to delete the following products? This action cannot be undone.\n"${productNames}"`;

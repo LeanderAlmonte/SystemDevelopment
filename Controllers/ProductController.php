@@ -78,25 +78,76 @@ class ProductController {
 
     public function delete() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['productId'] ?? null;
-            if ($id) {
-                $result = $this->product->delete($id);
-                if (isset($result['error'])) {
-                    echo "<script>alert('Error: " . $result['error'] . "');</script>";
+            $action = $_POST['action'] ?? '';
+            $isFromArchive = isset($_POST['fromArchive']) && $_POST['fromArchive'] === 'true';
+            
+            if ($action === 'bulkDelete') {
+                $productIds = json_decode($_POST['productIds'] ?? '[]', true);
+                if (!empty($productIds)) {
+                    $failedProducts = [];
+                    foreach ($productIds as $id) {
+                        $result = $this->product->delete($id);
+                        if (isset($result['error'])) {
+                            $failedProducts[] = $id;
+                        }
+                    }
+                    if (!empty($failedProducts)) {
+                        $_SESSION['error'] = "Failed to delete some products";
+                    } else {
+                        $_SESSION['success'] = "Selected products were deleted successfully";
+                    }
+                }
+            } else {
+                $id = $_POST['productId'] ?? null;
+                if ($id) {
+                    $result = $this->product->delete($id);
+                    if (isset($result['error'])) {
+                        $_SESSION['error'] = $result['error'];
+                    } else {
+                        $_SESSION['success'] = "Product deleted successfully";
+                    }
                 }
             }
-            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products');
+
+            // Redirect based on where the delete request came from
+            if ($isFromArchive) {
+                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/archive');
+            } else {
+                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products');
+            }
             exit();
         }
     }
 
     public function archive() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['productId'] ?? null;
-            if ($id) {
-                $result = $this->product->archive($id);
-                if (isset($result['error'])) {
-                    echo "<script>alert('Error: " . $result['error'] . "');</script>";
+            $action = $_POST['action'] ?? '';
+            
+            if ($action === 'bulkArchive') {
+                $productIds = json_decode($_POST['productIds'] ?? '[]', true);
+                if (!empty($productIds)) {
+                    $failedProducts = [];
+                    foreach ($productIds as $id) {
+                        $result = $this->product->archive($id);
+                        if (isset($result['error'])) {
+                            $failedProducts[] = $id;
+                        }
+                    }
+                    if (!empty($failedProducts)) {
+                        $_SESSION['error'] = "Failed to archive some products";
+                    } else {
+                        $_SESSION['success'] = "Selected products were archived successfully";
+                    }
+                }
+            } else {
+                $id = $_POST['productId'] ?? null;
+                if ($id) {
+                    $result = $this->product->archive($id);
+                    if (isset($result['error'])) {
+                        $_SESSION['error'] = $result['error'];
+                    } else {
+                        $_SESSION['success'] = "Product archived successfully";
+                    }
                 }
             }
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products');
@@ -110,11 +161,33 @@ class ProductController {
 
     public function unarchive() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['productId'] ?? null;
-            if ($id) {
-                $result = $this->product->unarchive($id);
-                if (isset($result['error'])) {
-                    echo "<script>alert('Error: " . $result['error'] . "');</script>";
+            $action = $_POST['action'] ?? '';
+            
+            if ($action === 'bulkUnarchive') {
+                $productIds = json_decode($_POST['productIds'] ?? '[]', true);
+                if (!empty($productIds)) {
+                    $failedProducts = [];
+                    foreach ($productIds as $id) {
+                        $result = $this->product->unarchive($id);
+                        if (isset($result['error'])) {
+                            $failedProducts[] = $id;
+                        }
+                    }
+                    if (!empty($failedProducts)) {
+                        $_SESSION['error'] = "Failed to unarchive some products";
+                    } else {
+                        $_SESSION['success'] = "Selected products were unarchived successfully";
+                    }
+                }
+            } else {
+                $id = $_POST['productId'] ?? null;
+                if ($id) {
+                    $result = $this->product->unarchive($id);
+                    if (isset($result['error'])) {
+                        $_SESSION['error'] = $result['error'];
+                    } else {
+                        $_SESSION['success'] = "Product unarchived successfully";
+                    }
                 }
             }
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/archive');
