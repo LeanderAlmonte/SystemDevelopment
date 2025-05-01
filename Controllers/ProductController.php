@@ -7,11 +7,13 @@ use Resources\Views\Product\ManageInventory;
 use Resources\Views\Product\AddProduct;
 use Resources\Views\Product\EditProduct;
 use Resources\Views\Product\ArchivedProducts;
+use Resources\Views\Product\SoldProducts;
 
 require(dirname(__DIR__) . '/Resources/Views/Product/ManageInventory.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/AddProduct.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/EditProduct.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/ArchivedProducts.php');
+require(dirname(__DIR__) . '/Resources/Views/Product/SoldProducts.php');
 require(dirname(__DIR__) . '/Models/Product.php');
 
 class ProductController {
@@ -138,5 +140,11 @@ class ProductController {
             'carreda-demon-slayer' => 'Carreda Demon Slayer',
             'pokemon-plush' => 'Pokemon Plush'
         ];
+    }
+
+    public function soldProducts() {
+        $data = $this->product->getSoldProducts();
+        $soldProducts = new SoldProducts();
+        $soldProducts->render($data);
     }
 }

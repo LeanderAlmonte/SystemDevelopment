@@ -228,6 +228,13 @@ class Product {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getSoldProducts() {
+        $query = "SELECT * FROM products WHERE isSold = 1";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>

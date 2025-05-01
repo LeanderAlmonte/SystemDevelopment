@@ -75,6 +75,16 @@ class App {
                         return;
                     }
 
+                    if ($action === 'logout') {
+                        $controller->logout();
+                        return;
+                    }
+
+                    if ($action === 'soldProducts') {
+                        $controller->soldProducts();
+                        return;
+                    }
+
                     switch($requestMethod) {
                         case "GET":
                             $controller->read();
