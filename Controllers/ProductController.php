@@ -12,6 +12,7 @@ use Resources\Views\Product\EditProduct;
 use Resources\Views\Product\ArchivedProducts;
 use Resources\Views\Product\SoldProducts;
 use Resources\Views\Product\ProcessOrder;
+use Resources\Views\Product\SalesCosts;
 
 require(dirname(__DIR__) . '/Resources/Views/Product/ManageInventory.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/AddProduct.php');
@@ -19,6 +20,7 @@ require(dirname(__DIR__) . '/Resources/Views/Product/EditProduct.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/ArchivedProducts.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/SoldProducts.php');
 require(dirname(__DIR__) . '/Resources/Views/Product/ProcessOrder.php');
+require(dirname(__DIR__) . '/Resources/Views/Product/SalesCosts.php');
 require(dirname(__DIR__) . '/Models/Product.php');
 require(dirname(__DIR__) . '/Models/Sales.php');
 require(dirname(__DIR__) . '/Models/User.php');
@@ -168,25 +170,59 @@ class ProductController {
             $clientID = $_POST['clientID'] ?? null;
             $quantitySold = $_POST['quantitySold'] ?? null;
             $salePrice = $_POST['salePrice'] ?? null;
+            $password = $_POST['password'] ?? null;
 
-            if (!$productID || !$clientID || !$quantitySold || !$salePrice) {
-                $_SESSION['error'] = "All fields are required";
-                header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder");
-                exit;
+            if (!$productID || !$clientID || !$quantitySold || !$salePrice || !$password) {
+                $error = "All fields are required";
+                $products = $this->product->read();
+                $clients = $this->client->read();
+                $processOrder = new ProcessOrder();
+                $processOrder->render([
+                    'products' => $products,
+                    'clients' => $clients
+                ], $error);
+                return;
+            }
+
+            // Validate password
+            $userID = $_SESSION['userID'];
+            $user = $this->user->read($userID);
+            if (!$user || !password_verify($password, $user['password'])) {
+                $error = "Invalid password";
+                $products = $this->product->read();
+                $clients = $this->client->read();
+                $processOrder = new ProcessOrder();
+                $processOrder->render([
+                    'products' => $products,
+                    'clients' => $clients
+                ], $error);
+                return;
             }
 
             // Validate quantity
             $product = $this->product->read($productID);
             if (!$product) {
-                $_SESSION['error'] = "Product not found";
-                header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder");
-                exit;
+                $error = "Product not found";
+                $products = $this->product->read();
+                $clients = $this->client->read();
+                $processOrder = new ProcessOrder();
+                $processOrder->render([
+                    'products' => $products,
+                    'clients' => $clients
+                ], $error);
+                return;
             }
 
             if ($quantitySold > $product['quantity']) {
-                $_SESSION['error'] = "Quantity exceeds available stock";
-                header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder");
-                exit;
+                $error = "Quantity exceeds available stock";
+                $products = $this->product->read();
+                $clients = $this->client->read();
+                $processOrder = new ProcessOrder();
+                $processOrder->render([
+                    'products' => $products,
+                    'clients' => $clients
+                ], $error);
+                return;
             }
 
             // Create sale record
@@ -200,12 +236,20 @@ class ProductController {
             $result = $this->sales->create($saleData);
 
             if (isset($result['error'])) {
-                $_SESSION['error'] = $result['error'];
-            } else {
-                $_SESSION['success'] = "Order processed successfully";
-                header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts");
-                exit;
+                $error = $result['error'];
+                $products = $this->product->read();
+                $clients = $this->client->read();
+                $processOrder = new ProcessOrder();
+                $processOrder->render([
+                    'products' => $products,
+                    'clients' => $clients
+                ], $error);
+                return;
             }
+
+            $_SESSION['success'] = "Order processed successfully";
+            header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts");
+            exit;
         }
 
         // Get all products and clients for the form
@@ -217,5 +261,12 @@ class ProductController {
             'products' => $products,
             'clients' => $clients
         ]);
+    }
+
+    public function salesCosts() {
+        $financialData = $this->sales->getFinancialSummary();
+        
+        $view = new SalesCosts();
+        $view->render($financialData);
     }
 }
