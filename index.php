@@ -85,6 +85,11 @@ class App {
                         return;
                     }
 
+                    if ($action === 'processOrder') {
+                        $controller->processOrder();
+                        return;
+                    }
+
                     switch($requestMethod) {
                         case "GET":
                             $controller->read();

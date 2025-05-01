@@ -125,7 +125,7 @@ class ManageInventory {
 
                         <!-- Action Buttons -->
                         <div class="action-buttons">
-                            <button class="action-btn" id="processOrderBtn">Process Order</button>
+                        <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder" class="action-btn">Process Order</a>
                             <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/create" class="action-btn">Add Product</a>
                         </div>
                     </div>

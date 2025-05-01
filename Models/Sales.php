@@ -14,6 +14,7 @@ class Sales {
     private $quantitySold;
     private $salePrice;
     private $saleDate;
+    private $clientID;
 
     private $dbConnection;
 
@@ -42,6 +43,10 @@ class Sales {
         return $this->saleDate;
     }
 
+    public function getClientID() {
+        return $this->clientID;
+    }
+
     // Setters
     public function setSaleID($saleID) {
         $this->saleID = $saleID;
@@ -68,21 +73,28 @@ class Sales {
         return $this;
     }
 
+    public function setClientID($clientID) {
+        $this->clientID = $clientID;
+        return $this;
+    }
+
     // CRUD Operations
     public function read($id = null) {
         if ($id) {
-            $query = "SELECT s.*, p.productName 
+            $query = "SELECT s.*, p.productName, c.clientName 
                      FROM sales s 
                      JOIN products p ON s.productID = p.productID 
+                     JOIN clients c ON s.clientID = c.clientID
                      WHERE s.saleID = :saleID";
             $stmt = $this->dbConnection->prepare($query);
             $stmt->bindParam(':saleID', $id);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } else {
-            $query = "SELECT s.*, p.productName 
+            $query = "SELECT s.*, p.productName, c.clientName 
                      FROM sales s 
                      JOIN products p ON s.productID = p.productID 
+                     JOIN clients c ON s.clientID = c.clientID
                      ORDER BY s.saleDate DESC";
             $stmt = $this->dbConnection->prepare($query);
             $stmt->execute();
@@ -93,29 +105,55 @@ class Sales {
     public function create($data = null) {
         if ($data) {
             $this->setProductID($data['productID']);
+            $this->setClientID($data['clientID']);
             $this->setQuantitySold($data['quantitySold']);
             $this->setSalePrice($data['salePrice']);
             $this->setSaleDate(date('Y-m-d H:i:s')); // Current date and time
         }
 
-        $query = "INSERT INTO sales (productID, quantitySold, salePrice, saleDate) 
-                 VALUES (:productID, :quantitySold, :salePrice, :saleDate)";
-        
-        $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':productID', $this->productID);
-        $stmt->bindParam(':quantitySold', $this->quantitySold);
-        $stmt->bindParam(':salePrice', $this->salePrice);
-        $stmt->bindParam(':saleDate', $this->saleDate);
-        
         try {
-            if ($stmt->execute()) {
-                // Update product quantity and mark as sold if quantity becomes 0
-                $this->updateProductAfterSale();
-                return ['success' => true];
-            } else {
-                return ['error' => 'Failed to create sale record'];
+            // Start transaction
+            $this->dbConnection->beginTransaction();
+
+            // Insert sale record
+            $query = "INSERT INTO sales (productID, clientID, quantitySold, salePrice, saleDate) 
+                     VALUES (:productID, :clientID, :quantitySold, :salePrice, :saleDate)";
+            
+            $stmt = $this->dbConnection->prepare($query);
+            $stmt->bindParam(':productID', $this->productID);
+            $stmt->bindParam(':clientID', $this->clientID);
+            $stmt->bindParam(':quantitySold', $this->quantitySold);
+            $stmt->bindParam(':salePrice', $this->salePrice);
+            $stmt->bindParam(':saleDate', $this->saleDate);
+            
+            if (!$stmt->execute()) {
+                throw new PDOException('Failed to create sale record');
             }
+
+            // Update product quantity
+            $updateQuery = "UPDATE products 
+                           SET quantity = quantity - :quantitySold,
+                               isSold = CASE 
+                                   WHEN (quantity - :quantitySold) <= 0 THEN 1 
+                                   ELSE 0 
+                               END
+                           WHERE productID = :productID";
+            
+            $updateStmt = $this->dbConnection->prepare($updateQuery);
+            $updateStmt->bindParam(':quantitySold', $this->quantitySold);
+            $updateStmt->bindParam(':productID', $this->productID);
+            
+            if (!$updateStmt->execute()) {
+                throw new PDOException('Failed to update product quantity');
+            }
+
+            // Commit transaction
+            $this->dbConnection->commit();
+            return ['success' => true, 'saleID' => $this->dbConnection->lastInsertId()];
+
         } catch (PDOException $e) {
+            // Rollback transaction on error
+            $this->dbConnection->rollBack();
             return ['error' => 'Database error: ' . $e->getMessage()];
         }
     }
@@ -170,35 +208,11 @@ class Sales {
         }
     }
 
-    private function updateProductAfterSale() {
-        // Get current product quantity
-        $query = "SELECT quantity FROM products WHERE productID = :productID";
-        $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':productID', $this->productID);
-        $stmt->execute();
-        $product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($product) {
-            $newQuantity = $product['quantity'] - $this->quantitySold;
-            $isSold = ($newQuantity <= 0) ? 1 : 0;
-
-            // Update product quantity and sold status
-            $updateQuery = "UPDATE products 
-                           SET quantity = :quantity, 
-                               isSold = :isSold 
-                           WHERE productID = :productID";
-            $updateStmt = $this->dbConnection->prepare($updateQuery);
-            $updateStmt->bindParam(':quantity', $newQuantity);
-            $updateStmt->bindParam(':isSold', $isSold);
-            $updateStmt->bindParam(':productID', $this->productID);
-            $updateStmt->execute();
-        }
-    }
-
     public function getSalesByDateRange($startDate, $endDate) {
-        $query = "SELECT s.*, p.productName 
+        $query = "SELECT s.*, p.productName, c.clientName 
                  FROM sales s 
                  JOIN products p ON s.productID = p.productID 
+                 JOIN clients c ON s.clientID = c.clientID
                  WHERE s.saleDate BETWEEN :startDate AND :endDate 
                  ORDER BY s.saleDate DESC";
         $stmt = $this->dbConnection->prepare($query);
@@ -224,6 +238,23 @@ class Sales {
         $stmt->bindParam(':endDate', $endDate);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC)['totalSales'] ?? 0;
+    }
+
+    public function getAggregatedSales() {
+        $query = "SELECT 
+            p.productID,
+            p.productName,
+            p.category,
+            SUM(s.quantitySold) AS unitsSold,
+            MAX(s.salePrice) AS salePrice
+        FROM sales s
+        JOIN products p ON s.productID = p.productID
+        GROUP BY p.productID, p.productName, p.category
+        ORDER BY unitsSold DESC";
+        
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>
