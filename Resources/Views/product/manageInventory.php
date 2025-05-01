@@ -159,7 +159,7 @@ class ManageInventory {
                             const productName = row.children[1].textContent.toLowerCase();
                             const productCategory = normalizeCategory(row.children[2].textContent);
                             const searchMatch = productName.includes(searchTerm.toLowerCase());
-                            const categoryMatch = category === 'all' || productCategory.includes(category);
+                            const categoryMatch = category === 'all' || productCategory === category;
                             
                             row.style.display = searchMatch && categoryMatch ? '' : 'none';
                         });
