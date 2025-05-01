@@ -83,7 +83,11 @@ class ManageInventory {
                                             <tr>
                                                 <td>#<?php echo $product['productID']; ?></td>
                                                 <td><?php echo $product['productName']; ?></td>
-                                                <td><?php echo $product['category']; ?></td>
+                                                <td><?php 
+                                                    $productController = new \Controllers\ProductController();
+                                                    $categories = $productController->getCategories();
+                                                    echo $categories[$product['category']] ?? $product['category'];
+                                                ?></td>
                                                 <td>$<?php echo $product['listedPrice']; ?></td>
                                                 <td><?php echo $product['quantity']; ?></td>
                                                 <td class="actions-cell">
@@ -155,7 +159,7 @@ class ManageInventory {
                             const productName = row.children[1].textContent.toLowerCase();
                             const productCategory = normalizeCategory(row.children[2].textContent);
                             const searchMatch = productName.includes(searchTerm.toLowerCase());
-                            const categoryMatch = category === 'all' || productCategory.includes(category);
+                            const categoryMatch = category === 'all' || productCategory === category;
                             
                             row.style.display = searchMatch && categoryMatch ? '' : 'none';
                         });
