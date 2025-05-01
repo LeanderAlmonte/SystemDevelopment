@@ -87,6 +87,11 @@ class App {
 
                     if ($action === 'processOrder') {
                         $controller->processOrder();
+                            return;
+                        }
+
+                    if ($action === 'salesCosts') {
+                        $controller->salesCosts();
                         return;
                     }
 

@@ -75,10 +75,77 @@ class ProcessOrder {
                 .error-message {
                     color: #dc3545;
                     margin-bottom: 15px;
-                    padding: 10px;
+                    padding: 12px 15px;
                     background-color: #f8d7da;
                     border: 1px solid #f5c6cb;
                     border-radius: 4px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .error-message i {
+                    font-size: 18px;
+                }
+
+                .form-group {
+                    margin-bottom: 20px;
+                }
+
+                .form-group label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-weight: 500;
+                    color: #333;
+                }
+
+                .form-group input,
+                .form-group select {
+                    width: 100%;
+                    padding: 8px 12px;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                    font-size: 14px;
+                }
+
+                .form-group input:focus,
+                .form-group select:focus {
+                    border-color: var(--primary-color);
+                    outline: none;
+                }
+
+                .form-actions {
+                    display: flex;
+                    gap: 10px;
+                    margin-top: 20px;
+                }
+
+                .btn {
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-weight: 500;
+                    transition: background-color 0.3s;
+                }
+
+                .btn-primary {
+                    background-color: var(--primary-color);
+                    color: black;
+                }
+
+                .btn-primary:hover {
+                    background-color: #d45a1a;
+                }
+
+                .btn-secondary {
+                    background-color: #d45a1a;
+                    color: black;
+                    text-decoration: none;
+                }
+
+                .btn-secondary:hover {
+                    background-color: #5a6268;
                 }
             </style>
         </head>
@@ -96,7 +163,7 @@ class ProcessOrder {
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts" class="active"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=history"><i class="fas fa-history"></i><span>History</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=sales"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
                     </ul>
                 </div>
@@ -110,8 +177,11 @@ class ProcessOrder {
 
                     <div class="process-order-container">
                         <h2>Process Order</h2>
-                        <?php if ($error): ?>
-                            <div class="error-message"><?php echo $error; ?></div>
+                        <?php if (isset($error)): ?>
+                            <div class="error-message">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <?php echo htmlspecialchars($error); ?>
+                            </div>
                         <?php endif; ?>
                         
                         <form action="/ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder" method="POST" class="process-order-form">
@@ -122,7 +192,8 @@ class ProcessOrder {
                                     <?php foreach ($data['products'] as $product): ?>
                                         <option value="<?php echo $product['productID']; ?>" 
                                                 data-price="<?php echo $product['listedPrice']; ?>"
-                                                data-quantity="<?php echo $product['quantity']; ?>">
+                                                data-quantity="<?php echo $product['quantity']; ?>"
+                                                <?php echo (isset($_POST['productID']) && $_POST['productID'] == $product['productID']) ? 'selected' : ''; ?>>
                                             <?php echo $product['productName']; ?> (Available: <?php echo $product['quantity']; ?>)
                                         </option>
                                     <?php endforeach; ?>
@@ -131,7 +202,7 @@ class ProcessOrder {
 
                             <div class="form-group">
                                 <label for="salePrice">Sale Price:</label>
-                                <input type="number" step="0.01" name="salePrice" id="salePrice" placeholder="Enter sale price" required>
+                                <input type="number" id="salePrice" name="salePrice" step="0.01" value="<?php echo isset($_POST['salePrice']) ? htmlspecialchars($_POST['salePrice']) : ''; ?>" required>
                             </div>
 
                             <div class="form-group">
@@ -139,7 +210,8 @@ class ProcessOrder {
                                 <select name="clientID" id="clientID" required>
                                     <option value="">Select a client</option>
                                     <?php foreach ($data['clients'] as $client): ?>
-                                        <option value="<?php echo $client['clientID']; ?>">
+                                        <option value="<?php echo $client['clientID']; ?>"
+                                                <?php echo (isset($_POST['clientID']) && $_POST['clientID'] == $client['clientID']) ? 'selected' : ''; ?>>
                                             <?php echo $client['clientName']; ?>
                                         </option>
                                     <?php endforeach; ?>
@@ -148,17 +220,17 @@ class ProcessOrder {
 
                             <div class="form-group">
                                 <label for="quantitySold">Quantity:</label>
-                                <input type="number" name="quantitySold" id="quantitySold" min="1" placeholder="Enter quantity" required>
+                                <input type="number" name="quantitySold" id="quantitySold" min="1" value="<?php echo isset($_POST['quantitySold']) ? htmlspecialchars($_POST['quantitySold']) : ''; ?>" placeholder="Enter quantity" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="password">Your Password:</label>
-                                <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                                <label for="password">Enter your password to confirm:</label>
+                                <input type="password" id="password" name="password" required>
                             </div>
 
                             <div class="form-actions">
-                                <button type="button" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=products'">Back</button>
-                                <button type="submit">Process Order</button>
+                                <button type="submit" class="btn btn-primary">Process Order</button>
+                                <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products" class="btn btn-secondary">Cancel</a>
                             </div>
                         </form>
                     </div>

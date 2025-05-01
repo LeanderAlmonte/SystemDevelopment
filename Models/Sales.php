@@ -256,5 +256,33 @@ class Sales {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getTotalRevenue() {
+        $query = "SELECT SUM(quantitySold * salePrice) as totalRevenue FROM sales";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC)['totalRevenue'] ?? 0;
+    }
+
+    public function getTotalCosts() {
+        $query = "SELECT SUM(s.quantitySold * p.paidPrice) as totalCosts
+                 FROM sales s
+                 JOIN products p ON s.productID = p.productID";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC)['totalCosts'] ?? 0;
+    }
+
+    public function getFinancialSummary() {
+        $revenue = $this->getTotalRevenue();
+        $costs = $this->getTotalCosts();
+        $profit = $revenue - $costs;
+
+        return [
+            'revenue' => $revenue,
+            'costs' => $costs,
+            'profit' => $profit
+        ];
+    }
 }
 ?>
