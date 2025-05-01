@@ -343,69 +343,68 @@ form .dropdown-item.delete {
     background-color: #654321;
 }
 
-/* Add Product Form Styles */
-.add-product-container {
+/* Form Container Styles */
+.add-product-container,
+.edit-product-container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
 }
 
-.add-product-container h2 {
-    color: #000;
-    margin-bottom: 40px;
-    font-size: 28px;
-    font-weight: normal;
-}
-
-.add-product-form {
+/* Form Styles */
+.add-product-form,
+.edit-product-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.add-product-form .form-group {
+/* Form Group Styles */
+.form-group {
     margin: 0;
 }
 
-.add-product-form .form-group label {
+.form-group label {
     display: block;
     margin-bottom: 5px;
     font-weight: normal;
 }
 
-.add-product-form .form-group input,
-.add-product-form .form-group select {
+.form-group input,
+.form-group select {
     width: 100%;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
-.add-product-form .form-actions {
+/* Form Actions */
+.form-actions {
     display: flex;
     gap: 10px;
     margin-top: 20px;
 }
 
-.add-product-form .form-actions button {
+.form-actions button {
     padding: 8px 20px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #fff;
     cursor: pointer;
-    transition: background-color 0.2s;
 }
 
-.add-product-form .form-actions button:hover {
+.form-actions button:hover {
     background-color: #f0f0f0;
 }
 
+/* Error Message Styles */
 .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
+    color: #dc3545;
+    margin-bottom: 15px;
     padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
 }
 
 /* Responsive Design */
