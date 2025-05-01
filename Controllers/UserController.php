@@ -38,6 +38,21 @@ class UserController {
         }
     }
 
+    public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['userId'] ?? null;
+            if ($id) {
+                $this->user->setUserID($id);
+                $result = $this->user->delete();
+                if (!$result) {
+                    echo "<script>alert('Error: Failed to delete user');</script>";
+                }
+            }
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
+            exit();
+        }
+    }
+
     private function showAddForm($error = null) {
         require(dirname(__DIR__) . '/resources/views/user/addUser.php');
         exit();

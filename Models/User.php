@@ -163,7 +163,16 @@ class User{
         $query = "DELETE FROM users WHERE userID = :userID";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':userID', $this->userID);
-        return $stmt->execute();
+        
+        try {
+            if ($stmt->execute()) {
+                return ['success' => true];
+            } else {
+                return ['error' => 'Failed to delete user'];
+            }
+        } catch (PDOException $e) {
+            return ['error' => 'Database error: ' . $e->getMessage()];
+        }
     }
 
     public function findByEmail($email) {

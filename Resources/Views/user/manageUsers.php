@@ -90,7 +90,7 @@ class ManageUsers {
                                                             <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=users/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?>')">
                                                                 <input type="hidden" name="action" value="delete">
                                                                 <input type="hidden" name="userId" value="<?php echo $user['userID']; ?>">
-                                                                <button type="submit" class="dropdown-item delete" style="background: none; border: none; width: 100%; text-align: left; padding: 8px 16px; cursor: pointer;">
+                                                                <button type="submit" class="dropdown-item delete">
                                                                     <i class="fas fa-trash"></i> Delete
                                                                 </button>
                                                             </form>
