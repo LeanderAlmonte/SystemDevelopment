@@ -27,7 +27,7 @@ class SoldProducts {
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts" class="active"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=history"><i class="fas fa-history"></i><span>History</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=sales"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
                     </ul>
                 </div>
@@ -201,27 +201,6 @@ class SoldProducts {
                     min-height: 100vh;
                 }
 
-                .header {
-                    padding: 20px;
-                    background-color: #fff;
-                    margin-bottom: 20px;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
-
-                .brand {
-                    margin: 0;
-                    color: #333;
-                }
-
-                .welcome-text {
-                    margin-top: 10px;
-                    color: #666;
-                }
-
-                h2 {
-                    color: #333;
-                    margin: 0;
-                }
             </style>
 
             <script>

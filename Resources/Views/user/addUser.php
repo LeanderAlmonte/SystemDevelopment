@@ -102,15 +102,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="menu-panel">
             <h2 class="menu-title">Menu Panel</h2>
             <ul class="menu-items">
-                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboard/home"><i class="fas fa-home"></i><span>Home</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboard/manual"><i class="fas fa-book"></i><span>View Manual</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/home"><i class="fas fa-home"></i><span>Home</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span>View Manual</span></a></li>
                 <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
                 <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users" class="active"><i class="fas fa-users"></i><span>Manage Users</span></a></li>
                 <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=product/manageInventory"><i class="fas fa-box"></i><span>Manage Inventory</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=product/soldProducts"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
                 <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
                 <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=history"><i class="fas fa-history"></i><span>History</span></a></li>
-                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=sales"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
+                <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
                 <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
             </ul>
         </div>
