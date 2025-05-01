@@ -91,7 +91,7 @@ class User{
 
     // CRUD Operations
     public function read($id = null) {
-        if ($id) {
+        if ($id !== null) {
             $query = "SELECT * FROM users WHERE userID = :userID";
             $stmt = $this->dbConnection->prepare($query);
             $stmt->bindParam(':userID', $id, PDO::PARAM_INT);
@@ -138,32 +138,56 @@ class User{
     }
 
     public function update() {
-        $query = "UPDATE users 
-                 SET firstName = :firstName, 
-                     lastName = :lastName, 
-                     password = :password, 
-                     email = :email, 
-                     userType = :userType, 
-                     theme = :theme 
-                 WHERE userID = :userID";
-        
-        $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':userID', $this->userID);
-        $stmt->bindParam(':firstName', $this->firstName);
-        $stmt->bindParam(':lastName', $this->lastName);
-        $stmt->bindParam(':password', $this->password);
-        $stmt->bindParam(':email', $this->email);
-        $stmt->bindParam(':userType', $this->userType);
-        $stmt->bindParam(':theme', $this->theme);
-        
-        return $stmt->execute();
+        try {
+            $query = "UPDATE users SET 
+                firstName = :firstName,
+                lastName = :lastName,
+                email = :email,
+                userType = :userType,
+                theme = :theme";
+            
+            // Only include password in update if it's set
+            if ($this->password !== null) {
+                $query .= ", password = :password";
+            }
+            
+            $query .= " WHERE userID = :userID";
+            
+            $stmt = $this->dbConnection->prepare($query);
+            
+            $params = [
+                ':userID' => $this->userID,
+                ':firstName' => $this->firstName,
+                ':lastName' => $this->lastName,
+                ':email' => $this->email,
+                ':userType' => $this->userType,
+                ':theme' => $this->theme
+            ];
+            
+            if ($this->password !== null) {
+                $params[':password'] = $this->password;
+            }
+            
+            return $stmt->execute($params);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     public function delete() {
         $query = "DELETE FROM users WHERE userID = :userID";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':userID', $this->userID);
-        return $stmt->execute();
+        
+        try {
+            if ($stmt->execute()) {
+                return ['success' => true];
+            } else {
+                return ['error' => 'Failed to delete user'];
+            }
+        } catch (PDOException $e) {
+            return ['error' => 'Database error: ' . $e->getMessage()];
+        }
     }
 
     public function findByEmail($email) {

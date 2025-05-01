@@ -78,7 +78,25 @@ class ManageUsers {
                                                 <td><?php echo $user['email']; ?></td>
                                                 <td><?php echo $user['userType']; ?></td>
                                                 <td><?php echo $user['theme']; ?></td>
-                                                <td><button class='action-btn'><i class='fas fa-ellipsis-h'></i></button></td>
+                                                <td class="actions-cell">
+                                                    <div class="dropdown">
+                                                        <button class="action-btn" onclick="toggleDropdown(this, <?php echo $user['userID']; ?>)">
+                                                            <i class="fas fa-ellipsis-h"></i>
+                                                        </button>
+                                                        <div id="dropdown-<?php echo $user['userID']; ?>" class="dropdown-content">
+                                                            <a href="/ecommerce/Project/SystemDevelopment/index.php?url=users/update&id=<?php echo $user['userID']; ?>" class="dropdown-item">
+                                                                <i class="fas fa-edit"></i> Edit
+                                                            </a>
+                                                            <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=users/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?>')">
+                                                                <input type="hidden" name="action" value="delete">
+                                                                <input type="hidden" name="userId" value="<?php echo $user['userID']; ?>">
+                                                                <button type="submit" class="dropdown-item delete">
+                                                                    <i class="fas fa-trash"></i> Delete
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                     <?php endif; ?>
@@ -140,6 +158,53 @@ class ManageUsers {
                     // Initial filter
                     filterUsers('all', '');
                 });
+
+                function confirmDelete(userName) {
+                    return confirm('Are you sure you want to delete "' + userName + '"? This action cannot be undone.');
+                }
+
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('.dropdown')) {
+                        const dropdowns = document.querySelectorAll('.dropdown-content');
+                        dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
+                    }
+                });
+
+                // Close dropdowns when scrolling
+                document.querySelector('.table-container').addEventListener('scroll', function() {
+                    const dropdowns = document.querySelectorAll('.dropdown-content');
+                    dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
+                });
+
+                function toggleDropdown(button, userId) {
+                    const dropdowns = document.querySelectorAll('.dropdown-content');
+                    dropdowns.forEach(dropdown => {
+                        if (dropdown.id !== `dropdown-${userId}`) {
+                            dropdown.classList.remove('show');
+                        }
+                    });
+                    
+                    const dropdown = document.getElementById(`dropdown-${userId}`);
+                    if (!dropdown.classList.contains('show')) {
+                        const rect = button.getBoundingClientRect();
+                        dropdown.style.left = `${rect.left}px`;
+                        
+                        // Calculate if there's enough space above
+                        const spaceAbove = rect.top;
+                        const spaceBelow = window.innerHeight - rect.bottom;
+                        const dropdownHeight = 150; // Approximate height of dropdown
+                        
+                        if (spaceAbove > dropdownHeight || spaceAbove > spaceBelow) {
+                            // Show above
+                            dropdown.style.top = `${rect.top}px`;
+                        } else {
+                            // Show below
+                            dropdown.style.top = `${rect.bottom}px`;
+                        }
+                    }
+                    dropdown.classList.toggle('show');
+                }
             </script>
         </body>
         </html>
