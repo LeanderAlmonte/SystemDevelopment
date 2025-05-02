@@ -128,7 +128,26 @@ class Product {
         
         try {
             if ($stmt->execute()) {
-                return ['success' => true];
+                $productID = $this->dbConnection->lastInsertId();
+                
+                // Create action record for the new product
+                $action = new Action();
+                $fullName = $_SESSION['userName']; // Get full name from session
+                $actionData = [
+                    'userID' => $_SESSION['userID'] ?? 1, // Get userID from session or default to 1
+                    'productID' => $productID,
+                    'clientID' => 0, // No client involved in adding product
+                    'timeStamp' => date('Y-m-d H:i:s'),
+                    'quantity' => $this->quantity,
+                    'actionType' => 'ADD',
+                    'description' => "{$fullName} added {$this->quantity} units of {$this->productName} to Inventory",
+                    'oldValue' => '0', // No previous value
+                    'newValue' => $this->quantity
+                ];
+                
+                $action->create($actionData);
+                
+                return ['success' => true, 'productID' => $productID];
             } else {
                 return ['error' => 'Failed to create product'];
             }
