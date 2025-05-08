@@ -284,5 +284,19 @@ class Sales {
             'profit' => $profit
         ];
     }
+
+    public function getTopSellers($limit = 5) {
+        $query = "SELECT p.productID, p.productName, SUM(s.quantitySold) as totalSold
+                 FROM sales s
+                 JOIN products p ON s.productID = p.productID
+                 GROUP BY p.productID, p.productName
+                 ORDER BY totalSold DESC
+                 LIMIT :limit";
+        
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

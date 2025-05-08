@@ -376,6 +376,19 @@ class Product {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getMostStocked($limit = 5) {
+        $query = "SELECT productID, productName, quantity 
+                 FROM products 
+                 WHERE isArchived = 0 
+                 ORDER BY quantity DESC 
+                 LIMIT :limit";
+        
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>
