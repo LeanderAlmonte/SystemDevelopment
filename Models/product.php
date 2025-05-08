@@ -166,6 +166,12 @@ class Product {
             $this->setQuantity($data['quantity']);
         }
 
+        // Get the old product data for comparison
+        $oldProduct = $this->read($this->productID);
+        if (!$oldProduct) {
+            return ['error' => 'Product not found'];
+        }
+
         $query = "UPDATE products 
                  SET productName = :productName, 
                      category = :category, 
@@ -184,6 +190,50 @@ class Product {
         
         try {
             if ($stmt->execute()) {
+                // Create action record for the update
+                $action = new Action();
+                $fullName = $_SESSION['userName']; // Get full name from session
+                
+                // Build description based on what changed
+                $changes = [];
+                if ($oldProduct['productName'] !== $this->productName) {
+                    $changes[] = "name from '{$oldProduct['productName']}' to '{$this->productName}'";
+                }
+                if ($oldProduct['category'] !== $this->category) {
+                    $changes[] = "category from '{$oldProduct['category']}' to '{$this->category}'";
+                }
+                if ($oldProduct['listedPrice'] !== $this->listedPrice) {
+                    $changes[] = "listed price from '{$oldProduct['listedPrice']}' to '{$this->listedPrice}'";
+                }
+                if ($oldProduct['paidPrice'] !== $this->paidPrice) {
+                    $changes[] = "paid price from '{$oldProduct['paidPrice']}' to '{$this->paidPrice}'";
+                }
+                if ($oldProduct['quantity'] !== $this->quantity) {
+                    $changes[] = "quantity from '{$oldProduct['quantity']}' to '{$this->quantity}'";
+                }
+                
+                $description = "{$fullName} updated product {$this->productName}: " . implode(", ", $changes);
+                
+                $actionData = [
+                    'userID' => $_SESSION['userID'] ?? 1, // Get userID from session or default to 1
+                    'productID' => $this->productID,
+                    'clientID' => 0, // No client involved in update
+                    'timeStamp' => date('Y-m-d H:i:s'),
+                    'quantity' => $this->quantity,
+                    'actionType' => 'UPDATE',
+                    'description' => $description,
+                    'oldValue' => json_encode($oldProduct),
+                    'newValue' => json_encode([
+                        'productName' => $this->productName,
+                        'category' => $this->category,
+                        'listedPrice' => $this->listedPrice,
+                        'paidPrice' => $this->paidPrice,
+                        'quantity' => $this->quantity
+                    ])
+                ];
+                
+                $action->create($actionData);
+                
                 return ['success' => true];
             } else {
                 return ['error' => 'Failed to update product'];
@@ -194,12 +244,36 @@ class Product {
     }
 
     public function delete($id) {
+        // Get the product data before deleting
+        $product = $this->read($id);
+        if (!$product) {
+            return ['error' => 'Product not found'];
+        }
+
         $query = "DELETE FROM products WHERE productID = :productID";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':productID', $id);
         
         try {
             if ($stmt->execute()) {
+                // Create action record for the deletion
+                $action = new Action();
+                $fullName = $_SESSION['userName']; // Get full name from session
+                
+                $actionData = [
+                    'userID' => $_SESSION['userID'] ?? 1, // Get userID from session or default to 1
+                    'productID' => $id,
+                    'clientID' => 0, // No client involved in deletion
+                    'timeStamp' => date('Y-m-d H:i:s'),
+                    'quantity' => $product['quantity'],
+                    'actionType' => 'DELETE',
+                    'description' => "{$fullName} deleted product {$product['productName']} from inventory",
+                    'oldValue' => json_encode($product),
+                    'newValue' => '0' // Product no longer exists
+                ];
+                
+                $action->create($actionData);
+                
                 return ['success' => true];
             } else {
                 return ['error' => 'Failed to delete product'];
@@ -210,12 +284,36 @@ class Product {
     }
 
     public function archive($id) {
+        // Get the product data before archiving
+        $product = $this->read($id);
+        if (!$product) {
+            return ['error' => 'Product not found'];
+        }
+
         $query = "UPDATE products SET isArchived = 1 WHERE productID = :productID";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':productID', $id);
         
         try {
             if ($stmt->execute()) {
+                // Create action record for archiving
+                $action = new Action();
+                $fullName = $_SESSION['userName']; // Get full name from session
+                
+                $actionData = [
+                    'userID' => $_SESSION['userID'] ?? 1, // Get userID from session or default to 1
+                    'productID' => $id,
+                    'clientID' => 0, // No client involved in archiving
+                    'timeStamp' => date('Y-m-d H:i:s'),
+                    'quantity' => $product['quantity'],
+                    'actionType' => 'ARCHIVE',
+                    'description' => "{$fullName} archived product {$product['productName']}",
+                    'oldValue' => json_encode($product),
+                    'newValue' => json_encode(array_merge($product, ['isArchived' => 1]))
+                ];
+                
+                $action->create($actionData);
+                
                 return ['success' => true];
             } else {
                 return ['error' => 'Failed to archive product'];
@@ -226,12 +324,36 @@ class Product {
     }
 
     public function unarchive($id) {
+        // Get the product data before unarchiving
+        $product = $this->read($id);
+        if (!$product) {
+            return ['error' => 'Product not found'];
+        }
+
         $query = "UPDATE products SET isArchived = 0 WHERE productID = :productID";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':productID', $id);
         
         try {
             if ($stmt->execute()) {
+                // Create action record for unarchiving
+                $action = new Action();
+                $fullName = $_SESSION['userName']; // Get full name from session
+                
+                $actionData = [
+                    'userID' => $_SESSION['userID'] ?? 1, // Get userID from session or default to 1
+                    'productID' => $id,
+                    'clientID' => 0, // No client involved in unarchiving
+                    'timeStamp' => date('Y-m-d H:i:s'),
+                    'quantity' => $product['quantity'],
+                    'actionType' => 'UNARCHIVE',
+                    'description' => "{$fullName} unarchived product {$product['productName']}",
+                    'oldValue' => json_encode($product),
+                    'newValue' => json_encode(array_merge($product, ['isArchived' => 0]))
+                ];
+                
+                $action->create($actionData);
+                
                 return ['success' => true];
             } else {
                 return ['error' => 'Failed to unarchive product'];
@@ -251,6 +373,19 @@ class Product {
     public function getSoldProducts() {
         $query = "SELECT * FROM products WHERE isSold = 1";
         $stmt = $this->dbConnection->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getMostStocked($limit = 5) {
+        $query = "SELECT productID, productName, quantity 
+                 FROM products 
+                 WHERE isArchived = 0 
+                 ORDER BY quantity DESC 
+                 LIMIT :limit";
+        
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
