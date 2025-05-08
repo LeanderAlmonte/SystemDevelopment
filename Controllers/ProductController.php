@@ -6,6 +6,7 @@ use Models\Product;
 use Models\Sales;
 use Models\User;
 use Models\Client;
+use Models\Action;
 use Resources\Views\Product\ManageInventory;
 use Resources\Views\Product\AddProduct;
 use Resources\Views\Product\EditProduct;
@@ -25,18 +26,21 @@ require(dirname(__DIR__) . '/Models/Product.php');
 require(dirname(__DIR__) . '/Models/Sales.php');
 require(dirname(__DIR__) . '/Models/User.php');
 require(dirname(__DIR__) . '/Models/Client.php');
+require(dirname(__DIR__) . '/Models/Action.php');
 
 class ProductController {
     private Product $product;
     private Sales $sales;
     private User $user;
     private Client $client;
+    private Action $action;
 
     public function __construct() {
         $this->product = new Product();
         $this->sales = new Sales();
         $this->user = new User();
         $this->client = new Client();
+        $this->action = new Action();
     }
 
     public function read() {
@@ -319,6 +323,46 @@ class ProductController {
                 ], $error);
                 return;
             }
+
+            // Update product quantity
+            $newQuantity = $product['quantity'] - $quantitySold;
+            $updateData = [
+                'productID' => $productID,
+                'productName' => $product['productName'],
+                'category' => $product['category'],
+                'listedPrice' => $product['listedPrice'],
+                'paidPrice' => $product['paidPrice'],
+                'quantity' => $newQuantity
+            ];
+            $this->product->update($updateData);
+
+            // Create action record for the sale
+            $action = new Action();
+            $fullName = $_SESSION['userName'];
+            $client = $this->client->read($clientID);
+            $clientName = $client ? $client['clientName'] : 'Unknown Client';
+            
+            $actionData = [
+                'userID' => $userID,
+                'productID' => $productID,
+                'clientID' => $clientID,
+                'timeStamp' => date('Y-m-d H:i:s'),
+                'quantity' => $quantitySold,
+                'actionType' => 'SALE',
+                'description' => "{$fullName} sold {$quantitySold} units of {$product['productName']} to {$clientName} for \${$salePrice} each",
+                'oldValue' => json_encode([
+                    'productQuantity' => $product['quantity'],
+                    'salePrice' => $salePrice,
+                    'clientID' => $clientID
+                ]),
+                'newValue' => json_encode([
+                    'productQuantity' => $newQuantity,
+                    'salePrice' => $salePrice,
+                    'clientID' => $clientID
+                ])
+            ];
+            
+            $action->create($actionData);
 
             $_SESSION['success'] = "Order processed successfully";
             header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts");
