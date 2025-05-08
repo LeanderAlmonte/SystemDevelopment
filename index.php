@@ -31,7 +31,7 @@ class App {
             $request = $requestBuilder->getRequest();
 
             if (isset($_GET['url'])) {
-                echo "URL = ".$_GET['url'] . "<br>";
+                //echo "URL = ".$_GET['url'] . "<br>";
                 
                 $urlParams = $request->getParams();
                 $currentRoute = implode('/', $urlParams);
