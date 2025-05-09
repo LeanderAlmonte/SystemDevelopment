@@ -50,6 +50,7 @@ class AuthController {
                 $_SESSION['userName'] = $authenticatedUser['firstName'] . ' ' . $authenticatedUser['lastName'];
                 $_SESSION['userType'] = $authenticatedUser['userType'];
                 $_SESSION['theme'] = $authenticatedUser['theme'];
+                $_SESSION['lang'] = $authenticatedUser['language'] ?? 'en';
                 
                 // Debug output
                 echo "Session data set:<br>";

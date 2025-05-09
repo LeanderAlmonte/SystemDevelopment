@@ -100,7 +100,11 @@ class App {
                             $controller->read();
                             break;
                         case "POST":
-                            $controller->create();
+                            if ($resourceName === 'settings') {
+                                $controller->update();
+                            } else {
+                                $controller->create();
+                            }
                             break;
                         case "PUT":
                             $controller->update();
