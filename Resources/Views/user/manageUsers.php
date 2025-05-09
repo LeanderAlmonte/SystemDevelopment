@@ -2,15 +2,17 @@
 
 namespace views\user;
 
+require_once(__DIR__ . '/../../../lang/lang.php');
+
 class ManageUsers {
     public function render($data) {
         ?>
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="<?php echo $_SESSION['lang'] ?? 'en'; ?>">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Manage Users - Eyesightcollectibles</title>
+            <title><?php echo lang('manage_users'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
@@ -18,18 +20,18 @@ class ManageUsers {
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
-                    <h2 class="menu-title">Menu Panel</h2>
+                    <h2 class="menu-title"><?php echo lang('menu_panel'); ?></h2>
                     <ul class="menu-items">
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span>Home</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span>User Manual</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users" class="active"><i class="fas fa-users"></i><span>Manage Users</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span>Manage Inventory</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span>Sold Products</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span>History</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span><?php echo lang('home'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span><?php echo lang('view_manual'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span><?php echo lang('settings'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users" class="active"><i class="fas fa-users"></i><span><?php echo lang('manage_users'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span><?php echo lang('manage_inventory'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span><?php echo lang('view_sold_products'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span><?php echo lang('archived_items'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span><?php echo lang('history'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span><?php echo lang('sales_costs'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span><?php echo lang('logout'); ?></span></a></li>
                     </ul>
                 </div>
 
@@ -37,21 +39,21 @@ class ManageUsers {
                 <div class="main-content">
                     <div class="header">
                         <h1 class="brand">Eyesightcollectibles</h1>
-                        <div class="welcome-text">Welcome <?php echo explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
+                        <div class="welcome-text"><?php echo lang('welcome') . ' ' . explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
                     </div>
 
                     <div class="inventory-container">
                         <!-- Search Bar -->
                         <div class="search-wrapper">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" id="searchInput" class="search-bar" placeholder="Search for user by name or email">
+                            <input type="text" id="searchInput" class="search-bar" placeholder="<?php echo lang('search_user_placeholder'); ?>">
                         </div>
 
                         <!-- User Type Filters -->
                         <div class="category-filters">
-                            <button class="category-btn active" data-category="all">All Users</button>
-                            <button class="category-btn" data-category="admin">Admins</button>
-                            <button class="category-btn" data-category="employee">Employees</button>
+                            <button class="category-btn active" data-category="all"><?php echo lang('all_users'); ?></button>
+                            <button class="category-btn" data-category="admin"><?php echo lang('admins'); ?></button>
+                            <button class="category-btn" data-category="employee"><?php echo lang('employees'); ?></button>
                         </div>
 
                         <!-- Users Table -->
@@ -59,25 +61,25 @@ class ManageUsers {
                             <table class="inventory-table">
                                 <thead>
                                     <tr>
-                                        <th>UserID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>User Type</th>
-                                        <th>Theme</th>
-                                        <th>Actions</th>
+                                        <th><?php echo lang('userid'); ?></th>
+                                        <th><?php echo lang('name'); ?></th>
+                                        <th><?php echo lang('email'); ?></th>
+                                        <th><?php echo lang('user_type'); ?></th>
+                                        <th><?php echo lang('theme'); ?></th>
+                                        <th><?php echo lang('actions'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="userTableBody">
                                     <?php if (isset($data['error'])): ?>
-                                        <tr><td colspan="6">Error loading users: <?php echo $data['error']; ?></td></tr>
+                                        <tr><td colspan="6"><?php echo lang('error_loading_users'); ?>: <?php echo $data['error']; ?></td></tr>
                                     <?php else: ?>
                                         <?php foreach ($data as $user): ?>
                                             <tr>
                                                 <td>#<?php echo $user['userID']; ?></td>
                                                 <td><?php echo $user['firstName'] . ' ' . $user['lastName']; ?></td>
                                                 <td><?php echo $user['email']; ?></td>
-                                                <td><?php echo $user['userType']; ?></td>
-                                                <td><?php echo $user['theme']; ?></td>
+                                                <td><?php echo lang(strtolower($user['userType'])); ?></td>
+                                                <td><?php echo lang(strtolower($user['theme'])); ?></td>
                                                 <td class="actions-cell">
                                                     <div class="dropdown">
                                                         <button class="action-btn" onclick="toggleDropdown(this, <?php echo $user['userID']; ?>)">
@@ -85,13 +87,13 @@ class ManageUsers {
                                                         </button>
                                                         <div id="dropdown-<?php echo $user['userID']; ?>" class="dropdown-content">
                                                             <a href="/ecommerce/Project/SystemDevelopment/index.php?url=users/update&id=<?php echo $user['userID']; ?>" class="dropdown-item">
-                                                                <i class="fas fa-edit"></i> Edit
+                                                                <i class="fas fa-edit"></i> <?php echo lang('edit'); ?>
                                                             </a>
                                                             <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=users/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($user['firstName'] . ' ' . $user['lastName']); ?>')">
                                                                 <input type="hidden" name="action" value="delete">
                                                                 <input type="hidden" name="userId" value="<?php echo $user['userID']; ?>">
                                                                 <button type="submit" class="dropdown-item delete">
-                                                                    <i class="fas fa-trash"></i> Delete
+                                                                    <i class="fas fa-trash"></i> <?php echo lang('delete'); ?>
                                                                 </button>
                                                             </form>
                                                         </div>
@@ -106,7 +108,7 @@ class ManageUsers {
 
                         <!-- Action Buttons -->
                         <div class="action-buttons">
-                            <a href="/ecommerce/Project/SystemDevelopment/index.php?url=users/create" class="action-btn">Add User</a>
+                            <a href="/ecommerce/Project/SystemDevelopment/index.php?url=users/create" class="action-btn"><?php echo lang('add_user'); ?></a>
                         </div>
                     </div>
                 </div>
@@ -160,7 +162,7 @@ class ManageUsers {
                 });
 
                 function confirmDelete(userName) {
-                    return confirm('Are you sure you want to delete "' + userName + '"? This action cannot be undone.');
+                    return confirm('<?php echo lang('confirm_delete'); ?>'.replace('{user}', userName));
                 }
 
                 // Close dropdowns when clicking outside
