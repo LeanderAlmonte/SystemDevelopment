@@ -326,15 +326,7 @@ class ProductController {
 
             // Update product quantity
             $newQuantity = $product['quantity'] - $quantitySold;
-            $updateData = [
-                'productID' => $productID,
-                'productName' => $product['productName'],
-                'category' => $product['category'],
-                'listedPrice' => $product['listedPrice'],
-                'paidPrice' => $product['paidPrice'],
-                'quantity' => $newQuantity
-            ];
-            $this->product->update($updateData);
+            $this->product->updateQuantityForSale($productID, $newQuantity);
 
             // Create action record for the sale
             $action = new Action();
@@ -342,7 +334,8 @@ class ProductController {
             $client = $this->client->read($clientID);
             $clientName = $client ? $client['clientName'] : 'Unknown Client';
             
-            $actionData = [
+            // First action - Sale record
+            $saleActionData = [
                 'userID' => $userID,
                 'productID' => $productID,
                 'clientID' => $clientID,
@@ -362,7 +355,22 @@ class ProductController {
                 ])
             ];
             
-            $action->create($actionData);
+            $action->create($saleActionData);
+
+            // Second action - Quantity update record
+            $quantityActionData = [
+                'userID' => $userID,
+                'productID' => $productID,
+                'clientID' => $clientID,
+                'timeStamp' => date('Y-m-d H:i:s'),
+                'quantity' => $quantitySold,
+                'actionType' => 'UPDATE',
+                'description' => "{$fullName} updated quantity of {$product['productName']} from {$product['quantity']} to {$newQuantity}",
+                'oldValue' => json_encode(['quantity' => $product['quantity']]),
+                'newValue' => json_encode(['quantity' => $newQuantity])
+            ];
+            
+            $action->create($quantityActionData);
 
             $_SESSION['success'] = "Order processed successfully";
             header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts");

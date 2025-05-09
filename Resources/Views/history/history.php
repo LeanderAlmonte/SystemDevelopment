@@ -123,10 +123,10 @@ class History {
                                 <strong>Description:</strong>
                                 <p class="modal-description"></p>
                             </div>
-                            <div class="mb-3 changes-section" style="display: none;">
+                            <!-- <div class="mb-3 changes-section" style="display: none;">
                                 <strong>Changes:</strong>
                                 <p class="changes-content"></p>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Close</button>
