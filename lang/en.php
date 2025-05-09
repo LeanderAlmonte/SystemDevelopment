@@ -23,5 +23,14 @@ return [
     'sales_costs' => 'Sales/Costs',
     'logout' => 'Logout',
     'welcome' => 'Welcome',
-    'brand' => 'Eyesightcollectibles',
+    'top_best_sellers' => 'Top 5 Best Sellers',
+    'top_most_stocked' => 'Top 5 Most Stocked',
+    'sold' => 'sold',
+    'in_stock' => 'in stock',
+    'no_sales_data' => 'No sales data available',
+    'no_stock_data' => 'No stock data available',
+    'random_pokemon' => 'Random Pokemon',
+    'height' => 'Height',
+    'weight' => 'Weight',
+    'get_another_pokemon' => 'Get Another Pokemon'
 ];
