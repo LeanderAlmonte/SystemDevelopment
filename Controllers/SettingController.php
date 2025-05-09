@@ -5,6 +5,7 @@ namespace Controllers;
 use Resources\Views\Settings\Settings;
 
 require_once(dirname(__DIR__) . '/Resources/Views/Settings/Settings.php');
+require_once(dirname(__DIR__) . '/helpers/lang.php');
 
 class SettingController {
     private Settings $settingsView;
