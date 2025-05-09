@@ -38,7 +38,7 @@ class App {
 
                 // Redirect logged-in users away from login page
                 if ($currentRoute === 'auths/login' && isset($_SESSION['userID'])) {
-                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
+                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
                     exit();
                 }
 

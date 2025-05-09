@@ -59,8 +59,8 @@ class AuthController {
                 echo "UserType: " . $_SESSION['userType'] . "<br>";
                 echo "Theme: " . $_SESSION['theme'] . "<br>";
                 
-                // Redirect to users management page
-                header('Location: http://localhost/ecommerce/project/systemdevelopment/index.php?url=users');
+                // Redirect to home page
+                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
                 exit();
             } else {
                 $this->loginView->render('Invalid email or password');
