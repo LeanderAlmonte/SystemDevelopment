@@ -41,35 +41,37 @@ class Settings {
 
                     <div class="settings-container">
                         <!-- Account Settings -->
-                        <h2>Account Setting</h2>
+                        <h2><?php echo lang('account_setting'); ?></h2>
                         <div class="settings-option">
-                            <span>Change Password</span>
-                            <button class="settings-btn">Change</button>
+                            <span><?php echo lang('change_password'); ?></span>
+                            <button class="settings-btn"><?php echo lang('change'); ?></button>
                         </div>
 
                         <!-- Preferences -->
-                        <h2>Preferences</h2>
+                        <h2><?php echo lang('preferences'); ?></h2>
                         <div class="settings-option">
-                            <span>Language Selection</span>
-                            <select class="settings-btn">
-                                <option value="en">English</option>
-                                <option value="fr">French</option>
-                            </select>
+                            <span><?php echo lang('language_selection'); ?></span>
+                            <form method="POST" action="">
+                                <select name="lang" class="settings-btn" onchange="this.form.submit()">
+                                    <option value="en" <?php if(($_SESSION['lang'] ?? 'en') === 'en') echo 'selected'; ?>>English</option>
+                                    <option value="fr_CA" <?php if(($_SESSION['lang'] ?? 'en') === 'fr_CA') echo 'selected'; ?>>Français (Canada)</option>
+                                </select>
+                            </form>
                         </div>
                         <div class="settings-option">
-                            <span>Notification Settings</span>
+                            <span><?php echo lang('notification_settings'); ?></span>
                             <button class="settings-btn">Configure</button>
                         </div>
                         <div class="settings-option">
-                            <span>Theme (Light/Dark Mode)</span>
-                            <button class="settings-btn">Switch Theme</button>
+                            <span><?php echo lang('theme'); ?></span>
+                            <button class="settings-btn"><?php echo lang('switch_theme'); ?></button>
                         </div>
 
                         <!-- Support -->
-                        <h2>Support</h2>
+                        <h2><?php echo lang('support'); ?></h2>
                         <div class="settings-option">
-                            <span>Contact Support</span>
-                            <button class="settings-btn">Contact</button>
+                            <span><?php echo lang('contact_support'); ?></span>
+                            <button class="settings-btn"><?php echo lang('contact'); ?></button>
                         </div>
                     </div>
                 </div>

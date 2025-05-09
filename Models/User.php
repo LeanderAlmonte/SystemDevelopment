@@ -17,6 +17,7 @@ class User{
     private $email;
     private $userType;
     private $theme;
+    private $language;
 
     private $dbConnection;
 
@@ -51,6 +52,10 @@ class User{
 
     public function getTheme() {
         return $this->theme;
+    }
+
+    public function getLanguage() {
+        return $this->language;
     }
 
     // Setters
@@ -89,6 +94,11 @@ class User{
         return $this;
     }
 
+    public function setLanguage($language) {
+        $this->language = $language;
+        return $this;
+    }
+
     // CRUD Operations
     public function read($id = null) {
         if ($id !== null) {
@@ -96,7 +106,11 @@ class User{
             $stmt = $this->dbConnection->prepare($query);
             $stmt->bindParam(':userID', $id, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($user) {
+                $this->setLanguage($user['language'] ?? 'en');
+            }
+            return $user;
         } else {
             $query = "SELECT * FROM users";
             $stmt = $this->dbConnection->prepare($query);
@@ -113,10 +127,11 @@ class User{
             $this->setEmail($data['email']);
             $this->setUserType($data['userType']);
             $this->setTheme($data['theme']);
+            $this->setLanguage($data['language'] ?? 'en');
         }
 
-        $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme) 
-                 VALUES (:firstName, :lastName, :password, :email, :userType, :theme)";
+        $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme, language) 
+                 VALUES (:firstName, :lastName, :password, :email, :userType, :theme, :language)";
         
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':firstName', $this->firstName);
@@ -125,6 +140,7 @@ class User{
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':userType', $this->userType);
         $stmt->bindParam(':theme', $this->theme);
+        $stmt->bindParam(':language', $this->language);
         
         try {
             if ($stmt->execute()) {
@@ -144,7 +160,8 @@ class User{
                 lastName = :lastName,
                 email = :email,
                 userType = :userType,
-                theme = :theme";
+                theme = :theme,
+                language = :language";
             
             // Only include password in update if it's set
             if ($this->password !== null) {
@@ -161,7 +178,8 @@ class User{
                 ':lastName' => $this->lastName,
                 ':email' => $this->email,
                 ':userType' => $this->userType,
-                ':theme' => $this->theme
+                ':theme' => $this->theme,
+                ':language' => $this->language
             ];
             
             if ($this->password !== null) {
