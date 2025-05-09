@@ -8,6 +8,9 @@ use PDOException;
 
 require_once(dirname(__DIR__) . '/core/db/DBConnectionManager.php');
 
+// Set timezone to Montreal
+date_default_timezone_set('America/Montreal');
+
 class Product {
     private $productID;
     private $productName;
@@ -209,10 +212,8 @@ class Product {
                     $changes[] = "paid price from '{$oldProduct['paidPrice']}' to '{$this->paidPrice}'";
                 }
                 if ($oldProduct['quantity'] !== $this->quantity) {
-                    $changes[] = "quantity from '{$oldProduct['quantity']}' to '{$this->quantity}'";
+                    $changes[] = "updated quantity from {$oldProduct['quantity']} to {$this->quantity}";
                 }
-                
-                $description = "{$fullName} updated product {$this->productName}: " . implode(", ", $changes);
                 
                 $actionData = [
                     'userID' => $_SESSION['userID'] ?? 1, // Get userID from session or default to 1
@@ -388,6 +389,22 @@ class Product {
         $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateQuantityForSale($productID, $newQuantity) {
+        $query = "UPDATE products 
+                 SET quantity = :quantity 
+                 WHERE productID = :productID";
+        
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':productID', $productID);
+        $stmt->bindParam(':quantity', $newQuantity);
+        
+        try {
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 }
 
