@@ -1,15 +1,17 @@
 <?php
 namespace Resources\Views\History;
 
+require_once(__DIR__ . '/../../../lang/lang.php');
+
 class History {
     public function render($data = null) {
         ?>
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="<?php echo $_SESSION['lang'] ?? 'en'; ?>">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Action History - Eyesightcollectibles</title>
+            <title><?php echo lang('action_history'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
@@ -17,18 +19,18 @@ class History {
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
-                    <h2 class="menu-title">Menu Panel</h2>
+                    <h2 class="menu-title"><?php echo lang('menu_panel'); ?></h2>
                     <ul class="menu-items">
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span>Home</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span>User Manual</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span>Manage Users</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span>Manage Inventory</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span>Sold Products</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys" class="active"><i class="fas fa-history"></i><span>History</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span><?php echo lang('home'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span><?php echo lang('view_manual'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span><?php echo lang('settings'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span><?php echo lang('manage_users'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span><?php echo lang('manage_inventory'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span><?php echo lang('view_sold_products'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span><?php echo lang('archived_items'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys" class="active"><i class="fas fa-history"></i><span><?php echo lang('history'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span><?php echo lang('sales_costs'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span><?php echo lang('logout'); ?></span></a></li>
                     </ul>
                 </div>
 
@@ -36,44 +38,44 @@ class History {
                 <div class="main-content">
                     <div class="header">
                         <h1 class="brand">Eyesightcollectibles</h1>
-                        <div class="welcome-text">Welcome <?php echo explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
+                        <div class="welcome-text"><?php echo lang('welcome') . ' ' . explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
                     </div>
 
                     <div class="inventory-container">
                         <div class="inventory-header">
                             <div class="header-content">
-                                <h2><i class="fas fa-history"></i> Action History</h2>
-                                <p>View all system actions and changes</p>
+                                <h2><i class="fas fa-history"></i> <?php echo lang('action_history'); ?></h2>
+                                <p><?php echo lang('view_system_actions'); ?></p>
                             </div>
                         </div>
 
                         <!-- Search Bar -->
                         <div class="search-wrapper">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" id="searchInput" class="search-bar" placeholder="Search by action type or description">
+                            <input type="text" id="searchInput" class="search-bar" placeholder="<?php echo lang('search_action_placeholder'); ?>">
                         </div>
 
                         <!-- Action Type Filters -->
                         <div class="category-filters">
-                            <button class="category-btn active" data-category="all">All Actions</button>
-                            <button class="category-btn" data-category="ADD">Add</button>
-                            <button class="category-btn" data-category="UPDATE">Update</button>
-                            <button class="category-btn" data-category="DELETE">Delete</button>
-                            <button class="category-btn" data-category="ARCHIVE">Archive</button>
-                            <button class="category-btn" data-category="UNARCHIVE">Unarchive</button>
-                            <button class="category-btn" data-category="SALE">Sale</button>
+                            <button class="category-btn active" data-category="all"><?php echo lang('all_actions'); ?></button>
+                            <button class="category-btn" data-category="ADD"><?php echo lang('add'); ?></button>
+                            <button class="category-btn" data-category="UPDATE"><?php echo lang('update'); ?></button>
+                            <button class="category-btn" data-category="DELETE"><?php echo lang('delete'); ?></button>
+                            <button class="category-btn" data-category="ARCHIVE"><?php echo lang('archive'); ?></button>
+                            <button class="category-btn" data-category="UNARCHIVE"><?php echo lang('unarchive'); ?></button>
+                            <button class="category-btn" data-category="SALE"><?php echo lang('sale'); ?></button>
                         </div>
 
                         <div class="table-container">
                             <table class="inventory-table">
                                 <thead>
                                     <tr>
-                                        <th>Timestamp</th>
-                                        <th>User ID</th>
-                                        <th>Product ID</th>
-                                        <th>Quantity</th>
-                                        <th>Action Type</th>
-                                        <th>Description</th>
+                                        <th><?php echo lang('timestamp'); ?></th>
+                                        <th><?php echo lang('user_id'); ?></th>
+                                        <th><?php echo lang('product_id'); ?></th>
+                                        <th><?php echo lang('quantity'); ?></th>
+                                        <th><?php echo lang('action_type'); ?></th>
+                                        <th><?php echo lang('description'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="actionTableBody">
@@ -93,14 +95,14 @@ class History {
                                                         data-description="<?php echo htmlspecialchars($action['description']); ?>"
                                                         data-old-value="<?php echo htmlspecialchars($action['oldValue']); ?>"
                                                         data-new-value="<?php echo htmlspecialchars($action['newValue']); ?>">
-                                                    View
+                                                    <?php echo lang('view'); ?>
                                                 </button>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="6" class="no-data">No actions found</td>
+                                            <td colspan="6" class="no-data"><?php echo lang('no_actions_found'); ?></td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>
@@ -115,21 +117,17 @@ class History {
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="actionDetailsModalLabel">Action Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title" id="actionDetailsModalLabel"><?php echo lang('action_details'); ?></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?php echo lang('close'); ?>"></button>
                         </div>
                         <div class="modal-body">
                             <div class="mb-3">
-                                <strong>Description:</strong>
+                                <strong><?php echo lang('description'); ?>:</strong>
                                 <p class="modal-description"></p>
                             </div>
-                            <!-- <div class="mb-3 changes-section" style="display: none;">
-                                <strong>Changes:</strong>
-                                <p class="changes-content"></p>
-                            </div> -->
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary close-btn" data-bs-dismiss="modal"><?php echo lang('close'); ?></button>
                         </div>
                     </div>
                 </div>
