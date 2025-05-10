@@ -38,7 +38,7 @@ class App {
 
                 // Redirect logged-in users away from login page
                 if ($currentRoute === 'auths/login' && isset($_SESSION['userID'])) {
-                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
+                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
                     exit();
                 }
 
@@ -100,7 +100,11 @@ class App {
                             $controller->read();
                             break;
                         case "POST":
-                            $controller->create();
+                            if ($resourceName === 'settings') {
+                                $controller->update();
+                            } else {
+                                $controller->create();
+                            }
                             break;
                         case "PUT":
                             $controller->update();
