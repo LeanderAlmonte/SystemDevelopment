@@ -44,7 +44,7 @@ class SoldProducts {
                     <div class="inventory-container">
                         <div class="inventory-header">
                             <div class="header-content">
-                                <h2><i class="fas fa-shopping-cart"></i> <?php echo lang('sold_products'); ?></h2>
+                                <h2><i class="fas fa-shopping-cart"></i> <?php echo lang('Sold Products'); ?></h2>
                                 <p><?php echo lang('view_sold_products'); ?></p>
                             </div>
                         </div>
