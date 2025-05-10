@@ -71,7 +71,8 @@ class App {
                     }
 
                     if ($action === 'manual') {
-                        $controller->manual();
+                        $pageNumber = $_GET['page'] ?? 1;
+                        $controller->manual($pageNumber);
                         return;
                     }
 
