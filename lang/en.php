@@ -88,5 +88,16 @@ return [
     'enter_paid_price' => 'Enter paid price',
     'enter_quantity' => 'Enter quantity',
     'add_product_btn' => 'Add Product',
-    'please_fill_out_this_field' => 'Please fill out this field.'
+    'please_fill_out_this_field' => 'Please fill out this field.',
+    'select_product' => 'Select a product',
+    'sale_price' => 'Sale Price',
+    'client' => 'Client',
+    'select_client' => 'Select a client',
+    'enter_password_to_confirm' => 'Enter your password to confirm:',
+    'cancel' => 'Cancel',
+    'quantity_exceed_stock' => 'Quantity cannot exceed available stock: {max}',
+    'available' => 'Available',
+    'id' => 'ID',
+    'total_units_sold' => 'Total Units Sold',
+    'no_sales_records_found' => 'No sales records found'
 ];
