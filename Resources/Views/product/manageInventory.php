@@ -1,15 +1,17 @@
 <?php
 namespace resources\views\product;
 
+require_once(__DIR__ . '/../../../lang/lang.php');
+
 class ManageInventory {
     public function render($data) {
         ?>
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="<?php echo $_SESSION['lang'] ?? 'en'; ?>">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Manage Inventory - Eyesightcollectibles</title>
+            <title><?php echo lang('manage_inventory'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
@@ -17,18 +19,18 @@ class ManageInventory {
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
-                    <h2 class="menu-title">Menu Panel</h2>
+                    <h2 class="menu-title"><?php echo lang('menu_panel'); ?></h2>
                     <ul class="menu-items">
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span>Home</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span>User Manual</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span>Manage Users</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products" class="active"><i class="fas fa-box"></i><span>Manage Inventory</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span>Sold Products</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span>History</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span><?php echo lang('home'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span><?php echo lang('view_manual'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span><?php echo lang('settings'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span><?php echo lang('manage_users'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products" class="active"><i class="fas fa-box"></i><span><?php echo lang('manage_inventory'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span><?php echo lang('view_sold_products'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span><?php echo lang('archived_items'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span><?php echo lang('history'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span><?php echo lang('sales_costs'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span><?php echo lang('logout'); ?></span></a></li>
                     </ul>
                 </div>
 
@@ -36,7 +38,7 @@ class ManageInventory {
                 <div class="main-content">
                     <div class="header">
                         <h1 class="brand">Eyesightcollectibles</h1>
-                        <div class="welcome-text">Welcome <?php echo explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
+                        <div class="welcome-text"><?php echo lang('welcome') . ' ' . explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
                     </div>
 
                     <div class="inventory-container">
@@ -61,12 +63,12 @@ class ManageInventory {
                         <!-- Search Bar -->
                         <div class="search-wrapper">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" id="searchInput" class="search-bar" placeholder="Search for product by name">
+                            <input type="text" id="searchInput" class="search-bar" placeholder="<?php echo lang('search_product_placeholder'); ?>">
                         </div>
 
                         <!-- Category Filters -->
                         <div class="category-filters">
-                            <button class="category-btn active" data-category="all">All Products</button>
+                            <button class="category-btn active" data-category="all"><?php echo lang('all_products'); ?></button>
                             <button class="category-btn" data-category="pokemon-japanese">Pokemon Japanese</button>
                             <button class="category-btn" data-category="pokemon-korean">Pokemon Korean</button>
                             <button class="category-btn" data-category="pokemon-chinese">Pokemon Chinese</button>
@@ -86,19 +88,19 @@ class ManageInventory {
                                 <thead>
                                     <tr>
                                         <th>
-                                            <input type="checkbox" id="selectAll" title="Select All">
+                                            <input type="checkbox" id="selectAll" title="<?php echo lang('select_all'); ?>">
                                         </th>
-                                        <th>ProductID</th>
-                                        <th>Product</th>
-                                        <th>Category</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Actions</th>
+                                        <th><?php echo lang('productid'); ?></th>
+                                        <th><?php echo lang('product'); ?></th>
+                                        <th><?php echo lang('category'); ?></th>
+                                        <th><?php echo lang('price'); ?></th>
+                                        <th><?php echo lang('quantity'); ?></th>
+                                        <th><?php echo lang('actions'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="productTableBody">
                                     <?php if (isset($data['error'])): ?>
-                                        <tr><td colspan="7">Error loading products: <?php echo $data['error']; ?></td></tr>
+                                        <tr><td colspan="7"><?php echo lang('error_loading_products'); ?>: <?php echo $data['error']; ?></td></tr>
                                     <?php else: ?>
                                         <?php foreach ($data as $product): ?>
                                             <tr>
@@ -124,17 +126,17 @@ class ManageInventory {
                                                                 <input type="hidden" name="action" value="archive">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
                                                                 <button type="submit" class="dropdown-item">
-                                                                    <i class="fas fa-archive"></i> Archive
+                                                                    <i class="fas fa-archive"></i> <?php echo lang('archive'); ?>
                                                                 </button>
                                                             </form>
                                                             <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/update&id=<?php echo $product['productID']; ?>" class="dropdown-item">
-                                                                <i class="fas fa-edit"></i> Edit
+                                                                <i class="fas fa-edit"></i> <?php echo lang('edit'); ?>
                                                             </a>
                                                             <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($product['productName']); ?>')">
                                                                 <input type="hidden" name="action" value="delete">
                                                                 <input type="hidden" name="productId" value="<?php echo $product['productID']; ?>">
                                                                 <button type="submit" class="dropdown-item delete">
-                                                                    <i class="fas fa-trash"></i> Delete
+                                                                    <i class="fas fa-trash"></i> <?php echo lang('delete'); ?>
                                                                 </button>
                                                             </form>
                                                         </div>
@@ -151,21 +153,21 @@ class ManageInventory {
                         <div class="bulk-actions" style="display: none; margin-bottom: 20px;">
                             <div class="bulk-actions-container">
                                 <div class="selected-count">
-                                    <span id="selectedCount">0</span> items selected
+                                    <span id="selectedCount">0</span> <?php echo lang('items_selected'); ?>
                                 </div>
                                 <div class="bulk-buttons">
                                     <form id="bulkArchiveForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive" style="display: inline;">
                                         <input type="hidden" name="action" value="bulkArchive">
                                         <input type="hidden" name="productIds" id="bulkArchiveIds">
                                         <button type="submit" class="action-btn archive-btn" onclick="return handleBulkArchive()">
-                                            <i class="fas fa-archive"></i> Archive Selected
+                                            <i class="fas fa-archive"></i> <?php echo lang('archive_selected'); ?>
                                         </button>
                                     </form>
                                     <form id="bulkDeleteForm" method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=products/delete" style="display: inline;">
                                         <input type="hidden" name="action" value="bulkDelete">
                                         <input type="hidden" name="productIds" id="bulkDeleteIds">
                                         <button type="submit" class="action-btn delete-btn" onclick="return handleBulkDelete()">
-                                            <i class="fas fa-trash"></i> Delete Selected
+                                            <i class="fas fa-trash"></i> <?php echo lang('delete_selected'); ?>
                                         </button>
                                     </form>
                                 </div>
@@ -174,8 +176,8 @@ class ManageInventory {
 
                         <!-- Action Buttons -->
                         <div class="action-buttons">
-                            <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder" class="action-btn">Process Order</a>
-                            <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/create" class="action-btn">Add Product</a>
+                            <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder" class="action-btn"><?php echo lang('process_order'); ?></a>
+                            <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/create" class="action-btn"><?php echo lang('add_product'); ?></a>
                         </div>
                     </div>
                 </div>
@@ -183,11 +185,11 @@ class ManageInventory {
 
             <script>
                 function confirmArchive(productName) {
-                    return confirm('Are you sure you want to archive "' + productName + '"?');
+                    return confirm('<?php echo lang('confirm_archive'); ?>'.replace('{product}', productName));
                 }
 
                 function confirmDelete(productName) {
-                    return confirm('Are you sure you want to delete "' + productName + '"? This action cannot be undone.');
+                    return confirm('<?php echo lang('confirm_delete'); ?>'.replace('{product}', productName));
                 }
 
                 document.addEventListener('DOMContentLoaded', function() {
@@ -317,13 +319,12 @@ class ManageInventory {
                 function handleBulkArchive() {
                     const selectedProducts = getSelectedProducts();
                     if (selectedProducts.length === 0) {
-                        alert('Please select products to archive');
+                        alert('<?php echo lang('please_select_products'); ?>'.replace('{action}', '<?php echo lang('archive'); ?>'));
                         return false;
                     }
 
                     const productNames = selectedProducts.map(p => p.name).join('", "');
-                    const confirmMessage = `Are you sure you want to archive the following products?\n"${productNames}"`;
-                    
+                    const confirmMessage = '<?php echo lang('confirm_bulk_archive'); ?>'.replace('{products}', productNames);
                     if (confirm(confirmMessage)) {
                         document.getElementById('bulkArchiveIds').value = JSON.stringify(selectedProducts.map(p => p.id));
                         return true;
@@ -335,13 +336,12 @@ class ManageInventory {
                 function handleBulkDelete() {
                     const selectedProducts = getSelectedProducts();
                     if (selectedProducts.length === 0) {
-                        alert('Please select products to delete');
+                        alert('<?php echo lang('please_select_products'); ?>'.replace('{action}', '<?php echo lang('delete'); ?>'));
                         return false;
                     }
 
                     const productNames = selectedProducts.map(p => p.name).join('", "');
-                    const confirmMessage = `Are you sure you want to delete the following products? This action cannot be undone.\n"${productNames}"`;
-                    
+                    const confirmMessage = '<?php echo lang('confirm_bulk_delete'); ?>'.replace('{products}', productNames);
                     if (confirm(confirmMessage)) {
                         document.getElementById('bulkDeleteIds').value = JSON.stringify(selectedProducts.map(p => p.id));
                         return true;
