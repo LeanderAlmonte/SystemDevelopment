@@ -114,39 +114,44 @@ class Manual {
                         </div>
 
                         <div class="manual-section">
-                            <h3>Steps to Manage Inventory</h3>
+                            <h3>Home Page</h3>
                             <ol>
-                                <li>Go to Manage Inventory from the menu.</li>
-                                <li>To add a product, click Add Product, enter details, and click Save.</li>
-                                <li>To edit a product, click Edit → update the fields → click Update.</li>
-                                <li>To delete a product, click Delete and confirm.</li>
-                                <li>To view sold products, go to View Sold Products.</li>
+                                <li>View the Top 5 Best Sellers section to see the most popular products</li>
+                                <li>Check the Top 5 Most Stocked section for items with the highest inventory</li>
+                                <li>Explore the Random Pokémon section to see a featured Pokémon with its details</li>
+                                <li>Use the left-side menu to navigate different sections like Inventory, History, and Sales</li>
+                                <li>Click on a product to view more details or manage inventory actions</li>
+                                <li>Check the displayed Pokémon height and weight for reference</li>
+                                <li>Click the "Get Another Pokémon" button to generate a new random Pokémon</li>
                             </ol>
-                            <img src="/ecommerce/Project/SystemDevelopment/assets/images/inventory-example.png" alt="Inventory screenshot">
+
+                            <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/home.png" alt="Inventory screenshot">
+                        </div>
+
+                        <div class="manual-section">
+                            <h3>Steps to Manage Users</h3>
+                            <ol>
+                            <li>Navigate the menu panel to access different sections</li>
+                            <li>Use the search bar to find a product by name</li>
+                            <li>Click on a category to filter products</li>
+                            <li>Use the Actions button to edit archive, delete or edit products</li>
+                            <li>Click Process Order to process selected products</li>
+                            <li>Click Add Product to add a new item to the inventory</li>
+                            </ol>
+                            <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/mp.png" alt="Inventory screenshot">
                         </div>
 
                         <div class="manual-section">
                             <h3>Steps to Manage Inventory</h3>
                             <ol>
-                                <li>Go to Manage Inventory from the menu.</li>
-                                <li>To add a product, click Add Product, enter details, and click Save.</li>
-                                <li>To edit a product, click Edit → update the fields → click Update.</li>
-                                <li>To delete a product, click Delete and confirm.</li>
-                                <li>To view sold products, go to View Sold Products.</li>
+                            <li>Navigate the menu panel to access different sections</li>
+                            <li>Use the search bar to find a product by name</li>
+                            <li>Click on a category to filter products</li>
+                            <li>Use the Actions button to edit archive, delete or edit products</li>
+                            <li>Click Process Order to process selected products</li>
+                            <li>Click Add Product to add a new item to the inventory</li>
                             </ol>
-                            <img src="/ecommerce/Project/SystemDevelopment/assets/images/inventory-example.png" alt="Inventory screenshot">
-                        </div>
-
-                        <div class="manual-section">
-                            <h3>Steps to Manage Inventory</h3>
-                            <ol>
-                                <li>Go to Manage Inventory from the menu.</li>
-                                <li>To add a product, click Add Product, enter details, and click Save.</li>
-                                <li>To edit a product, click Edit → update the fields → click Update.</li>
-                                <li>To delete a product, click Delete and confirm.</li>
-                                <li>To view sold products, go to View Sold Products.</li>
-                            </ol>
-                            <img src="/ecommerce/Project/SystemDevelopment/assets/images/inventory-example.png" alt="Inventory screenshot">
+                            <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/mp.png" alt="Inventory screenshot">
                         </div>
                     </div>
                 </div>
