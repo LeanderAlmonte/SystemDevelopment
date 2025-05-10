@@ -109,7 +109,6 @@ $actions = $action->read();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Add any additional JavaScript functionality here if needed
     </script>
 </body>
 </html> 

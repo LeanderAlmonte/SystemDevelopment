@@ -160,6 +160,7 @@ class Home {
                     color: #333;
                 }
             </style>
+            
         </head>
         <body>
             <div class="container">
