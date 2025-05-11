@@ -1,6 +1,22 @@
 <?php
 namespace Resources\Views\Settings;
 
+// If the theme switch button is clicked, toggle the theme
+if (isset($_POST['switch_theme'])) {
+    // Toggle between 'light' and 'dark'
+    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
+    setcookie('theme', $_SESSION['theme'], time() + (86400 * 30), "/"); // Store theme in a cookie for 30 days
+    header("Location: " . $_SERVER['PHP_SELF']); // Reload the page to apply the new theme
+    exit(); // Stop further script execution
+}
+
+// Check if the theme is stored in a cookie, otherwise use session
+if (isset($_COOKIE['theme'])) {
+    $_SESSION['theme'] = $_COOKIE['theme'];
+} elseif (!isset($_SESSION['theme'])) {
+    $_SESSION['theme'] = 'light'; // Default to light theme if no theme is set
+}
+
 class Settings {
     public function render() {
         ?>
@@ -12,6 +28,37 @@ class Settings {
             <title>Settings - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <?php
+    // Include dark theme CSS if the selected theme is dark
+    if ($_SESSION['theme'] === 'dark') {
+        echo '<link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/dark.css">';
+    }
+    ?>
+            <style>
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1000;
+                left: 0; top: 0;
+                width: 100%; height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+            .modal-content {
+                background-color: #fff;
+                margin: 10% auto;
+                padding: 20px;
+                width: 300px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px #000;
+            }
+            .close {
+                float: right;
+                font-size: 20px;
+                cursor: pointer;
+                }
+            </style>
+
         </head>
         <body>
             <div class="container">
@@ -44,7 +91,7 @@ class Settings {
                         <h2><?php echo lang('account_setting'); ?></h2>
                         <div class="settings-option">
                             <span><?php echo lang('change_password'); ?></span>
-                            <button class="settings-btn"><?php echo lang('change'); ?></button>
+                            <button class="settings-btn" onclick="location.href='resetPassword.php';"><?php echo lang('change'); ?></button>
                         </div>
 
                         <!-- Preferences -->
@@ -60,11 +107,11 @@ class Settings {
                         </div>
                         <div class="settings-option">
                             <span><?php echo lang('notification_settings'); ?></span>
-                            <button class="settings-btn">Configure</button>
+                            <button class="settings-btn" onclick="openModal()">Configure</button>
                         </div>
                         <div class="settings-option">
                             <span><?php echo lang('theme'); ?></span>
-                            <button class="settings-btn"><?php echo lang('switch_theme'); ?></button>
+                            <button type="submit" name="switch_theme" class="settings-btn"><?php echo lang('switch_theme'); ?></button>
                         </div>
 
                         <!-- Support -->
@@ -76,8 +123,36 @@ class Settings {
                     </div>
                 </div>
             </div>
+            <!-- Notification Settings Modal -->
+            <div id="notificationModal" class="modal">
+            <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2><?php echo lang('notification_settings'); ?></h2>
+            <form method="post" action="">
+            <label><input type="checkbox" name="email_notifications"> Email Notifications</label><br>
+            <label><input type="checkbox" name="sms_alerts"> SMS Alerts</label><br>
+            <label><input type="checkbox" name="push_notifications"> Push Notifications</label><br><br>
+            <button type="submit">Save</button>
+            </form>
+        </div>
+        </div>
+    <script>
+    function openModal() {
+        document.getElementById("notificationModal").style.display = "block";
+    }
+    function closeModal() {
+        document.getElementById("notificationModal").style.display = "none";
+    }
+    window.onclick = function(event) {
+        let modal = document.getElementById("notificationModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+    }
+}
+    </script>
         </body>
         </html>
         <?php
     }
 }
+?>
