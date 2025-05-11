@@ -28,7 +28,7 @@ class ForgotPassword {
                         <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
                     <?php endif; ?>
 
-                    <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=auths/sendcode">
+                    <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=auths/verifyCode">
                         <label for="email">Your Email</label>
                         <input type="email" id="email" name="email" placeholder="Enter your email" required>
                         <button type="submit" class="send-code">Send Code</button>
