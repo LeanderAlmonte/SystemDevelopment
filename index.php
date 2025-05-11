@@ -9,7 +9,7 @@ session_start();
 // echo "</pre><br>";
 
 class App {
-    private $publicRoutes = ['auths/login', 'auths/logout'];
+    private $publicRoutes = ['auths/login', 'auths/logout', 'auths/forgotPassword'];
 
     public function start() {
         spl_autoload_register(function($class) {

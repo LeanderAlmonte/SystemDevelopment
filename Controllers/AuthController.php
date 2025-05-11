@@ -75,4 +75,11 @@ class AuthController {
         header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
         exit();
     }
+
+    public function forgotPassword() {
+    require_once 'views/auth/forgotPassword.php';
+    $view = new \views\auth\ForgotPassword();
+    $view->render();
+}
+
 }
