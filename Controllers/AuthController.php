@@ -55,6 +55,31 @@ class AuthController {
             $user = $this->user->findByEmail($email);
             error_log("User found: " . ($user ? "Yes" : "No"));
 
+            // Check each user for matching credentials
+            foreach ($users as $user) {
+                if ($user['email'] === $email && password_verify($password, $user['password'])) {
+                    $authenticatedUser = $user;
+                    break;
+                }
+            }
+
+            if ($authenticatedUser) {
+                // Store user data in session
+                $_SESSION['userID'] = $authenticatedUser['userID'];
+                $_SESSION['userName'] = $authenticatedUser['firstName'] . ' ' . $authenticatedUser['lastName'];
+                $_SESSION['userType'] = $authenticatedUser['userType'];
+                $_SESSION['theme'] = $authenticatedUser['theme'];
+                $_SESSION['lang'] = $authenticatedUser['language'] ?? 'en';
+                
+                // Debug output
+                echo "Session data set:<br>";
+                echo "UserID: " . $_SESSION['userId'] . "<br>";
+                echo "UserName: " . $_SESSION['userName'] . "<br>";
+                echo "UserType: " . $_SESSION['userType'] . "<br>";
+                echo "Theme: " . $_SESSION['theme'] . "<br>";
+                
+                // Redirect to home page
+                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
             if ($user && password_verify($password, $user['password'])) {
                 error_log("Password verified successfully");
                 error_log("2FA enabled: " . ($user['twoFactorEnabled'] ? "Yes" : "No"));
@@ -86,7 +111,7 @@ class AuthController {
         }
 
         $this->loginView->render();
-    }
+        }
 
     public function verify2FA() {
         // Debug information
@@ -155,4 +180,11 @@ class AuthController {
         //error_log("Rendering verify2FA view");
         $this->verify2FAView->render();
     }
+
+    public function forgotPassword() {
+    require_once 'views/auth/forgotPassword.php';
+    $view = new \views\auth\ForgotPassword();
+    $view->render();
+    }
+
 }

@@ -1,15 +1,17 @@
 <?php
 namespace Resources\Views\Product;
 
+require_once(__DIR__ . '/../../../lang/lang.php');
+
 class ProcessOrder {
     public function render($data = null, $error = null) {
         ?>
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="<?php echo $_SESSION['lang'] ?? 'en'; ?>">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Process Order - Eyesightcollectibles</title>
+            <title><?php echo lang('process_order'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
             <style>
@@ -153,18 +155,18 @@ class ProcessOrder {
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
-                    <h2 class="menu-title">Menu Panel</h2>
+                    <h2 class="menu-title"><?php echo lang('menu_panel'); ?></h2>
                     <ul class="menu-items">
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span>Home</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span>View Manual</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span>Manage Users</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span>Manage Inventory</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts" class="active"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span>History</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span><?php echo lang('home'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span><?php echo lang('view_manual'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span><?php echo lang('settings'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span><?php echo lang('manage_users'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span><?php echo lang('manage_inventory'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts" class="active"><i class="fas fa-shopping-cart"></i><span><?php echo lang('view_sold_products'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span><?php echo lang('archived_items'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span><?php echo lang('history'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span><?php echo lang('sales_costs'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span><?php echo lang('logout'); ?></span></a></li>
                     </ul>
                 </div>
 
@@ -172,11 +174,11 @@ class ProcessOrder {
                 <div class="main-content">
                     <div class="header">
                         <h1 class="brand">Eyesightcollectibles</h1>
-                        <div class="welcome-text">Welcome <?php echo explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
+                        <div class="welcome-text"><?php echo lang('welcome') . ' ' . explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
                     </div>
 
                     <div class="process-order-container">
-                        <h2>Process Order</h2>
+                        <h2><?php echo lang('process_order'); ?></h2>
                         <?php if (isset($error)): ?>
                             <div class="error-message">
                                 <i class="fas fa-exclamation-circle"></i>
@@ -186,29 +188,30 @@ class ProcessOrder {
                         
                         <form action="/ecommerce/Project/SystemDevelopment/index.php?url=products/processOrder" method="POST" class="process-order-form">
                             <div class="form-group">
-                                <label for="productID">Product:</label>
-                                <select name="productID" id="productID" required>
-                                    <option value="">Select a product</option>
-                                    <?php foreach ($data['products'] as $product): ?>
+                                <label for="productID"><?php echo lang('product'); ?>:</label>
+                                <select name="productID" id="productID" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
+                                    <option value=""><?php echo lang('select_product'); ?></option>
+                                    <?php foreach (
+                                        $data['products'] as $product): ?>
                                         <option value="<?php echo $product['productID']; ?>" 
                                                 data-price="<?php echo $product['listedPrice']; ?>"
                                                 data-quantity="<?php echo $product['quantity']; ?>"
                                                 <?php echo (isset($_POST['productID']) && $_POST['productID'] == $product['productID']) ? 'selected' : ''; ?>>
-                                            <?php echo $product['productName']; ?> (Available: <?php echo $product['quantity']; ?>)
+                                            <?php echo $product['productName']; ?> (<?php echo lang('available'); ?>: <?php echo $product['quantity']; ?>)
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
 
                             <div class="form-group">
-                                <label for="salePrice">Sale Price:</label>
-                                <input type="number" id="salePrice" name="salePrice" step="0.01" value="<?php echo isset($_POST['salePrice']) ? htmlspecialchars($_POST['salePrice']) : ''; ?>" required>
+                                <label for="salePrice"><?php echo lang('sale_price'); ?>:</label>
+                                <input type="number" id="salePrice" name="salePrice" step="0.01" value="<?php echo isset($_POST['salePrice']) ? htmlspecialchars($_POST['salePrice']) : ''; ?>" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
                             </div>
 
                             <div class="form-group">
-                                <label for="clientID">Client:</label>
-                                <select name="clientID" id="clientID" required>
-                                    <option value="">Select a client</option>
+                                <label for="clientID"><?php echo lang('client'); ?>:</label>
+                                <select name="clientID" id="clientID" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
+                                    <option value=""><?php echo lang('select_client'); ?></option>
                                     <?php foreach ($data['clients'] as $client): ?>
                                         <option value="<?php echo $client['clientID']; ?>"
                                                 <?php echo (isset($_POST['clientID']) && $_POST['clientID'] == $client['clientID']) ? 'selected' : ''; ?>>
@@ -219,18 +222,18 @@ class ProcessOrder {
                             </div>
 
                             <div class="form-group">
-                                <label for="quantitySold">Quantity:</label>
-                                <input type="number" name="quantitySold" id="quantitySold" min="1" value="<?php echo isset($_POST['quantitySold']) ? htmlspecialchars($_POST['quantitySold']) : ''; ?>" placeholder="Enter quantity" required>
+                                <label for="quantitySold"><?php echo lang('quantity'); ?>:</label>
+                                <input type="number" name="quantitySold" id="quantitySold" min="1" value="<?php echo isset($_POST['quantitySold']) ? htmlspecialchars($_POST['quantitySold']) : ''; ?>" placeholder="<?php echo lang('enter_quantity'); ?>" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
                             </div>
 
                             <div class="form-group">
-                                <label for="password">Enter your password to confirm:</label>
-                                <input type="password" id="password" name="password" required>
+                                <label for="password"><?php echo lang('enter_password_to_confirm'); ?></label>
+                                <input type="password" id="password" name="password" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn btn-primary">Process Order</button>
-                                <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary"><?php echo lang('process_order'); ?></button>
+                                <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products" class="btn btn-secondary"><?php echo lang('cancel'); ?></a>
                             </div>
                         </form>
                     </div>
@@ -265,7 +268,7 @@ class ProcessOrder {
                         if (selectedOption.value) {
                             const maxQuantity = parseInt(selectedOption.getAttribute('data-quantity'));
                             if (this.value > maxQuantity) {
-                                alert('Quantity cannot exceed available stock: ' + maxQuantity);
+                                alert('<?php echo lang('quantity_exceed_stock'); ?>'.replace('{max}', maxQuantity));
                                 this.value = maxQuantity;
                             }
                         }

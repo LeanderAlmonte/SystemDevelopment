@@ -1,15 +1,17 @@
 <?php
 namespace Resources\Views\Product;
 
+require_once(__DIR__ . '/../../../lang/lang.php');
+
 class SoldProducts {
     public function render($data = null) {
         ?>
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="<?php echo $_SESSION['lang'] ?? 'en'; ?>">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Sold Products - Eyesightcollectibles</title>
+            <title><?php echo lang('sold_products'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
@@ -17,18 +19,18 @@ class SoldProducts {
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
-                    <h2 class="menu-title">Menu Panel</h2>
+                    <h2 class="menu-title"><?php echo lang('menu_panel'); ?></h2>
                     <ul class="menu-items">
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span>Home</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span>View Manual</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span>Settings</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span>Manage Users</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span>Manage Inventory</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts" class="active"><i class="fas fa-shopping-cart"></i><span>View sold products</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span>Archived Items</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span>History</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span>Sales/Costs</span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span><?php echo lang('home'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span><?php echo lang('view_manual'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span><?php echo lang('settings'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span><?php echo lang('manage_users'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span><?php echo lang('manage_inventory'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts" class="active"><i class="fas fa-shopping-cart"></i><span><?php echo lang('view_sold_products'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span><?php echo lang('archived_items'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span><?php echo lang('history'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span><?php echo lang('sales_costs'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span><?php echo lang('logout'); ?></span></a></li>
                     </ul>
                 </div>
 
@@ -36,26 +38,26 @@ class SoldProducts {
                 <div class="main-content">
                     <div class="header">
                         <h1 class="brand">Eyesightcollectibles</h1>
-                        <div class="welcome-text">Welcome <?php echo explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
+                        <div class="welcome-text"><?php echo lang('welcome') . ' ' . explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
                     </div>
 
                     <div class="inventory-container">
                         <div class="inventory-header">
                             <div class="header-content">
-                                <h2><i class="fas fa-shopping-cart"></i> Sold Products</h2>
-                                <p>View all sold products in your inventory</p>
+                                <h2><i class="fas fa-shopping-cart"></i> <?php echo lang('Sold Products'); ?></h2>
+                                <p><?php echo lang('view_sold_products'); ?></p>
                             </div>
                         </div>
 
                         <!-- Search Bar -->
                         <div class="search-wrapper">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" id="searchInput" class="search-bar" placeholder="Search for product by name">
+                            <input type="text" id="searchInput" class="search-bar" placeholder="<?php echo lang('search_product_placeholder'); ?>">
                         </div>
 
                         <!-- Category Filters -->
                         <div class="category-filters">
-                            <button class="category-btn active" data-category="all">All Products</button>
+                            <button class="category-btn active" data-category="all"><?php echo lang('all_products'); ?></button>
                             <button class="category-btn" data-category="pokemon-japanese">Pokemon Japanese</button>
                             <button class="category-btn" data-category="pokemon-korean">Pokemon Korean</button>
                             <button class="category-btn" data-category="pokemon-chinese">Pokemon Chinese</button>
@@ -73,11 +75,11 @@ class SoldProducts {
                             <table class="inventory-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Product Name</th>
-                                        <th>Category</th>
-                                        <th>Total Units Sold</th>
-                                        <th>Sale Price</th>
+                                        <th><?php echo lang('id'); ?></th>
+                                        <th><?php echo lang('product_name'); ?></th>
+                                        <th><?php echo lang('category'); ?></th>
+                                        <th><?php echo lang('total_units_sold'); ?></th>
+                                        <th><?php echo lang('sale_price'); ?></th>
                                     </tr>
                                 </thead>
                                 <tbody id="productTableBody">
@@ -97,7 +99,7 @@ class SoldProducts {
                                         <?php endforeach; ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td colspan="5" class="no-data">No sales records found</td>
+                                            <td colspan="5" class="no-data"><?php echo lang('no_sales_records_found'); ?></td>
                                         </tr>
                                     <?php endif; ?>
                                 </tbody>

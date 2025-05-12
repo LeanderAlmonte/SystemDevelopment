@@ -12,7 +12,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 // echo "</pre><br>";
 
 class App {
-    private $publicRoutes = ['auths/login', 'auths/logout', 'auths/verify2fa'];
+    private $publicRoutes = ['auths/login', 'auths/logout', 'auths/forgotPassword', 'auths/verify2fa'];
 
     public function start() {
         spl_autoload_register(function($class) {
@@ -34,14 +34,14 @@ class App {
             $request = $requestBuilder->getRequest();
 
             if (isset($_GET['url'])) {
-                echo "URL = ".$_GET['url'] . "<br>";
+                //echo "URL = ".$_GET['url'] . "<br>";
                 
                 $urlParams = $request->getParams();
                 $currentRoute = implode('/', $urlParams);
 
                 // Redirect logged-in users away from login page
                 if ($currentRoute === 'auths/login' && isset($_SESSION['userID'])) {
-                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
+                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
                     exit();
                 }
 
@@ -93,6 +93,11 @@ class App {
                         return;
                     }
 
+                    if ($action === 'logout') {
+                        $controller->logout();
+                        return;
+                    }
+
                     if ($action === 'soldProducts') {
                         $controller->soldProducts();
                         return;
@@ -123,7 +128,11 @@ class App {
                             $controller->read();
                             break;
                         case "POST":
-                            $controller->create();
+                            if ($resourceName === 'settings') {
+                                $controller->update();
+                            } else {
+                                $controller->create();
+                            }
                             break;
                         case "PUT":
                             $controller->update();

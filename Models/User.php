@@ -19,6 +19,7 @@ class User{
     private $theme;
     private $secretKey;
     private $twoFactorEnabled;
+    private $language;
 
     private $dbConnection;
 
@@ -61,6 +62,10 @@ class User{
 
     public function getTwoFactorEnabled() {
         return $this->twoFactorEnabled;
+    }
+
+    public function getLanguage() {
+        return $this->language;
     }
 
     // Setters
@@ -109,6 +114,11 @@ class User{
         return $this;
     }
 
+    public function setLanguage($language) {
+        $this->language = $language;
+        return $this;
+    }
+
     // CRUD Operations
     public function read($id = null) {
         if ($id !== null) {
@@ -116,7 +126,11 @@ class User{
             $stmt = $this->dbConnection->prepare($query);
             $stmt->bindParam(':userID', $id, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($user) {
+                $this->setLanguage($user['language'] ?? 'en');
+            }
+            return $user;
         } else {
             $query = "SELECT * FROM users";
             $stmt = $this->dbConnection->prepare($query);
@@ -134,10 +148,11 @@ class User{
             $this->setUserType($data['userType']);
             $this->setTheme($data['theme']);
             $this->setTwoFactorEnabled(false);
+            $this->setLanguage($data['language'] ?? 'en');
         }
 
-        $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme, twoFactorEnabled) 
-                 VALUES (:firstName, :lastName, :password, :email, :userType, :theme, :twoFactorEnabled)";
+        $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme, twoFactorEnabled, language) 
+                 VALUES (:firstName, :lastName, :password, :email, :userType, :theme, :twoFactorEnabled, :language)";
         
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':firstName', $this->firstName);
@@ -147,6 +162,7 @@ class User{
         $stmt->bindParam(':userType', $this->userType);
         $stmt->bindParam(':theme', $this->theme);
         $stmt->bindParam(':twoFactorEnabled', $this->twoFactorEnabled);
+        $stmt->bindParam(':language', $this->language);
         
         try {
             if ($stmt->execute()) {
@@ -166,7 +182,8 @@ class User{
                 lastName = :lastName,
                 email = :email,
                 userType = :userType,
-                theme = :theme";
+                theme = :theme,
+                language = :language";
             
             // Only include password in update if it's set
             if ($this->password !== null) {
@@ -183,7 +200,8 @@ class User{
                 ':lastName' => $this->lastName,
                 ':email' => $this->email,
                 ':userType' => $this->userType,
-                ':theme' => $this->theme
+                ':theme' => $this->theme,
+                ':language' => $this->language
             ];
             
             if ($this->password !== null) {
@@ -206,44 +224,22 @@ class User{
             $stmt = $this->dbConnection->prepare($query);
             $params = [
                 ':secret' => $secret,
-                ':enabled' => $enabled ? 1 : 0, // Convert boolean to integer
+                ':enabled' => $enabled ? 1 : 0,
                 ':userId' => $userId
             ];
             
-            // Execute the query
-            $result = $stmt->execute($params);
-            
-            // Store debug info in session
-            $_SESSION['debug_db'] = [
-                'query' => $query,
-                'params' => $params,
-                'result' => $result,
-                'rowCount' => $stmt->rowCount()
-            ];
-            
-            return $result;
+            return $stmt->execute($params);
         } catch (PDOException $e) {
-            $_SESSION['debug_db'] = [
-                'error' => $e->getMessage(),
-                'query' => $query,
-                'params' => $params
-            ];
             return false;
         }
     }
 
     public function findByEmail($email) {
-        error_log("Finding user by email: " . $email);
         $query = "SELECT * FROM users WHERE email = :email";
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':email', $email);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        error_log("Query result: " . ($result ? "User found" : "No user found"));
-        if ($result) {
-            error_log("User data: " . print_r($result, true));
-        }
-        return $result;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function delete() {
@@ -263,9 +259,10 @@ class User{
     }
 
     public function getUserById($userId) {
-        $sql = "SELECT * FROM users WHERE id = ?";
-        $stmt = $this->dbConnection->prepare($sql);
-        $stmt->execute([$userId]);
-        return $stmt->fetch();
+        $query = "SELECT * FROM users WHERE userID = :userID";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':userID', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
