@@ -17,6 +17,8 @@ class User{
     private $email;
     private $userType;
     private $theme;
+    private $secretKey;
+    private $twoFactorEnabled;
     private $language;
 
     private $dbConnection;
@@ -52,6 +54,14 @@ class User{
 
     public function getTheme() {
         return $this->theme;
+    }
+
+    public function getSecretKey() {
+        return $this->secretKey;
+    }
+
+    public function getTwoFactorEnabled() {
+        return $this->twoFactorEnabled;
     }
 
     public function getLanguage() {
@@ -94,6 +104,16 @@ class User{
         return $this;
     }
 
+    public function setSecretKey($secret) {
+        $this->secretKey = $secret;
+        return $this;
+    }
+
+    public function setTwoFactorEnabled($enabled) {
+        $this->twoFactorEnabled = $enabled;
+        return $this;
+    }
+
     public function setLanguage($language) {
         $this->language = $language;
         return $this;
@@ -127,11 +147,12 @@ class User{
             $this->setEmail($data['email']);
             $this->setUserType($data['userType']);
             $this->setTheme($data['theme']);
+            $this->setTwoFactorEnabled(false);
             $this->setLanguage($data['language'] ?? 'en');
         }
 
-        $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme, language) 
-                 VALUES (:firstName, :lastName, :password, :email, :userType, :theme, :language)";
+        $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme, twoFactorEnabled, language) 
+                 VALUES (:firstName, :lastName, :password, :email, :userType, :theme, :twoFactorEnabled, :language)";
         
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':firstName', $this->firstName);
@@ -140,6 +161,7 @@ class User{
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':userType', $this->userType);
         $stmt->bindParam(':theme', $this->theme);
+        $stmt->bindParam(':twoFactorEnabled', $this->twoFactorEnabled);
         $stmt->bindParam(':language', $this->language);
         
         try {
@@ -192,6 +214,34 @@ class User{
         }
     }
 
+    public function update2FASettings($userId, $secret, $enabled) {
+        try {
+            $query = "UPDATE users SET 
+                secretKey = :secret,
+                twoFactorEnabled = :enabled
+                WHERE userID = :userId";
+            
+            $stmt = $this->dbConnection->prepare($query);
+            $params = [
+                ':secret' => $secret,
+                ':enabled' => $enabled ? 1 : 0,
+                ':userId' => $userId
+            ];
+            
+            return $stmt->execute($params);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function findByEmail($email) {
+        $query = "SELECT * FROM users WHERE email = :email";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function delete() {
         $query = "DELETE FROM users WHERE userID = :userID";
         $stmt = $this->dbConnection->prepare($query);
@@ -208,10 +258,10 @@ class User{
         }
     }
 
-    public function findByEmail($email) {
-        $query = "SELECT * FROM users WHERE email = :email";
+    public function getUserById($userId) {
+        $query = "SELECT * FROM users WHERE userID = :userID";
         $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':userID', $userId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
