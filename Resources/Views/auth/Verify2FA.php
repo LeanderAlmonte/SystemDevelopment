@@ -1,18 +1,17 @@
 <?php
+namespace Views\Auth;
 
-namespace views\auth;
-
-class Login {
-    public function render($error = null) {
+class Verify2FA {
+    public function render() {
         // Debug output
         /*
         echo "<div style='background: #f0f0f0; padding: 10px; margin: 10px; border: 1px solid #ccc;'>";
         echo "<h3>Debug Information:</h3>";
         echo "<pre>";
-        echo "POST data: ";
-        print_r($_POST);
-        echo "\nSession data: ";
+        echo "Session data: ";
         print_r($_SESSION);
+        echo "\nRequest Method: " . $_SERVER['REQUEST_METHOD'];
+        echo "\nCurrent URL: " . $_SERVER['REQUEST_URI'];
         echo "</pre>";
         echo "</div>";
         */
@@ -22,7 +21,7 @@ class Login {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Eyesightcollectibles Login</title>
+            <title>Verify 2FA - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/login.css">
         </head>
         <body>
@@ -34,25 +33,22 @@ class Login {
                 </div>
                 <div class="login-form">
                     <h1>Eyesightcollectibles</h1>
-                    <h2>Login</h2>
+                    <h2>Two-Factor Authentication</h2>
                     
-                    <?php if (isset($error)): ?>
-                        <div class="error-message"><?php echo $error; ?></div>
-                    <?php endif; ?>
-
                     <?php if (isset($_SESSION['error'])): ?>
-                        <div class="error-message"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
+                        <div class="error-message">
+                            <?php 
+                            echo $_SESSION['error'];
+                            unset($_SESSION['error']);
+                            ?>
+                        </div>
                     <?php endif; ?>
 
-                    <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=auths/login">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=auths/verify2fa">
+                        <label for="code">Enter the 6-digit code from your authenticator app</label>
+                        <input type="text" id="code" name="code" placeholder="Enter 6-digit code" required autocomplete="off" maxlength="6" pattern="[0-9]{6}">
                         
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                        
-                        <a href="#" class="forgot-password">Forgot Password?</a>
-                        <button type="submit" class="submit-button">Login</button>
+                        <button type="submit" class="submit-button">Verify</button>
                     </form>
                 </div>
             </div>

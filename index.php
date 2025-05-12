@@ -1,6 +1,9 @@
 <?php
 session_start();
 
+// Include Composer's autoloader
+require_once __DIR__ . '/vendor/autoload.php';
+
 // echo "Session Status:<br>";
 // echo "Session ID: " . session_id() . "<br>";
 // echo "Session Name: " . session_name() . "<br>";
@@ -9,7 +12,7 @@ session_start();
 // echo "</pre><br>";
 
 class App {
-    private $publicRoutes = ['auths/login', 'auths/logout'];
+    private $publicRoutes = ['auths/login', 'auths/logout', 'auths/verify2fa'];
 
     public function start() {
         spl_autoload_register(function($class) {
@@ -60,6 +63,21 @@ class App {
                     $requestMethod = $request->getMethod();
 
                     // Handle specific actions first
+                    if ($action === 'login') {
+                        $controller->login();
+                        return;
+                    }
+
+                    if ($action === 'verify2fa') {
+                        $controller->verify2FA();
+                        return;
+                    }
+
+                    if ($action === 'logout') {
+                        $controller->logout();
+                        return;
+                    }
+
                     if ($action === 'archive') {
                         $controller->archive();
                         return;
@@ -75,11 +93,6 @@ class App {
                         return;
                     }
 
-                    if ($action === 'logout') {
-                        $controller->logout();
-                        return;
-                    }
-
                     if ($action === 'soldProducts') {
                         $controller->soldProducts();
                         return;
@@ -87,11 +100,21 @@ class App {
 
                     if ($action === 'processOrder') {
                         $controller->processOrder();
-                            return;
-                        }
+                        return;
+                    }
 
                     if ($action === 'salesCosts') {
                         $controller->salesCosts();
+                        return;
+                    }
+
+                    if ($action === 'enable2fa') {
+                        $controller->enable2FA();
+                        return;
+                    }
+
+                    if ($action === 'disable2fa') {
+                        $controller->disable2FA();
                         return;
                     }
 

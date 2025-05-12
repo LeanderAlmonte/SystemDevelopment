@@ -46,6 +46,14 @@ class Settings {
                             <span>Change Password</span>
                             <button class="settings-btn">Change</button>
                         </div>
+                        <div class="settings-option">
+                            <span>Two-Factor Authentication</span>
+                            <?php if ($_SESSION['twoFactorEnabled']): ?>
+                                <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/disable2fa'">Disable 2FA</button>
+                            <?php else: ?>
+                                <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/enable2fa'">Enable 2FA</button>
+                            <?php endif; ?>
+                        </div>
 
                         <!-- Preferences -->
                         <h2>Preferences</h2>

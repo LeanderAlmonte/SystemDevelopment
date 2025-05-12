@@ -17,6 +17,8 @@ class User{
     private $email;
     private $userType;
     private $theme;
+    private $secretKey;
+    private $twoFactorEnabled;
 
     private $dbConnection;
 
@@ -51,6 +53,14 @@ class User{
 
     public function getTheme() {
         return $this->theme;
+    }
+
+    public function getSecretKey() {
+        return $this->secretKey;
+    }
+
+    public function getTwoFactorEnabled() {
+        return $this->twoFactorEnabled;
     }
 
     // Setters
@@ -89,6 +99,16 @@ class User{
         return $this;
     }
 
+    public function setSecretKey($secret) {
+        $this->secretKey = $secret;
+        return $this;
+    }
+
+    public function setTwoFactorEnabled($enabled) {
+        $this->twoFactorEnabled = $enabled;
+        return $this;
+    }
+
     // CRUD Operations
     public function read($id = null) {
         if ($id !== null) {
@@ -113,10 +133,11 @@ class User{
             $this->setEmail($data['email']);
             $this->setUserType($data['userType']);
             $this->setTheme($data['theme']);
+            $this->setTwoFactorEnabled(false);
         }
 
-        $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme) 
-                 VALUES (:firstName, :lastName, :password, :email, :userType, :theme)";
+        $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme, twoFactorEnabled) 
+                 VALUES (:firstName, :lastName, :password, :email, :userType, :theme, :twoFactorEnabled)";
         
         $stmt = $this->dbConnection->prepare($query);
         $stmt->bindParam(':firstName', $this->firstName);
@@ -125,6 +146,7 @@ class User{
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':userType', $this->userType);
         $stmt->bindParam(':theme', $this->theme);
+        $stmt->bindParam(':twoFactorEnabled', $this->twoFactorEnabled);
         
         try {
             if ($stmt->execute()) {
@@ -174,6 +196,56 @@ class User{
         }
     }
 
+    public function update2FASettings($userId, $secret, $enabled) {
+        try {
+            $query = "UPDATE users SET 
+                secretKey = :secret,
+                twoFactorEnabled = :enabled
+                WHERE userID = :userId";
+            
+            $stmt = $this->dbConnection->prepare($query);
+            $params = [
+                ':secret' => $secret,
+                ':enabled' => $enabled ? 1 : 0, // Convert boolean to integer
+                ':userId' => $userId
+            ];
+            
+            // Execute the query
+            $result = $stmt->execute($params);
+            
+            // Store debug info in session
+            $_SESSION['debug_db'] = [
+                'query' => $query,
+                'params' => $params,
+                'result' => $result,
+                'rowCount' => $stmt->rowCount()
+            ];
+            
+            return $result;
+        } catch (PDOException $e) {
+            $_SESSION['debug_db'] = [
+                'error' => $e->getMessage(),
+                'query' => $query,
+                'params' => $params
+            ];
+            return false;
+        }
+    }
+
+    public function findByEmail($email) {
+        error_log("Finding user by email: " . $email);
+        $query = "SELECT * FROM users WHERE email = :email";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        error_log("Query result: " . ($result ? "User found" : "No user found"));
+        if ($result) {
+            error_log("User data: " . print_r($result, true));
+        }
+        return $result;
+    }
+
     public function delete() {
         $query = "DELETE FROM users WHERE userID = :userID";
         $stmt = $this->dbConnection->prepare($query);
@@ -190,11 +262,10 @@ class User{
         }
     }
 
-    public function findByEmail($email) {
-        $query = "SELECT * FROM users WHERE email = :email";
-        $stmt = $this->dbConnection->prepare($query);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function getUserById($userId) {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $stmt = $this->dbConnection->prepare($sql);
+        $stmt->execute([$userId]);
+        return $stmt->fetch();
     }
 }
