@@ -4,8 +4,8 @@ namespace Controllers;
 
 use Models\User;
 use RobThree\Auth\TwoFactorAuth;
-use Views\Auth\Login;
-use Views\Auth\Verify2FA;
+use Resources\Views\Auth\Login;
+use Resources\Views\Auth\Verify2FA;
 use Core\TwoFA\EndroidQRCodeProvider;
 
 require_once(dirname(__DIR__) . '/Models/User.php');
@@ -17,6 +17,8 @@ class AuthController {
     private User $user;
     private Login $loginView;
     private Verify2FA $verify2FAView;
+    private TwoFactorAuth $tfa;
+    private EndroidQRCodeProvider $qrCodeProvider;
 
     public function __construct() {
         $this->user = new User();
@@ -41,150 +43,81 @@ class AuthController {
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
 
-            // Debug information
-            error_log("Login attempt - Email: " . $email);
-            error_log("POST data: " . print_r($_POST, true));
-            error_log("Session data: " . print_r($_SESSION, true));
-
             if (empty($email) || empty($password)) {
-                $_SESSION['error'] = 'Please enter both email and password.';
-                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
-                exit();
+                $this->loginView->render('Please enter both email and password');
+                return;
             }
 
             $user = $this->user->findByEmail($email);
-            error_log("User found: " . ($user ? "Yes" : "No"));
-
-            // Check each user for matching credentials
-            foreach ($users as $user) {
-                if ($user['email'] === $email && password_verify($password, $user['password'])) {
-                    $authenticatedUser = $user;
-                    break;
-                }
-            }
-
-            if ($authenticatedUser) {
-                // Store user data in session
-                $_SESSION['userID'] = $authenticatedUser['userID'];
-                $_SESSION['userName'] = $authenticatedUser['firstName'] . ' ' . $authenticatedUser['lastName'];
-                $_SESSION['userType'] = $authenticatedUser['userType'];
-                $_SESSION['theme'] = $authenticatedUser['theme'];
-                $_SESSION['lang'] = $authenticatedUser['language'] ?? 'en';
-                
-                // Debug output
-                echo "Session data set:<br>";
-                echo "UserID: " . $_SESSION['userId'] . "<br>";
-                echo "UserName: " . $_SESSION['userName'] . "<br>";
-                echo "UserType: " . $_SESSION['userType'] . "<br>";
-                echo "Theme: " . $_SESSION['theme'] . "<br>";
-                
-                // Redirect to home page
-                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
+            
             if ($user && password_verify($password, $user['password'])) {
-                error_log("Password verified successfully");
-                error_log("2FA enabled: " . ($user['twoFactorEnabled'] ? "Yes" : "No"));
-
+                // Check if 2FA is enabled
                 if ($user['twoFactorEnabled']) {
                     // Store user data in session for 2FA verification
                     $_SESSION['pending_user'] = $user;
-                    error_log("Redirecting to 2FA verification");
                     header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/verify2fa');
                     exit();
                 } else {
-                    // Set session variables
+                    // Set session variables for regular login
                     $_SESSION['userID'] = $user['userID'];
                     $_SESSION['userName'] = $user['firstName'] . ' ' . $user['lastName'];
                     $_SESSION['userType'] = $user['userType'];
-                    $_SESSION['theme'] = $user['theme'];
                     $_SESSION['twoFactorEnabled'] = $user['twoFactorEnabled'];
-
-                    error_log("Redirecting to dashboard");
+                    $_SESSION['lang'] = $user['language'] ?? 'en';
+                    
                     header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
                     exit();
                 }
             } else {
-                error_log("Login failed - Invalid credentials");
-                $_SESSION['error'] = 'Invalid email or password.';
-                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
-                exit();
+                $this->loginView->render('Invalid email or password');
             }
+        } else {
+            $this->loginView->render();
         }
-
-        $this->loginView->render();
-        }
+    }
 
     public function verify2FA() {
-        // Debug information
-        /*
-        error_log("=== Verify2FA Method Called ===");
-        error_log("Request Method: " . $_SERVER['REQUEST_METHOD']);
-        error_log("Full Session Data: " . print_r($_SESSION, true));
-        error_log("Current URL: " . $_SERVER['REQUEST_URI']);
-        error_log("GET params: " . print_r($_GET, true));
-        error_log("POST params: " . print_r($_POST, true));
-        */
-
-        // If there's no pending user but we have a userID, we're already logged in
-        if (!isset($_SESSION['pending_user']) && isset($_SESSION['userID'])) {
-            //error_log("User already logged in, redirecting to dashboard");
-            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
-            exit();
-        }
-
-        // If there's no pending user and no userID, we need to log in first
         if (!isset($_SESSION['pending_user'])) {
-            //error_log("No pending user found in session");
-            $_SESSION['error'] = 'Please log in first.';
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
             exit();
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $code = $_POST['code'] ?? '';
-            //error_log("2FA code submitted: " . $code);
-            
+            $user = $_SESSION['pending_user'];
+
             if (empty($code)) {
-                $_SESSION['error'] = 'Please enter the 2FA code.';
-                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/verify2fa');
-                exit();
+                $_SESSION['error'] = 'Please enter the verification code';
+                $this->verify2FAView->render();
+                return;
             }
 
-            $user = $_SESSION['pending_user'];
-            $tfa = new TwoFactorAuth($this->qrCodeProvider, 'Eyesightcollectibles');
+            if ($this->tfa->verifyCode($user['secretKey'], $code)) {
+                // Clear pending user data
+                unset($_SESSION['pending_user']);
 
-            //error_log("Verifying code for user: " . $user['email']);
-            //error_log("Secret key: " . $user['secretKey']);
-
-            if ($tfa->verifyCode($user['secretKey'], $code)) {
-                //error_log("2FA verification successful");
                 // Set session variables
                 $_SESSION['userID'] = $user['userID'];
                 $_SESSION['userName'] = $user['firstName'] . ' ' . $user['lastName'];
                 $_SESSION['userType'] = $user['userType'];
                 $_SESSION['theme'] = $user['theme'];
                 $_SESSION['twoFactorEnabled'] = $user['twoFactorEnabled'];
-
-                // Clear pending user data
-                unset($_SESSION['pending_user']);
+                $_SESSION['lang'] = $user['language'] ?? 'en';
 
                 header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
                 exit();
             } else {
-                //error_log("2FA verification failed");
-                $_SESSION['error'] = 'Invalid 2FA code. Please try again.';
-                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/verify2fa');
-                exit();
+                $_SESSION['error'] = 'Invalid verification code';
+                $this->verify2FAView->render();
             }
+        } else {
+            $this->verify2FAView->render();
         }
-
-        //error_log("Rendering verify2FA view");
-        $this->verify2FAView->render();
     }
 
     public function forgotPassword() {
-    require_once 'views/auth/forgotPassword.php';
-    $view = new \views\auth\ForgotPassword();
-    $view->render();
+        require_once dirname(__DIR__) . '/Resources/Views/Auth/ForgotPassword.php';
+        $view = new \Resources\Views\Auth\ForgotPassword();
+        $view->render();
     }
-
 }

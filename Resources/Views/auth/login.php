@@ -1,6 +1,6 @@
 <?php
 
-namespace views\auth;
+namespace Resources\Views\Auth;
 
 class Login {
     public function render($error = null) {

@@ -7,14 +7,12 @@ use RobThree\Auth\TwoFactorAuth;
 use Resources\Views\Settings\Settings;
 use Resources\Views\Settings\Enable2FA;
 use Core\TwoFA\EndroidQRCodeProvider;
-use Models\User;
 
 require_once(dirname(__DIR__) . '/Models/User.php');
 require_once(dirname(__DIR__) . '/Resources/Views/Settings/Settings.php');
 require_once(dirname(__DIR__) . '/Resources/Views/Settings/Enable2FA.php');
 require_once(dirname(__DIR__) . '/Core/TwoFA/EndroidQRCodeProvider.php');
 require_once(dirname(__DIR__) . '/lang/lang.php');
-require_once(dirname(__DIR__) . '/Models/User.php');
 
 class SettingController {
     private User $user;
@@ -91,15 +89,6 @@ class SettingController {
             $code = $_POST['code'] ?? '';
             $secret = $_POST['secret'] ?? '';
 
-            // Add debugging information immediately
-            $_SESSION['debug_info'] = [
-                'entered_code' => $code,
-                'secret' => $secret,
-                'verification_result' => $this->tfa->verifyCode($secret, $code),
-                'timestamp' => date('Y-m-d H:i:s'),
-                'user_id' => $_SESSION['userID']
-            ];
-
             if (empty($code) || empty($secret)) {
                 $_SESSION['error'] = 'Please enter the verification code.';
                 header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings/enable2fa');
@@ -120,13 +109,10 @@ class SettingController {
                     exit();
                 }
             } else {
-                $_SESSION['error'] = 'Invalid verification code. Please try again. Make sure you\'re using the most recent code from your authenticator app.';
+                $_SESSION['error'] = 'Invalid verification code. Please try again.';
                 header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings/enable2fa');
                 exit();
             }
-        } else {
-            // If it's a GET request, show the form with any existing debug info
-            $this->enable2FAView->render();
         }
     }
 

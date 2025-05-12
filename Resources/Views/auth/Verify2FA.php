@@ -1,5 +1,5 @@
 <?php
-namespace Views\Auth;
+namespace Resources\Views\Auth;
 
 class Verify2FA {
     public function render() {

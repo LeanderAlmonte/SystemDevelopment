@@ -89,7 +89,7 @@ class App {
                     }
 
                     if ($action === 'manual') {
-                        $controller->manual();
+                        $controller->manual(1);
                         return;
                     }
 
