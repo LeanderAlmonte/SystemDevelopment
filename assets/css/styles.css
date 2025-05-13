@@ -750,3 +750,40 @@ input[type="checkbox"]:checked::after {
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
+
+/* Dark Theme Overrides */
+.dark-theme {
+    background-color: #181818 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .container,
+.dark-theme .main-content {
+    background-color: #222 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .menu-panel {
+    background-color: #222 !important;
+    color: #fff !important;
+}
+.dark-theme .header {
+    background-color: #181818 !important;
+    color: #fff !important;
+}
+.dark-theme .settings-container,
+.dark-theme .inventory-container,
+.dark-theme .table-container {
+    background-color: #232323 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .menu-items a.active {
+    color: #FFDAB9 !important;
+}
+.dark-theme .settings-btn,
+.dark-theme .category-btn {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .settings-btn:hover,
+.dark-theme .category-btn:hover {
+    background-color: #444 !important;
+}

@@ -14,7 +14,10 @@ class Settings {
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
-        <body>
+        <body<?php 
+            $theme = $_SESSION['theme'] ?? ($userData['theme'] ?? 'Light');
+            echo $theme === 'Dark' ? ' class="dark-theme"' : '';
+        ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -85,7 +88,12 @@ class Settings {
                         </div>
                         <div class="settings-option">
                             <span><?php echo lang('theme'); ?></span>
-                            <button class="settings-btn"><?php echo lang('switch_theme'); ?></button>
+                            <form method="POST" action="" style="display:inline;">
+                                <input type="hidden" name="theme" value="<?php echo ($_SESSION['theme'] ?? ($userData['theme'] ?? 'Light')) === 'Dark' ? 'Light' : 'Dark'; ?>">
+                                <button class="settings-btn" type="submit">
+                                    <?php echo ($_SESSION['theme'] ?? ($userData['theme'] ?? 'Light')) === 'Dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'; ?>
+                                </button>
+                            </form>
                         </div>
 
                         <!-- Support -->
