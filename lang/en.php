@@ -140,5 +140,7 @@ return [
     'close' => 'Close',
     'current_password' => 'Current Password',
     'new_password' => 'New Password',
-    'confirm_password' => 'Confirm Password'
+    'confirm_password' => 'Confirm Password',
+    'switch_to_dark' => 'Switch to Dark Mode',
+    'switch_to_light' => 'Switch to Light Mode'
 ];

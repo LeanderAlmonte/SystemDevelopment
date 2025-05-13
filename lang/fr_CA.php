@@ -137,5 +137,7 @@ return [
     'view' => 'Voir',
     'action_details' => 'Détails de l\'action',
     'no_actions_found' => 'Aucune action trouvée',
-    'close' => 'Fermer'
+    'close' => 'Fermer',
+    'switch_to_dark' => 'Passer en mode sombre',
+    'switch_to_light' => 'Passer en mode clair'
 ];

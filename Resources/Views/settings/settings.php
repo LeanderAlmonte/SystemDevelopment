@@ -47,6 +47,12 @@ class Settings {
                     </div>
 
                     <div class="settings-container">
+                        <div class="inventory-header">
+                            <div class="header-content" style="flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
+                                <h2 style="margin: 0;"><i class="fas fa-cog"></i> <?php echo lang('settings'); ?></h2>
+                                <span style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;">Manage your account and preferences</span>
+                            </div>
+                        </div>
                         <?php if (isset($_SESSION['success'])): ?>
                             <div class="success-message">
                                 <?php 
@@ -91,7 +97,10 @@ class Settings {
                             <form method="POST" action="" style="display:inline;">
                                 <input type="hidden" name="theme" value="<?php echo ($_SESSION['theme'] ?? ($userData['theme'] ?? 'Light')) === 'Dark' ? 'Light' : 'Dark'; ?>">
                                 <button class="settings-btn" type="submit">
-                                    <?php echo ($_SESSION['theme'] ?? ($userData['theme'] ?? 'Light')) === 'Dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'; ?>
+                                    <?php
+                                        $isDark = ($_SESSION['theme'] ?? ($userData['theme'] ?? 'Light')) === 'Dark';
+                                        echo $isDark ? lang('switch_to_light') : lang('switch_to_dark');
+                                    ?>
                                 </button>
                             </form>
                         </div>

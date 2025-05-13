@@ -93,7 +93,7 @@ class Manual2 {
                 }
             </style>
         </head>
-        <body>
+        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -122,11 +122,15 @@ class Manual2 {
                         <div class="welcome-text"><?php echo lang('welcome') . ' ' . explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
                     </div>
 
-            <div class="manual-container">
-                <h2>User Manual - Continuation</h2>
-                <h3>How To Use Our Application</h3>
+                    <div class="manual-header">
+                        <div class="manual-header-content" style="flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
+                            <h2 style="margin: 0;"><i class="fas fa-book"></i> User Manual - Continuation</h2>
+                            <h3 style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;">How To Use Our Application</h3>
+                        </div>
+                    </div>
 
-                <div class="manual-section">
+                    <div class="manual-container">
+                        <div class="manual-section">
                             <h3>View Sold Products</h3>
                             <ol>
                                 <li>Navigate to the menu panel on the left side of the screen.</li>
@@ -138,7 +142,7 @@ class Manual2 {
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/sp.png" alt="Inventory screenshot">
                         </div>
 
-                    <div class="manual-section">
+                        <div class="manual-section">
                             <h3>View Archived Products</h3>
                             <ol>
                                 <li>Navigate to the "Archived Items" section from the Menu Panel</li>
@@ -176,13 +180,15 @@ class Manual2 {
                             </ol>
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/sc.png" alt="Inventory screenshot">
                         </div>
-            </div>
-            <!-- Pagination -->
-                <div class="pagination">
-                    <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/1">&lt;</a>
-                    <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/1">1</a>
-                    <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/2" class="active">2</a>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/1">&lt;</a>
+                        <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/1">1</a>
+                        <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/2" class="active">2</a>
+                    </div>
                 </div>
+            </div>
         </body>
         </html>
         <?php
