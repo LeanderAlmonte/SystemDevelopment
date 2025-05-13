@@ -390,8 +390,11 @@ class ProductController {
     }
 
     public function salesCosts() {
+        if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
+            exit();
+        }
         $financialData = $this->sales->getFinancialSummary();
-        
         $view = new SalesCosts();
         $view->render($financialData);
     }

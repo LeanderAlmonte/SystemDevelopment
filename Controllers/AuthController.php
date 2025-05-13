@@ -42,6 +42,7 @@ class AuthController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
             $password = $_POST['password'] ?? '';
+            $selectedRole = $_POST['userRole'] ?? '';
 
             if (empty($email) || empty($password)) {
                 $this->loginView->render('Please enter both email and password');
@@ -51,6 +52,11 @@ class AuthController {
             $user = $this->user->findByEmail($email);
             
             if ($user && password_verify($password, $user['password'])) {
+                // Check if selected role matches user's actual role
+                if (strtolower($user['userType']) !== strtolower($selectedRole)) {
+                    $this->loginView->render('Invalid email or password');
+                    return;
+                }
                 // Check if 2FA is enabled
                 if ($user['twoFactorEnabled']) {
                     // Store user data in session for 2FA verification
@@ -64,6 +70,8 @@ class AuthController {
                     $_SESSION['userType'] = $user['userType'];
                     $_SESSION['twoFactorEnabled'] = $user['twoFactorEnabled'];
                     $_SESSION['lang'] = $user['language'] ?? 'en';
+                    // Store userRole from login form (Employee/Admin), fallback to userType
+                    $_SESSION['userRole'] = $user['userType'];
                     
                     header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
                     exit();
