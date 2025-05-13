@@ -7,6 +7,7 @@ use PDO;
 use PDOException;
 
 require_once(dirname(__DIR__) . '/core/db/DBConnectionManager.php');
+require_once(dirname(__DIR__) . '/models/Action.php');
 
 // Set timezone to Montreal
 date_default_timezone_set('America/Montreal');
@@ -134,7 +135,7 @@ class Product {
                 $productID = $this->dbConnection->lastInsertId();
                 
                 // Create action record for the new product
-                $action = new Action();
+                $action = new \models\Action();
                 $fullName = $_SESSION['userName']; // Get full name from session
                 $actionData = [
                     'userID' => $_SESSION['userID'] ?? 1, // Get userID from session or default to 1
@@ -193,47 +194,116 @@ class Product {
         
         try {
             if ($stmt->execute()) {
+                // Log session state
+                error_log("Session state before action creation:");
+                error_log("userID: " . ($_SESSION['userID'] ?? 'not set'));
+                error_log("userName: " . ($_SESSION['userName'] ?? 'not set'));
+                error_log("Full session data: " . print_r($_SESSION, true));
+
                 // Create action record for the update
-                $action = new Action();
-                $fullName = $_SESSION['userName']; // Get full name from session
+                $action = new \models\Action();
+                $fullName = $_SESSION['userName'] ?? 'Unknown User';
                 
-                // Build description based on what changed
-                $changes = [];
-                if ($oldProduct['productName'] !== $this->productName) {
-                    $changes[] = "name from '{$oldProduct['productName']}' to '{$this->productName}'";
-                }
-                if ($oldProduct['category'] !== $this->category) {
-                    $changes[] = "category from '{$oldProduct['category']}' to '{$this->category}'";
-                }
-                if ($oldProduct['listedPrice'] !== $this->listedPrice) {
-                    $changes[] = "listed price from '{$oldProduct['listedPrice']}' to '{$this->listedPrice}'";
-                }
-                if ($oldProduct['paidPrice'] !== $this->paidPrice) {
-                    $changes[] = "paid price from '{$oldProduct['paidPrice']}' to '{$this->paidPrice}'";
-                }
-                if ($oldProduct['quantity'] !== $this->quantity) {
-                    $changes[] = "updated quantity from {$oldProduct['quantity']} to {$this->quantity}";
+                // Track which fields were modified
+                $modifiedFields = [];
+                
+                // Product Name comparison
+                $oldName = $this->normalizeString($oldProduct['productName']);
+                $newName = $this->normalizeString($this->productName);
+                error_log("Product Name - Old: '{$oldName}', New: '{$newName}'");
+                if ($oldName != $newName) {
+                    $modifiedFields[] = [
+                        'field' => 'productName',
+                        'old' => $oldProduct['productName'],
+                        'new' => $this->productName,
+                        'description' => "name from '{$oldProduct['productName']}' to '{$this->productName}'"
+                    ];
                 }
                 
-                $actionData = [
-                    'userID' => $_SESSION['userID'] ?? 1, // Get userID from session or default to 1
-                    'productID' => $this->productID,
-                    'clientID' => 0, // No client involved in update
-                    'timeStamp' => date('Y-m-d H:i:s'),
-                    'quantity' => $this->quantity,
-                    'actionType' => 'UPDATE',
-                    'description' => $description,
-                    'oldValue' => json_encode($oldProduct),
-                    'newValue' => json_encode([
-                        'productName' => $this->productName,
-                        'category' => $this->category,
-                        'listedPrice' => $this->listedPrice,
-                        'paidPrice' => $this->paidPrice,
-                        'quantity' => $this->quantity
-                    ])
-                ];
+                // Category comparison
+                $oldCategory = $this->normalizeString($oldProduct['category']);
+                $newCategory = $this->normalizeString($this->category);
+                error_log("Category - Old: '{$oldCategory}', New: '{$newCategory}'");
+                if ($oldCategory != $newCategory) {
+                    $modifiedFields[] = [
+                        'field' => 'category',
+                        'old' => $oldProduct['category'],
+                        'new' => $this->category,
+                        'description' => "category from '{$oldProduct['category']}' to '{$this->category}'"
+                    ];
+                }
                 
-                $action->create($actionData);
+                // Listed Price comparison
+                $oldListedPrice = $this->normalizeNumber($oldProduct['listedPrice']);
+                $newListedPrice = $this->normalizeNumber($this->listedPrice);
+                error_log("Listed Price - Old: '{$oldListedPrice}', New: '{$newListedPrice}'");
+                if ($oldListedPrice != $newListedPrice) {
+                    $modifiedFields[] = [
+                        'field' => 'listedPrice',
+                        'old' => $oldProduct['listedPrice'],
+                        'new' => $this->listedPrice,
+                        'description' => "listed price from '{$oldProduct['listedPrice']}' to '{$this->listedPrice}'"
+                    ];
+                }
+                
+                // Paid Price comparison
+                $oldPaidPrice = $this->normalizeNumber($oldProduct['paidPrice']);
+                $newPaidPrice = $this->normalizeNumber($this->paidPrice);
+                error_log("Paid Price - Old: '{$oldPaidPrice}', New: '{$newPaidPrice}'");
+                if ($oldPaidPrice != $newPaidPrice) {
+                    $modifiedFields[] = [
+                        'field' => 'paidPrice',
+                        'old' => $oldProduct['paidPrice'],
+                        'new' => $this->paidPrice,
+                        'description' => "paid price from '{$oldProduct['paidPrice']}' to '{$this->paidPrice}'"
+                    ];
+                }
+                
+                // Quantity comparison
+                $oldQuantity = $this->normalizeNumber($oldProduct['quantity']);
+                $newQuantity = $this->normalizeNumber($this->quantity);
+                error_log("Quantity - Old: '{$oldQuantity}', New: '{$newQuantity}'");
+                if ($oldQuantity != $newQuantity) {
+                    $modifiedFields[] = [
+                        'field' => 'quantity',
+                        'old' => $oldProduct['quantity'],
+                        'new' => $this->quantity,
+                        'description' => "quantity from {$oldProduct['quantity']} to {$this->quantity}"
+                    ];
+                }
+                
+                error_log("Modified fields: " . print_r($modifiedFields, true));
+                
+                // Create separate action records for each modified field
+                foreach ($modifiedFields as $field) {
+                    $actionData = [
+                        'userID' => $_SESSION['userID'] ?? 1,
+                        'productID' => $this->productID,
+                        'clientID' => 0,
+                        'timeStamp' => date('Y-m-d H:i:s'),
+                        'quantity' => $this->quantity,
+                        'actionType' => 'UPDATE',
+                        'description' => "{$fullName} updated product {$this->productName}'s {$field['description']}",
+                        'oldValue' => json_encode([$field['field'] => $field['old']]),
+                        'newValue' => json_encode([$field['field'] => $field['new']])
+                    ];
+                    
+                    error_log("Creating action record for {$field['field']} update:");
+                    error_log("Action data: " . print_r($actionData, true));
+                    
+                    try {
+                        $result = $action->create($actionData);
+                        error_log("Action create result for {$field['field']}: " . print_r($result, true));
+                        if (isset($result['error'])) {
+                            error_log("Failed to create action record for {$field['field']}: " . $result['error']);
+                        } else {
+                            error_log("Successfully created action record for {$field['field']}");
+                        }
+                    } catch (\Exception $e) {
+                        error_log("Exception while creating action record for {$field['field']}: " . $e->getMessage());
+                        error_log("Exception trace: " . $e->getTraceAsString());
+                    }
+                }
                 
                 return ['success' => true];
             } else {
@@ -258,7 +328,7 @@ class Product {
         try {
             if ($stmt->execute()) {
                 // Create action record for the deletion
-                $action = new Action();
+                $action = new \models\Action();
                 $fullName = $_SESSION['userName']; // Get full name from session
                 
                 $actionData = [
@@ -298,7 +368,7 @@ class Product {
         try {
             if ($stmt->execute()) {
                 // Create action record for archiving
-                $action = new Action();
+                $action = new \models\Action();
                 $fullName = $_SESSION['userName']; // Get full name from session
                 
                 $actionData = [
@@ -338,7 +408,7 @@ class Product {
         try {
             if ($stmt->execute()) {
                 // Create action record for unarchiving
-                $action = new Action();
+                $action = new \models\Action();
                 $fullName = $_SESSION['userName']; // Get full name from session
                 
                 $actionData = [
@@ -405,6 +475,14 @@ class Product {
         } catch (PDOException $e) {
             return false;
         }
+    }
+
+    private function normalizeString($string) {
+        return strtolower(trim($string));
+    }
+
+    private function normalizeNumber($number) {
+        return floatval($number);
     }
 }
 
