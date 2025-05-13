@@ -107,7 +107,7 @@ class AuthController {
                 // Set session variables
                 $_SESSION['userID'] = $user['userID'];
                 $_SESSION['userName'] = $user['firstName'] . ' ' . $user['lastName'];
-                $_SESSION['userType'] = $user['userType'];
+                $_SESSION['userRole'] = $user['userType'];
                 $_SESSION['theme'] = $user['theme'];
                 $_SESSION['twoFactorEnabled'] = $user['twoFactorEnabled'];
                 $_SESSION['lang'] = $user['language'] ?? 'en';
