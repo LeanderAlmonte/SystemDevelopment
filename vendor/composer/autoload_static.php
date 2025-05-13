@@ -15,6 +15,10 @@ class ComposerStaticInit49934d390b4e9da66f8682be34d0383f
         array (
             'RobThree\\Auth\\' => 14,
         ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'G' => 
         array (
             'Google\\Authenticator\\' => 21,
@@ -41,6 +45,10 @@ class ComposerStaticInit49934d390b4e9da66f8682be34d0383f
         'RobThree\\Auth\\' => 
         array (
             0 => __DIR__ . '/..' . '/robthree/twofactorauth/lib',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Google\\Authenticator\\' => 
         array (
