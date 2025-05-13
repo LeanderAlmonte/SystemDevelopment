@@ -78,7 +78,7 @@ class Client {
         if ($data) {
             $this->setClientName($data['clientName']);
             $this->setEmail($data['email']);
-            $this->setPhoneNumber($data['phoneNumber']);
+            $this->setPhoneNumber($data['phone']);
         }
 
         $query = "INSERT INTO clients (clientName, email, phoneNumber) 
@@ -105,7 +105,7 @@ class Client {
             $this->setClientID($data['clientID']);
             $this->setClientName($data['clientName']);
             $this->setEmail($data['email']);
-            $this->setPhoneNumber($data['phoneNumber']);
+            $this->setPhoneNumber($data['phone']);
         }
 
         $query = "UPDATE clients 
