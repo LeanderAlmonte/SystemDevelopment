@@ -4,8 +4,10 @@ namespace controllers;
 
 use models\Client;
 use views\client\ManageClients;
+use resources\views\client\EditClient;
 
 require(dirname(__DIR__) . '/resources/views/client/manageClient.php');
+require(dirname(__DIR__) . '/resources/views/client/editClient.php');
 require(dirname(__DIR__) . '/models/Client.php');
 
 class ClientController {
@@ -41,10 +43,9 @@ class ClientController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['clientId'] ?? null;
             if ($id) {
-                $this->client->setClientID($id);
-                $result = $this->client->delete();
-                if (!$result) {
-                    echo "<script>alert('Error: Failed to delete client');</script>";
+                $result = $this->client->delete($id);
+                if (isset($result['error'])) {
+                    echo "<script>alert('Error: " . $result['error'] . "');</script>";
                 }
             }
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=clients');
@@ -59,23 +60,13 @@ class ClientController {
 
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['clientID'] ?? null;
-            if ($id) {
-                $this->client->setClientID($id);
-                $this->client->setFirstName($_POST['firstName']);
-                $this->client->setLastName($_POST['lastName']);
-                $this->client->setEmail($_POST['email']);
-                $this->client->setPhone($_POST['phone']);
-
-                $result = $this->client->update();
-                if (!$result) {
-                    $this->showEditForm($id, 'Failed to update client');
-                    return;
-                }
-
-                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=clients');
-                exit();
+            $result = $this->client->update($_POST);
+            if (isset($result['error'])) {
+                $this->showEditForm($_POST['clientID'], $result['error']);
+                return;
             }
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=clients');
+            exit();
         } else {
             $id = $_GET['id'] ?? null;
             if ($id) {
@@ -88,9 +79,13 @@ class ClientController {
     }
 
     private function showEditForm($id, $error = null) {
-        $data = ['client' => $this->client->read($id)];
-        require(dirname(__DIR__) . '/resources/views/client/editClient.php');
-        $editClient = new \resources\views\client\EditClient();
+        $client = $this->client->read($id);
+        if (!$client) {
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=clients');
+            exit();
+        }
+        $data = ['client' => $client];
+        $editClient = new EditClient();
         $editClient->render($data, $error);
         exit();
     }
