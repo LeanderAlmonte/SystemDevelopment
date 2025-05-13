@@ -2,6 +2,8 @@
 
 namespace views\client;
 
+require_once(__DIR__ . '/../../../lang/lang.php');
+
 class ManageClients {
     public function render($data) {
         ?>
@@ -18,11 +20,22 @@ class ManageClients {
         <div class="container">
             <!-- Menu Panel -->
             <div class="menu-panel">
-                <h2 class="menu-title">Menu Panel</h2>
+                <h2 class="menu-title"><?php echo lang('menu_panel'); ?></h2>
+                <?php $role = $_SESSION['userRole'] ?? 'Admin'; ?>
                 <ul class="menu-items">
-                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span>Home</span></a></li>
-                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=clients" class="active"><i class="fas fa-user-friends"></i><span>Manage Clients</span></a></li>
-                    <!-- Add other links as needed -->
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span><?php echo lang('home'); ?></span></a></li>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span><?php echo lang('view_manual'); ?></span></a></li>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span><?php echo lang('settings'); ?></span></a></li>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span><?php echo lang('manage_inventory'); ?></span></a></li>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span><?php echo lang('view_sold_products'); ?></span></a></li>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span><?php echo lang('archived_items'); ?></span></a></li>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=clients" class="active"><i class="fas fa-user-friends"></i><span><?php echo lang('manage_clients'); ?></span></a></li>
+                    <?php if ($role === 'Admin'): ?>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span><?php echo lang('manage_users'); ?></span></a></li>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span><?php echo lang('history'); ?></span></a></li>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span><?php echo lang('sales_costs'); ?></span></a></li>
+                    <?php endif; ?>
+                    <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span><?php echo lang('logout'); ?></span></a></li>
                 </ul>
             </div>
 
@@ -37,7 +50,7 @@ class ManageClients {
                     <!-- Search Bar -->
                     <div class="search-wrapper">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="searchInput" class="search-bar" placeholder="Search for client by name or email">
+                        <input type="text" id="searchInput" class="search-bar" placeholder="<?php echo lang('search_client'); ?>">
                     </div>
 
                     <!-- Clients Table -->
@@ -45,23 +58,23 @@ class ManageClients {
                         <table class="inventory-table">
                             <thead>
                             <tr>
-                                <th>ClientID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Actions</th>
+                                <th><?php echo lang('clientid'); ?></th>
+                                <th><?php echo lang('client_name'); ?></th>
+                                <th><?php echo lang('email'); ?></th>
+                                <th><?php echo lang('phone_number'); ?></th>
+                                <th><?php echo lang('actions'); ?></th>
                             </tr>
                             </thead>
                             <tbody id="clientTableBody">
                             <?php if (isset($data['error'])): ?>
-                                <tr><td colspan="5">Error loading clients: <?php echo $data['error']; ?></td></tr>
+                                <tr><td colspan="5"><?php echo lang('error_loading_clients'); ?>: <?php echo $data['error']; ?></td></tr>
                             <?php else: ?>
                                 <?php foreach ($data as $client): ?>
                                     <tr>
                                         <td>#<?php echo $client['clientID']; ?></td>
-                                        <td><?php echo $client['firstName'] . ' ' . $client['lastName']; ?></td>
-                                        <td><?php echo $client['email']; ?></td>
-                                        <td><?php echo $client['phone']; ?></td>
+                                        <td><?php echo htmlspecialchars($client['clientName']); ?></td>
+                                        <td><?php echo htmlspecialchars($client['email']); ?></td>
+                                        <td><?php echo htmlspecialchars($client['phoneNumber']); ?></td>
                                         <td class="actions-cell">
                                             <div class="dropdown">
                                                 <button class="action-btn" onclick="toggleDropdown(this, <?php echo $client['clientID']; ?>)">
@@ -69,13 +82,13 @@ class ManageClients {
                                                 </button>
                                                 <div id="dropdown-<?php echo $client['clientID']; ?>" class="dropdown-content">
                                                     <a href="/ecommerce/Project/SystemDevelopment/index.php?url=clients/update&id=<?php echo $client['clientID']; ?>" class="dropdown-item">
-                                                        <i class="fas fa-edit"></i> Edit
+                                                        <i class="fas fa-edit"></i> <?php echo lang('edit'); ?>
                                                     </a>
-                                                    <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=clients/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($client['firstName'] . ' ' . $client['lastName']); ?>')">
+                                                    <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=clients/delete" style="display: inline;" onsubmit="return confirmDelete('<?php echo htmlspecialchars($client['clientName']); ?>')">
                                                         <input type="hidden" name="action" value="delete">
                                                         <input type="hidden" name="clientId" value="<?php echo $client['clientID']; ?>">
                                                         <button type="submit" class="dropdown-item delete">
-                                                            <i class="fas fa-trash"></i> Delete
+                                                            <i class="fas fa-trash"></i> <?php echo lang('delete'); ?>
                                                         </button>
                                                     </form>
                                                 </div>
@@ -90,7 +103,7 @@ class ManageClients {
 
                     <!-- Action Buttons -->
                     <div class="action-buttons">
-                        <a href="/ecommerce/Project/SystemDevelopment/index.php?url=clients/create" class="action-btn">Add Client</a>
+                        <a href="/ecommerce/Project/SystemDevelopment/index.php?url=clients/create" class="action-btn"><?php echo lang('add_client'); ?></a>
                     </div>
                 </div>
             </div>
