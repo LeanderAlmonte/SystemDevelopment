@@ -14,7 +14,10 @@ class Settings {
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
-        <body>
+        <body<?php 
+            $theme = $_SESSION['theme'] ?? ($userData['theme'] ?? 'Light');
+            echo $theme === 'Dark' ? ' class="dark-theme"' : '';
+        ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -45,6 +48,12 @@ class Settings {
                     </div>
 
                     <div class="settings-container">
+                        <div class="inventory-header">
+                            <div class="header-content" style="flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
+                                <h2 style="margin: 0;"><i class="fas fa-cog"></i> <?php echo lang('settings'); ?></h2>
+                                <span style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;">Manage your account and preferences</span>
+                            </div>
+                        </div>
                         <?php if (isset($_SESSION['success'])): ?>
                             <div class="success-message">
                                 <?php 
@@ -86,7 +95,15 @@ class Settings {
                         </div>
                         <div class="settings-option">
                             <span><?php echo lang('theme'); ?></span>
-                            <button class="settings-btn"><?php echo lang('switch_theme'); ?></button>
+                            <form method="POST" action="" style="display:inline;">
+                                <input type="hidden" name="theme" value="<?php echo ($_SESSION['theme'] ?? ($userData['theme'] ?? 'Light')) === 'Dark' ? 'Light' : 'Dark'; ?>">
+                                <button class="settings-btn" type="submit">
+                                    <?php
+                                        $isDark = ($_SESSION['theme'] ?? ($userData['theme'] ?? 'Light')) === 'Dark';
+                                        echo $isDark ? lang('switch_to_light') : lang('switch_to_dark');
+                                    ?>
+                                </button>
+                            </form>
                         </div>
 
                         <!-- Support -->

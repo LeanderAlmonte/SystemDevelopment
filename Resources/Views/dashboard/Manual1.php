@@ -71,13 +71,10 @@ class Manual1 {
                     display: flex;
                     justify-content: center;
                     gap: 10px;
-                    width: 50px;
-                    background: #f4f4f4;
                     padding: 10px;
                     margin-top: 40px;
                     margin-bottom: 20px;
                     text-align: center;
-                    transform: translateX(-50%) translateX(850px);
                 }
 
                 .pagination a {
@@ -96,7 +93,7 @@ class Manual1 {
 
             </style>
         </head>
-        <body>
+        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -126,10 +123,14 @@ class Manual1 {
                         <div class="welcome-text"><?php echo lang('welcome') . ' ' . explode(' ', $_SESSION['userName'])[0]; ?>! <i class="fas fa-user-circle"></i></div>
                     </div>
 
-                    <div class="manual-container">
-                        <h2>User Manual</h2>
-                        <h3>How To Use Our Application</h3>
+                    <div class="manual-header">
+                        <div class="manual-header-content" style="flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
+                            <h2 style="margin: 0;"><i class="fas fa-book"></i> User Manual</h2>
+                            <h3 style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;">How To Use Our Application</h3>
+                        </div>
+                    </div>
 
+                    <div class="manual-container">
                         <div class="manual-section">
                             <h3>Steps to Log In</h3>
                             <ol>

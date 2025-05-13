@@ -15,7 +15,7 @@ class ManageInventory {
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
-        <body>
+        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -46,6 +46,12 @@ class ManageInventory {
                     </div>
 
                     <div class="inventory-container">
+                        <div class="inventory-header">
+                            <div class="header-content">
+                                <h2><i class="fas fa-box"></i> <?php echo lang('manage_inventory'); ?></h2>
+                                <p><?php echo lang('manage_inventory'); ?></p>
+                            </div>
+                        </div>
                         <?php if (isset($_SESSION['error'])): ?>
                             <div class="alert alert-error">
                                 <?php 

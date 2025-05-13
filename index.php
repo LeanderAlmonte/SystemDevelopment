@@ -141,6 +141,8 @@ class App {
                         case "POST":
                             if ($resourceName === 'settings') {
                                 $controller->update();
+                                // After update (if not redirected), render the page
+                                $controller->read();
                             } else {
                                 $controller->create();
                             }

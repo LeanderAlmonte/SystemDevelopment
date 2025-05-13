@@ -63,7 +63,25 @@ class SettingController {
                 header('Location: ' . $_SERVER['REQUEST_URI']);
                 exit;
             }
-            // Handle other settings update logic here
+            // Handle theme change
+            if (isset($_POST['theme'])) {
+                $newTheme = $_POST['theme'] === 'Dark' ? 'Dark' : 'Light';
+                $_SESSION['theme'] = $newTheme;
+                if (isset($_SESSION['userID'])) {
+                    $user = new User();
+                    $user->setUserID($_SESSION['userID']);
+                    $userData = $user->read($_SESSION['userID']);
+                    $user->setFirstName($userData['firstName']);
+                    $user->setLastName($userData['lastName']);
+                    $user->setEmail($userData['email']);
+                    $user->setUserType($userData['userType']);
+                    $user->setTheme($newTheme);
+                    $user->setLanguage($userData['language']);
+                    $user->update();
+                }
+                header('Location: ' . $_SERVER['REQUEST_URI']);
+                exit;
+            }
         }
     }
 

@@ -16,7 +16,7 @@ class ManageUsers {
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
-        <body>
+        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -47,6 +47,13 @@ class ManageUsers {
                     </div>
 
                     <div class="inventory-container">
+                        <div class="inventory-header">
+                            <div class="header-content" style="flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
+                                <h2 style="margin: 0;"><i class="fas fa-users"></i> <?php echo lang('manage_users'); ?></h2>
+                                <span style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;">Manage users and their roles</span>
+                            </div>
+                        </div>
+
                         <!-- Search Bar -->
                         <div class="search-wrapper">
                             <i class="fas fa-search search-icon"></i>

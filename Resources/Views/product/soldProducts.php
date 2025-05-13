@@ -15,7 +15,7 @@ class SoldProducts {
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
-        <body>
+        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -172,13 +172,13 @@ class SoldProducts {
                 }
 
                 .inventory-table th {
-                    background-color: #f8f9fa;
+                    background-color: var(--primary-color);
+                    color: var(--white);
                     font-weight: 600;
-                    color: #333;
                 }
 
                 .inventory-table tr:hover {
-                    background-color:#E86C2C;
+                    /* background-color:#E86C2C; */
                 }
 
                 .inventory-table td:first-child {

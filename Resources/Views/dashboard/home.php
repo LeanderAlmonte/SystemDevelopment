@@ -162,7 +162,7 @@ class Home {
             </style>
             
         </head>
-        <body>
+        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">

@@ -47,6 +47,13 @@ class ManageClients {
                 </div>
 
                 <div class="inventory-container">
+                    <div class="inventory-header">
+                        <div class="header-content" style="flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
+                            <h2 style="margin: 0;"><i class="fas fa-user-friends"></i> <?php echo lang('manage_clients'); ?></h2>
+                            <span style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;">Manage your clients</span>
+                        </div>
+                    </div>
+
                     <!-- Search Bar -->
                     <div class="search-wrapper">
                         <i class="fas fa-search search-icon"></i>

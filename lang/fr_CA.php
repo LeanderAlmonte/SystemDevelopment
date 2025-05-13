@@ -138,6 +138,8 @@ return [
     'action_details' => 'Détails de l\'action',
     'no_actions_found' => 'Aucune action trouvée',
     'close' => 'Fermer',
+    'switch_to_dark' => 'Passer en mode sombre',
+    'switch_to_light' => 'Passer en mode clair',
     'current_password' => 'Mot de passe actuel',
     'new_password' => 'Nouveau mot de passe',
     'confirm_password' => 'Confirmer le mot de passe',
