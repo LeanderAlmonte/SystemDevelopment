@@ -26,7 +26,6 @@ require(dirname(__DIR__) . '/Models/Product.php');
 require(dirname(__DIR__) . '/Models/Sales.php');
 require(dirname(__DIR__) . '/Models/User.php');
 require(dirname(__DIR__) . '/Models/Client.php');
-require(dirname(__DIR__) . '/Models/Action.php');
 
 class ProductController {
     private Product $product;
@@ -66,7 +65,9 @@ class ProductController {
 
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            error_log("Product update POST data: " . print_r($_POST, true));
             $result = $this->product->update($_POST);
+            error_log("Product update result: " . print_r($result, true));
             if (isset($result['error'])) {
                 $error = $result['error'];
                 $this->showEditForm($_POST['productID'], $error);
