@@ -316,7 +316,6 @@ form .dropdown-item.delete {
 .settings-container h2 {
     color: var(--brown-color);
     margin: 20px 0;
-    font-style: italic;
 }
 
 .settings-option {
