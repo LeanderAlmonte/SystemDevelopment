@@ -93,6 +93,14 @@ class Settings {
                             <span><?php echo lang('change_password'); ?></span>
                             <button class="settings-btn" onclick="location.href='resetPassword.php';"><?php echo lang('change'); ?></button>
                         </div>
+                        <div class="settings-option">
+                            <span>Two-Factor Authentication</span>
+                            <?php if ($_SESSION['twoFactorEnabled']): ?>
+                                <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/disable2fa'">Disable 2FA</button>
+                            <?php else: ?>
+                                <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/enable2fa'">Enable 2FA</button>
+                            <?php endif; ?>
+                        </div>
 
                         <!-- Preferences -->
                         <h2><?php echo lang('preferences'); ?></h2>
