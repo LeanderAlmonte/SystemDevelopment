@@ -18,15 +18,15 @@ class DashboardController {
     private Product $product;
     private Sales $sales;
     private Home $homeView;
-    private Manual $manualView1;
-    private Manual $manualView2;
+    private Manual1 $manualView1;
+    private Manual2 $manualView2;
 
     public function __construct() {
         $this->product = new Product();
         $this->sales = new Sales();
         // $this->homeView = new Home();
-        $this->manualView = new Manual1();
-        $this->manualView = new Manual2();
+        $this->manualView1 = new Manual1();
+        $this->manualView2 = new Manual2();
     }
 
     public function read() {
@@ -45,19 +45,17 @@ class DashboardController {
         $home->render($data);
     }
 
-    public function manual($page) {
+    public function manual($page = 1) {
+        // Convert string page number to integer
+        $page = (int)$page;
+        
         if ($page == 1) {
-        $manualView = new Manual1();
-    } elseif ($page == 2) {
-        $manualView = new Manual2();
-    } else {
-        echo "Invalid page number!";
-        return;
-    }
-
-    $manualView->render();
-
-
-
+            $this->manualView1->render();
+        } elseif ($page == 2) {
+            $this->manualView2->render();
+        } else {
+            echo "Invalid page number!";
+            return;
+        }
     }
 } 

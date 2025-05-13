@@ -103,7 +103,7 @@ class Manual1 {
                     <h2 class="menu-title"><?php echo lang('menu_panel'); ?></h2>
                     <ol class="menu-items">
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span><?php echo lang('home'); ?></span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual" class="active"><i class="fas fa-book"></i><span><?php echo lang('view_manual'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/1" class="active"><i class="fas fa-book"></i><span><?php echo lang('view_manual'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span><?php echo lang('settings'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span><?php echo lang('manage_users'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products"><i class="fas fa-box"></i><span><?php echo lang('manage_inventory'); ?></span></a></li>
@@ -181,9 +181,9 @@ class Manual1 {
                 </div>
             </div>
             <div class="pagination">
-                <a href="#" class="active">1</a>
-                <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual&page=2">2</a>
-                <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual&page=2">&gt;</a>
+                <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/1" class="active">1</a>
+                <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/2">2</a>
+                <a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual/2">&gt;</a>
             </div>
         </body>
         </html>

@@ -189,7 +189,7 @@ class ManageInventory {
                 }
 
                 function confirmDelete(productName) {
-                    return confirm('<?php echo lang('confirm_delete'); ?>'.replace('{product}', productName));
+                    return confirm('<?php echo lang('confirm_delete_product'); ?>'.replace('{product}', productName));
                 }
 
                 document.addEventListener('DOMContentLoaded', function() {
