@@ -182,8 +182,12 @@ class ArchivedProducts {
                     return confirm('<?php echo lang('confirm_unarchive'); ?>'.replace('{product}', productName));
                 }
 
+                function confirmRestore(productName) {
+                    return confirm('<?php echo lang('confirm_restore'); ?>'.replace('{product}', productName));
+                }
+
                 function confirmDelete(productName) {
-                    return confirm('<?php echo lang('confirm_delete'); ?>'.replace('{product}', productName));
+                    return confirm('<?php echo lang('confirm_delete_product'); ?>'.replace('{product}', productName));
                 }
 
                 document.addEventListener('DOMContentLoaded', function() {

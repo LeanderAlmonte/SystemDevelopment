@@ -89,12 +89,8 @@ class App {
                     }
 
                     if ($action === 'manual') {
-                        $controller->manual(1);
-                        return;
-                    }
-
-                    if ($action === 'logout') {
-                        $controller->logout();
+                        $page = isset($urlParams[2]) ? (int)$urlParams[2] : 1;
+                        $controller->manual($page);
                         return;
                     }
 
@@ -120,6 +116,21 @@ class App {
 
                     if ($action === 'disable2fa') {
                         $controller->disable2FA();
+                        return;
+                    }
+
+                    if ($action === 'sendcode') {
+                        $controller->sendResetLink();
+                        return;
+                    }
+
+                    if ($action === 'resetPassword') {
+                        $controller->resetPassword();
+                        return;
+                    }
+
+                    if ($action === 'changePassword') {
+                        $controller->changePassword();
                         return;
                     }
 

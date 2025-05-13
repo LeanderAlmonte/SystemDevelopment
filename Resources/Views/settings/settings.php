@@ -2,14 +2,15 @@
 namespace Resources\Views\Settings;
 
 class Settings {
-    public function render() {
+    public function render($userData = null) {
+        require_once __DIR__ . '/../../../lang/lang.php';
         ?>
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="<?php echo $_SESSION['lang'] ?? 'en'; ?>">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Settings - Eyesightcollectibles</title>
+            <title><?php echo lang('settings'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
@@ -40,11 +41,20 @@ class Settings {
                     </div>
 
                     <div class="settings-container">
+                        <?php if (isset($_SESSION['success'])): ?>
+                            <div class="success-message">
+                                <?php 
+                                    echo $_SESSION['success'];
+                                    unset($_SESSION['success']);
+                                ?>
+                            </div>
+                        <?php endif; ?>
+
                         <!-- Account Settings -->
                         <h2><?php echo lang('account_setting'); ?></h2>
                         <div class="settings-option">
                             <span><?php echo lang('change_password'); ?></span>
-                            <button class="settings-btn"><?php echo lang('change'); ?></button>
+                            <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/changePassword'"><?php echo lang('change'); ?></button>
                         </div>
                         <div class="settings-option">
                             <span>Two-Factor Authentication</span>
@@ -84,6 +94,17 @@ class Settings {
                     </div>
                 </div>
             </div>
+
+            <style>
+                .success-message {
+                    color: #155724;
+                    margin-bottom: 15px;
+                    padding: 10px;
+                    background-color: #d4edda;
+                    border: 1px solid #c3e6cb;
+                    border-radius: 4px;
+                }
+            </style>
         </body>
         </html>
         <?php

@@ -76,6 +76,7 @@ return [
     'confirm_archive' => 'Are you sure you want to archive "{product}"?',
     'confirm_bulk_archive' => 'Are you sure you want to archive the following products?\n"{products}"',
     'confirm_bulk_delete' => 'Are you sure you want to delete the following products? This action cannot be undone.\n"{products}"',
+    'confirm_delete_product' => 'Are you sure you want to delete "{product}"? This action cannot be undone.',
     'please_select_products' => 'Please select products to {action}',
     'category' => 'Category',
     'new_product' => 'New Product',
@@ -136,5 +137,8 @@ return [
     'view' => 'View',
     'action_details' => 'Action Details',
     'no_actions_found' => 'No actions found',
-    'close' => 'Close'
+    'close' => 'Close',
+    'current_password' => 'Current Password',
+    'new_password' => 'New Password',
+    'confirm_password' => 'Confirm Password'
 ];

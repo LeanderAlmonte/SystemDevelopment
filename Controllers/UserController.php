@@ -27,8 +27,7 @@ class UserController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $this->user->create($_POST);
             if (isset($result['error'])) {
-                $error = $result['error'];
-                $this->showAddForm($error);
+                $this->showAddForm($result['error']);
             } else {
                 header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
                 exit();
@@ -54,7 +53,9 @@ class UserController {
     }
 
     private function showAddForm($error = null) {
-        require(dirname(__DIR__) . '/resources/views/user/addUser.php');
+        require_once(dirname(__DIR__) . '/resources/views/user/addUser.php');
+        $view = new \Resources\Views\User\Adduser();
+        $view->render($error);
         exit();
     }
 
