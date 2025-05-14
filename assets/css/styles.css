@@ -344,66 +344,164 @@ form .dropdown-item.delete {
 
 /* Form Container Styles */
 .add-product-container,
-.edit-product-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+.edit-product-container,
+.process-order-container {
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    padding: 30px 40px;
+    max-width: 600px;
+    margin: 40px auto 0 auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 
-/* Form Styles */
+.add-product-container h2,
+.process-order-container h2 {
+    color: var(--brown-color);
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .add-product-form,
-.edit-product-form {
+.edit-product-form,
+.process-order-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px;
 }
 
-/* Form Group Styles */
-.form-group {
-    margin: 0;
+.add-product-form .form-group,
+.edit-product-form .form-group,
+.process-order-form .form-group {
+    margin-bottom: 10px;
 }
 
-.form-group label {
+.add-product-form label,
+.edit-product-form label,
+.process-order-form label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--brown-color);
     display: block;
-    margin-bottom: 5px;
-    font-weight: normal;
 }
 
-.form-group input,
-.form-group select {
+.add-product-form input,
+.add-product-form select,
+.edit-product-form input,
+.edit-product-form select,
+.process-order-form input,
+.process-order-form select {
     width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background: #fff;
+    color: #333;
+    transition: border 0.2s;
 }
 
-/* Form Actions */
-.form-actions {
+.add-product-form input:focus,
+.add-product-form select:focus,
+.edit-product-form input:focus,
+.edit-product-form select:focus,
+.process-order-form input:focus,
+.process-order-form select:focus {
+    border: 1.5px solid var(--primary-color);
+    outline: none;
+}
+
+.add-product-form .form-actions,
+.edit-product-form .form-actions,
+.process-order-form .form-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    margin-top: 25px;
+    justify-content: flex-end;
 }
 
-.form-actions button {
-    padding: 8px 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #fff;
+.add-product-form button,
+.edit-product-form button,
+.process-order-form button,
+.process-order-form .btn,
+.process-order-form .btn-primary,
+.process-order-form .btn-secondary {
+    padding: 10px 28px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--brown-color);
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.form-actions button:hover {
-    background-color: #f0f0f0;
+.add-product-form button:hover,
+.edit-product-form button:hover,
+.process-order-form button:hover,
+.process-order-form .btn:hover,
+.process-order-form .btn-primary:hover,
+.process-order-form .btn-secondary:hover {
+    background-color: #654321;
+    color: #FFDAB9;
 }
 
-/* Error Message Styles */
-.error-message {
+.add-product-container .error-message,
+.edit-product-container .error-message,
+.process-order-container .error-message {
     color: #dc3545;
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #f8d7da;
+    background: #f8d7da;
     border: 1px solid #f5c6cb;
     border-radius: 4px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+/* Dark mode for add/process order */
+.dark-theme .add-product-container, .dark-theme .process-order-container {
+    background-color: #232323 !important;
+    color: #f4f4f4 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+.dark-theme .add-product-container h2, .dark-theme .process-order-container h2 {
+    color: #FFDAB9 !important;
+}
+.dark-theme .add-product-form label, .dark-theme .process-order-form label {
+    color: #FFDAB9 !important;
+}
+.dark-theme .add-product-form input,
+.dark-theme .add-product-form select,
+.dark-theme .process-order-form input,
+.dark-theme .process-order-form select {
+    background: #181818 !important;
+    color: #fff !important;
+    border: 1px solid #555 !important;
+}
+.dark-theme .add-product-form input:focus,
+.dark-theme .add-product-form select:focus,
+.dark-theme .process-order-form input:focus,
+.dark-theme .process-order-form select:focus {
+    border: 1.5px solid var(--primary-color) !important;
+}
+.dark-theme .add-product-form button, .dark-theme .process-order-form button, .dark-theme .process-order-form .btn, .dark-theme .process-order-form .btn-primary, .dark-theme .process-order-form .btn-secondary {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .add-product-form button:hover, .dark-theme .process-order-form button:hover, .dark-theme .process-order-form .btn:hover, .dark-theme .process-order-form .btn-primary:hover, .dark-theme .process-order-form .btn-secondary:hover {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+.dark-theme .add-product-container .error-message, .dark-theme .process-order-container .error-message {
+    background: #3a2323 !important;
+    color: #ff8c6b !important;
+    border: 1px solid #ff8c6b !important;
 }
 
 /* Responsive Design */
@@ -1133,4 +1231,129 @@ input[type="checkbox"]:checked::after {
 
 .dark-theme .inventory-table td:first-child {
     color: #fff !important;
+}
+
+.edit-product-container {
+    background-color: var(--secondary-color);
+    border-radius: 10px;
+    padding: 30px 40px;
+    max-width: 600px;
+    margin: 40px auto 0 auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.edit-product-container h2 {
+    color: var(--brown-color);
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.edit-product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.edit-product-form .form-group {
+    margin-bottom: 10px;
+}
+
+.edit-product-form label {
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--brown-color);
+    display: block;
+}
+
+.edit-product-form input,
+.edit-product-form select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    background: #fff;
+    color: #333;
+    transition: border 0.2s;
+}
+
+.edit-product-form input:focus,
+.edit-product-form select:focus {
+    border: 1.5px solid var(--primary-color);
+    outline: none;
+}
+
+.edit-product-form .form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+    justify-content: flex-end;
+}
+
+.edit-product-form button {
+    padding: 10px 28px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--brown-color);
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.edit-product-form button:hover {
+    background-color: #654321;
+    color: #FFDAB9;
+}
+
+/* Error message styling for consistency */
+.edit-product-container .error-message {
+    color: #dc3545;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+/* Dark mode for edit product */
+.dark-theme .edit-product-container {
+    background-color: #232323 !important;
+    color: #f4f4f4 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
+}
+.dark-theme .edit-product-container h2 {
+    color: #FFDAB9 !important;
+}
+.dark-theme .edit-product-form label {
+    color: #FFDAB9 !important;
+}
+.dark-theme .edit-product-form input,
+.dark-theme .edit-product-form select {
+    background: #181818 !important;
+    color: #fff !important;
+    border: 1px solid #555 !important;
+}
+.dark-theme .edit-product-form input:focus,
+.dark-theme .edit-product-form select:focus {
+    border: 1.5px solid var(--primary-color) !important;
+}
+.dark-theme .edit-product-form button {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .edit-product-form button:hover {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+.dark-theme .edit-product-container .error-message {
+    background: #3a2323 !important;
+    color: #ff8c6b !important;
+    border: 1px solid #ff8c6b !important;
 }
