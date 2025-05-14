@@ -151,7 +151,7 @@ class ProcessOrder {
                 }
             </style>
         </head>
-        <body>
+        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -236,8 +236,8 @@ class ProcessOrder {
                             </div>
 
                             <div class="form-actions">
-                                <button type="submit" class="btn btn-primary"><?php echo lang('process_order'); ?></button>
                                 <a href="/ecommerce/Project/SystemDevelopment/index.php?url=products" class="btn btn-secondary"><?php echo lang('cancel'); ?></a>
+                                <button type="submit" class="btn btn-primary"><?php echo lang('process_order'); ?></button>
                             </div>
                         </form>
                     </div>
