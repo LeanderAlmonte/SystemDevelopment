@@ -316,7 +316,6 @@ form .dropdown-item.delete {
 .settings-container h2 {
     color: var(--brown-color);
     margin: 20px 0;
-    font-style: italic;
 }
 
 .settings-option {
@@ -749,4 +748,389 @@ input[type="checkbox"]:checked::after {
     background-color: #f8d7da;
     color: #721c24;
     border: 1px solid #f5c6cb;
+}
+
+/* Dark Theme Overrides */
+.dark-theme {
+    background-color: #181818 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .container,
+.dark-theme .main-content {
+    background-color: #232323 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .menu-panel {
+    background-color: #181818 !important;
+    color: #fff !important;
+}
+.dark-theme .header {
+    background-color: #181818 !important;
+    color: #fff !important;
+}
+.dark-theme .settings-container,
+.dark-theme .inventory-container,
+.dark-theme .table-container {
+    background-color: #232323 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .menu-items a.active {
+    color: #FFDAB9 !important;
+}
+.dark-theme .settings-btn,
+.dark-theme .category-btn {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .settings-btn:hover,
+.dark-theme .category-btn:hover {
+    background-color: #444 !important;
+}
+.dark-theme .settings-option,
+.dark-theme .settings-btn,
+.dark-theme select,
+.dark-theme input,
+.dark-theme option {
+    color: #fff !important;
+}
+.dark-theme .settings-option {
+    background-color: #232323 !important;
+    border: 1px solid #333 !important;
+}
+.dark-theme .settings-btn {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+    border: 1px solid #555 !important;
+}
+.dark-theme .settings-btn:hover {
+    background-color: #444 !important;
+    color: #fff !important;
+}
+.dark-theme select,
+.dark-theme input {
+    background-color: #232323 !important;
+    border: 1px solid #555 !important;
+}
+.dark-theme .brand {
+    color: #fff !important;
+}
+
+/* Dark mode overrides for dashboard (moved from home.php) */
+.dark-theme .dashboard-card,
+.dark-theme .pokemon-card {
+    background: #232323 !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+.dark-theme .dashboard-card h3,
+.dark-theme .pokemon-name,
+.dark-theme .stat-label,
+.dark-theme .stat-value {
+    color: #fff !important;
+}
+.dark-theme .product-item span,
+.dark-theme .product-item {
+    color: #fff !important;
+}
+.dark-theme .product-rank {
+    background: #444 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .stat-item {
+    background: #181818 !important;
+    color: #fff !important;
+}
+.dark-theme .refresh-btn {
+    background: #E86C2C !important;
+    color: #fff !important;
+    border: 1px solid #FFDAB9 !important;
+}
+.dark-theme .refresh-btn:hover {
+    background: #d15a1a !important;
+    color: #fff !important;
+}
+
+/* Dark mode overrides for manual pages */
+.dark-theme .manual-container {
+    background-color: #232323 !important;
+    color: #fff !important;
+}
+.dark-theme .manual-section {
+    background-color: #181818 !important;
+    color: #fff !important;
+    border: 1px solid #333 !important;
+}
+.dark-theme .manual-section h3,
+.dark-theme .manual-section ol,
+.dark-theme .manual-section ol li {
+    color: #fff !important;
+}
+.dark-theme .manual-section img {
+    border-color: #FFDAB9 !important;
+}
+.dark-theme .pagination {
+    background: #232323 !important;
+}
+.dark-theme .pagination a {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .pagination a.active {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+
+/* Dark mode overrides for dropdown and bulk actions */
+.dark-theme .dropdown-content {
+    background-color: #232323 !important;
+    color: #FFDAB9 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+.dark-theme .dropdown-item,
+.dark-theme form .dropdown-item {
+    background: #333 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .dropdown-item.delete,
+.dark-theme form .dropdown-item.delete {
+    color: #ff8c6b !important;
+}
+.dark-theme .dropdown-item:hover,
+.dark-theme .dropdown-item.active {
+    background: #E86C2C !important;
+    color: #fff !important;
+}
+.dark-theme .bulk-actions {
+    background-color: #232323 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+.dark-theme .action-btn,
+.dark-theme a.action-btn {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+    border: none !important;
+}
+.dark-theme .action-btn.archive-btn,
+.dark-theme .action-btn.delete-btn,
+.dark-theme .action-btn.unarchive-btn {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .action-btn:hover,
+.dark-theme a.action-btn:hover {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+
+/* Dark mode overrides for history modal */
+.dark-theme .modal-content {
+    background-color: #232323 !important;
+    color: #fff !important;
+}
+.dark-theme .modal-header,
+.dark-theme .modal-footer {
+    background-color: #232323 !important;
+    color: #fff !important;
+    border-color: #333 !important;
+}
+.dark-theme .modal-title {
+    color: #FFDAB9 !important;
+}
+.dark-theme .modal-body,
+.dark-theme .modal-description {
+    color: #fff !important;
+}
+.dark-theme .close-btn {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+    border: none !important;
+}
+.dark-theme .close-btn:hover {
+    background-color: #d15a1a !important;
+    color: #fff !important;
+}
+
+/* Dark mode overrides for sales/costs page */
+.dark-theme .sales-costs-container {
+    background-color: #232323 !important;
+    color: #fff !important;
+}
+.dark-theme .chart-container {
+    background: #181818 !important;
+    color: #fff !important;
+}
+.dark-theme .financial-summary {
+    background: #232323 !important;
+    color: #fff !important;
+}
+.dark-theme .summary-card {
+    background: #181818 !important;
+    color: #fff !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+.dark-theme .summary-card h3,
+.dark-theme .summary-card p,
+.dark-theme .revenue p,
+.dark-theme .costs p,
+.dark-theme .profit p.positive,
+.dark-theme .profit p.negative {
+    color: #fff !important;
+}
+.dark-theme .inventory-header,
+.dark-theme .header-content {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+
+/* In dark mode, keep the color for revenue, costs, and profit/loss numbers the same as light mode */
+.dark-theme .revenue p {
+    color: #4CAF50 !important;
+}
+.dark-theme .costs p {
+    color: #f44336 !important;
+}
+.dark-theme .profit p.positive {
+    color: #4CAF50 !important;
+}
+.dark-theme .profit p.negative {
+    color: #f44336 !important;
+}
+
+/* Inventory Header Styles (shared for soldProducts and manageInventory) */
+.inventory-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.header-content h2 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-content h2 i {
+    font-size: 18px;
+}
+
+.header-content p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Dark mode for inventory-header */
+.dark-theme .inventory-header {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+.dark-theme .header-content h2 {
+    color: #fff !important;
+}
+.dark-theme .header-content p {
+    color: #fff !important;
+    opacity: 0.9;
+}
+
+/* Manual Header Styles (shared for Manual1 and Manual2) */
+.manual-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.manual-header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.manual-header-content h2 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--white);
+    font-weight: bold;
+}
+
+.manual-header-content h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--white);
+    font-weight: normal;
+}
+
+/* Dark mode for manual-header */
+.dark-theme .manual-header {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+.dark-theme .manual-header-content h2,
+.dark-theme .manual-header-content h3 {
+    color: #fff !important;
+}
+
+/* Dark mode overrides for manageClient.php */
+.dark-theme .inventory-container,
+.dark-theme .table-container {
+    background-color: #232323 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .inventory-table {
+    background-color: #232323 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .inventory-header {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+.dark-theme .header-content h2,
+.dark-theme .header-content span {
+    color: #fff !important;
+}
+.dark-theme .action-btn {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+    border: none !important;
+}
+.dark-theme .action-btn:hover {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+.dark-theme .dropdown-content {
+    background-color: #232323 !important;
+    color: #FFDAB9 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+.dark-theme .dropdown-item {
+    background: #333 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .dropdown-item:hover {
+    background: #E86C2C !important;
+    color: #fff !important;
+}
+
+.dark-theme .inventory-table td:first-child {
+    color: #fff !important;
 }

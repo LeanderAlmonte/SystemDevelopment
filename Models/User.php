@@ -27,6 +27,10 @@ class User{
         $this->dbConnection = (new DBConnectionManager())->getConnection();
     }
 
+    public function __destruct() {
+        $this->dbConnection = null;
+    }
+
     // Getters
     public function getUserID() {
         return $this->userID;
@@ -121,6 +125,7 @@ class User{
 
     // CRUD Operations
     public function read($id = null) {
+        try {
         if ($id !== null) {
             $query = "SELECT * FROM users WHERE userID = :userID";
             $stmt = $this->dbConnection->prepare($query);
@@ -136,10 +141,15 @@ class User{
             $stmt = $this->dbConnection->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+        } catch (PDOException $e) {
+            error_log("Database error in read: " . $e->getMessage());
+            return false;
         }
     }
 
     public function create($data = null) {
+        try {
         if ($data) {
             $this->setFirstName($data['firstName']);
             $this->setLastName($data['lastName']);
@@ -164,13 +174,13 @@ class User{
         $stmt->bindParam(':twoFactorEnabled', $this->twoFactorEnabled);
         $stmt->bindParam(':language', $this->language);
         
-        try {
             if ($stmt->execute()) {
                 return ['success' => true];
             } else {
                 return ['error' => 'Failed to create user'];
             }
         } catch (PDOException $e) {
+            error_log("Database error in create: " . $e->getMessage());
             return ['error' => 'Database error: ' . $e->getMessage()];
         }
     }
@@ -264,5 +274,32 @@ class User{
         $stmt->bindParam(':userID', $userId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function saveResetToken($userID, $token, $expiry) {
+        $sql = "UPDATE users SET token = ?, tokenExpiry = ? WHERE userID = ?";
+        $stmt = $this->dbConnection->prepare($sql);
+        $stmt->execute([$token, $expiry, $userID]);
+    }
+
+    public function updatePassword($userID, $hashedPassword) {
+        $sql = "UPDATE users SET password = ? WHERE userID = ?";
+        $stmt = $this->dbConnection->prepare($sql);
+        $stmt->execute([$hashedPassword, $userID]);
+    }
+
+    public function clearResetToken($userID) {
+        $sql = "UPDATE users SET token = NULL, tokenExpiry = NULL WHERE userID = ?";
+        $stmt = $this->dbConnection->prepare($sql);
+        $stmt->execute([$userID]);
+    }
+
+    public function is2FAEnabled($userID) {
+        $query = "SELECT twoFactorEnabled FROM users WHERE userID = :userID";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result && $result['twoFactorEnabled'] == 1;
     }
 }

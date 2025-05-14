@@ -15,21 +15,25 @@ class ManageInventory {
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         </head>
-        <body>
+        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
                     <h2 class="menu-title"><?php echo lang('menu_panel'); ?></h2>
+                    <?php $role = $_SESSION['userRole'] ?? 'Admin'; ?>
                     <ul class="menu-items">
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards"><i class="fas fa-home"></i><span><?php echo lang('home'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=dashboards/manual"><i class="fas fa-book"></i><span><?php echo lang('view_manual'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=settings"><i class="fas fa-cog"></i><span><?php echo lang('settings'); ?></span></a></li>
-                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span><?php echo lang('manage_users'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products" class="active"><i class="fas fa-box"></i><span><?php echo lang('manage_inventory'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts"><i class="fas fa-shopping-cart"></i><span><?php echo lang('view_sold_products'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/archive"><i class="fas fa-archive"></i><span><?php echo lang('archived_items'); ?></span></a></li>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=clients"><i class="fas fa-user-friends"></i><span><?php echo lang('manage_clients'); ?></span></a></li>
+                        <?php if ($role === 'Admin'): ?>
+                        <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=users"><i class="fas fa-users"></i><span><?php echo lang('manage_users'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=historys"><i class="fas fa-history"></i><span><?php echo lang('history'); ?></span></a></li>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=products/salesCosts"><i class="fas fa-chart-line"></i><span><?php echo lang('sales_costs'); ?></span></a></li>
+                        <?php endif; ?>
                         <li><a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/logout"><i class="fas fa-sign-out-alt"></i><span><?php echo lang('logout'); ?></span></a></li>
                     </ul>
                 </div>
@@ -42,6 +46,12 @@ class ManageInventory {
                     </div>
 
                     <div class="inventory-container">
+                        <div class="inventory-header">
+                            <div class="header-content">
+                                <h2><i class="fas fa-box"></i> <?php echo lang('manage_inventory'); ?></h2>
+                                <p><?php echo lang('manage_inventory'); ?></p>
+                            </div>
+                        </div>
                         <?php if (isset($_SESSION['error'])): ?>
                             <div class="alert alert-error">
                                 <?php 
@@ -189,7 +199,7 @@ class ManageInventory {
                 }
 
                 function confirmDelete(productName) {
-                    return confirm('<?php echo lang('confirm_delete'); ?>'.replace('{product}', productName));
+                    return confirm('<?php echo lang('confirm_delete_product'); ?>'.replace('{product}', productName));
                 }
 
                 document.addEventListener('DOMContentLoaded', function() {

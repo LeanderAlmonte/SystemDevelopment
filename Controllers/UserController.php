@@ -18,17 +18,24 @@ class UserController {
     }
 
     public function read() {
+        if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
+            exit();
+        }
         $data = $this->user->read();
         $manageUsers = new ManageUsers();
         $manageUsers->render($data);
     }
 
     public function create() {
+        if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $this->user->create($_POST);
             if (isset($result['error'])) {
-                $error = $result['error'];
-                $this->showAddForm($error);
+                $this->showAddForm($result['error']);
             } else {
                 header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
                 exit();
@@ -39,6 +46,10 @@ class UserController {
     }
 
     public function delete() {
+        if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['userId'] ?? null;
             if ($id) {
@@ -54,11 +65,21 @@ class UserController {
     }
 
     private function showAddForm($error = null) {
-        require(dirname(__DIR__) . '/resources/views/user/addUser.php');
+        if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
+            exit();
+        }
+        require_once(dirname(__DIR__) . '/resources/views/user/addUser.php');
+        $view = new \Resources\Views\User\Adduser();
+        $view->render($error);
         exit();
     }
 
     public function update() {
+        if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['userID'] ?? null;
             if ($id) {
@@ -109,6 +130,10 @@ class UserController {
     }
 
     private function showEditForm($id, $error = null) {
+        if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
+            exit();
+        }
         $data = ['user' => $this->user->read($id)];
         require(dirname(__DIR__) . '/resources/views/user/editUser.php');
         $editUser = new \resources\views\user\EditUser();

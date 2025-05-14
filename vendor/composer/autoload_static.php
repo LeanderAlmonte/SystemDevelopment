@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf64c0f42a180f64dd5c4971478d99adf
+class ComposerStaticInit49934d390b4e9da66f8682be34d0383f
 {
     public static $prefixLengthsPsr4 = array (
         'S' => 
@@ -14,6 +14,10 @@ class ComposerStaticInitf64c0f42a180f64dd5c4971478d99adf
         'R' => 
         array (
             'RobThree\\Auth\\' => 14,
+        ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'G' => 
         array (
@@ -42,6 +46,10 @@ class ComposerStaticInitf64c0f42a180f64dd5c4971478d99adf
         array (
             0 => __DIR__ . '/..' . '/robthree/twofactorauth/lib',
         ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
         'Google\\Authenticator\\' => 
         array (
             0 => __DIR__ . '/..' . '/sonata-project/google-authenticator/src',
@@ -67,9 +75,9 @@ class ComposerStaticInitf64c0f42a180f64dd5c4971478d99adf
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf64c0f42a180f64dd5c4971478d99adf::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf64c0f42a180f64dd5c4971478d99adf::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf64c0f42a180f64dd5c4971478d99adf::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit49934d390b4e9da66f8682be34d0383f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit49934d390b4e9da66f8682be34d0383f::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit49934d390b4e9da66f8682be34d0383f::$classMap;
 
         }, null, ClassLoader::class);
     }
