@@ -226,4 +226,10 @@ return [
     'enable_2fa_description' => 'Enter your verification code to enable 2FA',
     'enter_2fa_code' => 'Enter verification code',
     '2fa_enabled_success' => 'Two-factor authentication has been enabled successfully',
+    'support_email_message' => 'If you are experiencing any issues or need assistance, please contact our support team at:',
+    'dashboard' => 'Dashboard',
+    'sold_products' => 'Sold Products',
+    'edit_client' => 'Edit Client',
+    'edit_product' => 'Edit Product',
+    'edit_user' => 'Edit User',
 ];

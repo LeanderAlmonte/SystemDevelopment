@@ -1,15 +1,6 @@
 <?php
 namespace Resources\Views\Settings;
 
-// If the theme switch button is clicked, toggle the theme
-if (isset($_POST['switch_theme'])) {
-    // Toggle between 'Light' and 'Dark'
-    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'Light') === 'Light' ? 'Dark' : 'Light';
-    setcookie('theme', $_SESSION['theme'], time() + (86400 * 30), "/"); // Store theme in a cookie for 30 days
-    header("Location: " . $_SERVER['PHP_SELF']); // Reload the page to apply the new theme
-    exit(); // Stop further script execution
-}
-
 // Check if the theme is stored in a cookie, otherwise use session
 if (isset($_COOKIE['theme'])) {
     $_SESSION['theme'] = $_COOKIE['theme'];
@@ -114,7 +105,7 @@ class Settings {
                         <h2><?php echo lang('account_setting'); ?></h2>
                         <div class="settings-option">
                             <span><?php echo lang('change_password'); ?></span>
-                            <button class="settings-btn"><?php echo lang('change'); ?></button>
+                            <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/changePassword'"><?php echo lang('change'); ?></button>
                         </div>
                         <div class="settings-option">
                             <span>Two-Factor Authentication</span>
@@ -137,13 +128,10 @@ class Settings {
                             </form>
                         </div>
                         <div class="settings-option">
-                            <span><?php echo lang('notification_settings'); ?></span>
-                            <button class="settings-btn" onclick="openModal()">Configure</button>
-                        </div>
-                        <div class="settings-option">
                             <span><?php echo lang('theme'); ?></span>
-                            <form method="POST" action="" style="display:inline;">
-                                <button type="submit" name="switch_theme" class="settings-btn"><?php echo lang('switch_theme'); ?></button>
+                            <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=settings/update" style="display:inline;">
+                                <input type="hidden" name="switch_theme" value="1">
+                                <button type="submit" class="settings-btn"><?php echo lang('switch_theme'); ?></button>
                             </form>
                         </div>
 
@@ -151,11 +139,144 @@ class Settings {
                         <h2><?php echo lang('support'); ?></h2>
                         <div class="settings-option">
                             <span><?php echo lang('contact_support'); ?></span>
-                            <button class="settings-btn"><?php echo lang('contact'); ?></button>
+                            <button class="settings-btn" onclick="showContactModal()"><?php echo lang('contact'); ?></button>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Contact Support Modal -->
+            <div id="contactModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-envelope"></i> <?php echo lang('contact_support'); ?></h3>
+                        <span class="close" onclick="closeContactModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo lang('support_email_message'); ?></p>
+                        <div class="support-email">
+                            <a href="mailto:support@eyesightcollectibles.com">support@eyesightcollectibles.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .success-message {
+                    color: #155724;
+                    margin-bottom: 15px;
+                    padding: 10px;
+                    background-color: #d4edda;
+                    border: 1px solid #c3e6cb;
+                    border-radius: 4px;
+                }
+
+                /* Modal Styles */
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 1000;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0,0,0,0.5);
+                }
+
+                .modal-content {
+                    background-color: #fefefe;
+                    margin: 15% auto;
+                    padding: 20px;
+                    border-radius: 8px;
+                    width: 80%;
+                    max-width: 500px;
+                    position: relative;
+                    animation: modalSlideIn 0.3s ease-out;
+                }
+
+                .dark-theme .modal-content {
+                    background-color: #2d2d2d;
+                    color: #fff;
+                }
+
+                .modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid #ddd;
+                }
+
+                .dark-theme .modal-header {
+                    border-bottom-color: #444;
+                }
+
+                .modal-header h3 {
+                    margin: 0;
+                    color: #ff6b00;
+                }
+
+                .close {
+                    color: #aaa;
+                    font-size: 28px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+
+                .close:hover {
+                    color: #ff6b00;
+                }
+
+                .modal-body {
+                    padding: 10px 0;
+                }
+
+                .support-email {
+                    margin-top: 20px;
+                    text-align: center;
+                }
+
+                .support-email a {
+                    color: #ff6b00;
+                    text-decoration: none;
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+                .support-email a:hover {
+                    text-decoration: underline;
+                }
+
+                @keyframes modalSlideIn {
+                    from {
+                        transform: translateY(-100px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+            </style>
+
+            <script>
+                function showContactModal() {
+                    document.getElementById('contactModal').style.display = 'block';
+                }
+
+                function closeContactModal() {
+                    document.getElementById('contactModal').style.display = 'none';
+                }
+
+                // Close modal when clicking outside
+                window.onclick = function(event) {
+                    var modal = document.getElementById('contactModal');
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                }
+            </script>
         </body>
         </html>
         <?php
