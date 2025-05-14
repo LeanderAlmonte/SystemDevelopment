@@ -75,6 +75,74 @@ class Disable2FA {
                 </div>
             </div>
         </body>
+        <style>
+            .settings-form {
+                max-width: 500px;
+                margin: 20px auto;
+            }
+            .form-group {
+                margin-bottom: 20px;
+            }
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 500;
+            }
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+            .form-actions {
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+            }
+            .settings-btn {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: all 0.3s ease;
+            }
+            .settings-btn:not(.primary) {
+                background-color: #f8f9fa;
+                color: #333;
+                border: 1px solid #ddd;
+            }
+            .settings-btn.primary {
+                background-color: #ff6b00;
+                color: white;
+            }
+            .settings-btn:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+            }
+            .error-message {
+                color: #dc3545;
+                background-color: #f8d7da;
+                border: 1px solid #f5c6cb;
+                padding: 10px;
+                border-radius: 4px;
+                margin-bottom: 20px;
+            }
+            .dark-theme .settings-btn:not(.primary) {
+                background-color: #2d2d2d;
+                color: #fff;
+                border-color: #444;
+            }
+            .dark-theme .form-group input {
+                background-color: #2d2d2d;
+                color: #fff;
+                border-color: #444;
+            }
+            .dark-theme .form-group input::placeholder {
+                color: #888;
+            }
+        </style>
         </html>
         <?php
     }
