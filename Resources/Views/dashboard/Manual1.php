@@ -125,60 +125,60 @@ class Manual1 {
 
                     <div class="manual-header">
                         <div class="manual-header-content" style="flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
-                            <h2 style="margin: 0;"><i class="fas fa-book"></i> User Manual</h2>
-                            <h3 style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;">How To Use Our Application</h3>
+                            <h2 style="margin: 0;"><i class="fas fa-book"></i> <?php echo lang('user_manual'); ?></h2>
+                            <h3 style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;"><?php echo lang('how_to_use_app'); ?></h3>
                         </div>
                     </div>
 
                     <div class="manual-container">
                         <div class="manual-section">
-                            <h3>Steps to Log In</h3>
+                            <h3><?php echo lang('steps_to_login'); ?></h3>
                             <ol>
-                                <li>Enter your Email and Password into the provided fields.</li>
-                                <li>Click the login button.</li>
-                                <li>If the credentials are correct, you will be redirected to the Admin Home Page.</li>
-                                <li>If the credentials are incorrect, an error message will be displayed.</li>
-                                <li>To reset your password, click on "Reset Password" and follow the instructions.</li>
+                                <li><?php echo lang('manual_login_step1'); ?></li>
+                                <li><?php echo lang('manual_login_step2'); ?></li>
+                                <li><?php echo lang('manual_login_step3'); ?></li>
+                                <li><?php echo lang('manual_login_step4'); ?></li>
+                                <li><?php echo lang('manual_login_step5'); ?></li>
                             </ol>
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/m6.png" alt="Login screenshot">
                         </div>
 
                         <div class="manual-section">
-                            <h3>Home Page</h3>
+                            <h3><?php echo lang('home_page'); ?></h3>
                             <ol>
-                                <li>View the Top 5 Best Sellers section to see the most popular products</li>
-                                <li>Check the Top 5 Most Stocked section for items with the highest inventory</li>
-                                <li>Explore the Random Pokémon section to see a featured Pokémon with its details</li>
-                                <li>Use the left-side menu to navigate different sections like Inventory, History, and Sales</li>
-                                <li>Click on a product to view more details or manage inventory actions</li>
-                                <li>Check the displayed Pokémon height and weight for reference</li>
-                                <li>Click the "Get Another Pokémon" button to generate a new random Pokémon</li>
+                                <li><?php echo lang('manual_home_step1'); ?></li>
+                                <li><?php echo lang('manual_home_step2'); ?></li>
+                                <li><?php echo lang('manual_home_step3'); ?></li>
+                                <li><?php echo lang('manual_home_step4'); ?></li>
+                                <li><?php echo lang('manual_home_step5'); ?></li>
+                                <li><?php echo lang('manual_home_step6'); ?></li>
+                                <li><?php echo lang('manual_home_step7'); ?></li>
                             </ol>
 
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/home.png" alt="Inventory screenshot">
                         </div>
 
                         <div class="manual-section">
-                            <h3>Steps to Manage Users</h3>
+                            <h3><?php echo lang('steps_to_manage_users'); ?></h3>
                             <ol>
-                            <li>Navigate the menu panel to access Manage User</li>
-                            <li>Use the search bar to find a user by name</li>
-                            <li>Click on the 3 buttons on top to filter the user by role</li>
-                            <li>Use the Actions button to edit or delete user</li>
-                            <li>Click the Add User button to add a new user</li>
+                            <li><?php echo lang('manual_users_step1'); ?></li>
+                            <li><?php echo lang('manual_users_step2'); ?></li>
+                            <li><?php echo lang('manual_users_step3'); ?></li>
+                            <li><?php echo lang('manual_users_step4'); ?></li>
+                            <li><?php echo lang('manual_users_step5'); ?></li>
                             </ol>
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/u2.png" alt="Inventory screenshot">
                         </div>
 
                         <div class="manual-section">
-                            <h3>Steps to Manage Inventory</h3>
+                            <h3><?php echo lang('steps_to_manage_inventory'); ?></h3>
                             <ol>
-                            <li>Navigate the menu panel to access Manage Inventory</li>
-                            <li>Use the search bar to find a product by name</li>
-                            <li>Click on a category to filter products</li>
-                            <li>Use the Actions button to edit archive, delete or edit products</li>
-                            <li>Click Process Order to process selected products</li>
-                            <li>Click Add Product to add a new item to the inventory</li>
+                            <li><?php echo lang('manual_inventory_step1'); ?></li>
+                            <li><?php echo lang('manual_inventory_step2'); ?></li>
+                            <li><?php echo lang('manual_inventory_step3'); ?></li>
+                            <li><?php echo lang('manual_inventory_step4'); ?></li>
+                            <li><?php echo lang('manual_inventory_step5'); ?></li>
+                            <li><?php echo lang('manual_inventory_step6'); ?></li>
                             </ol>
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/mp.png" alt="Inventory screenshot">
                         </div>
