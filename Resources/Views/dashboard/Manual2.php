@@ -125,59 +125,59 @@ class Manual2 {
 
                     <div class="manual-header">
                         <div class="manual-header-content" style="flex-direction: row; align-items: center; justify-content: space-between; width: 100%;">
-                            <h2 style="margin: 0;"><i class="fas fa-book"></i> User Manual - Continuation</h2>
-                            <h3 style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;">How To Use Our Application</h3>
+                            <h2 style="margin: 0;"><i class="fas fa-book"></i> <?php echo lang('user_manual_cont'); ?></h2>
+                            <h3 style="margin: 0; font-size: 15px; font-weight: normal; opacity: 0.85; text-align: right;"><?php echo lang('how_to_use_app'); ?></h3>
                         </div>
                     </div>
 
                     <div class="manual-container">
                         <div class="manual-section">
-                            <h3>View Sold Products</h3>
+                            <h3><?php echo lang('view_sold_products'); ?></h3>
                             <ol>
-                                <li>Navigate to the menu panel on the left side of the screen.</li>
-                                <li>Click on the "Sold Products" option in the menu panel.</li>
-                                <li>Use the search bar to find a specific product by name, if needed.</li>
-                                <li>Use the filter buttons to narrow down the product categories, if needed.</li>
-                                <li>View the list of sold products, which includes columns for ID, Product Name, <br> Category, Total Units Sold, and Sale Price.</li>
+                                <li><?php echo lang('manual2_sold_step1'); ?></li>
+                                <li><?php echo lang('manual2_sold_step2'); ?></li>
+                                <li><?php echo lang('manual2_sold_step3'); ?></li>
+                                <li><?php echo lang('manual2_sold_step4'); ?></li>
+                                <li><?php echo lang('manual2_sold_step5'); ?></li>
                             </ol>
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/sp.png" alt="Inventory screenshot">
                         </div>
 
                         <div class="manual-section">
-                            <h3>View Archived Products</h3>
+                            <h3><?php echo lang('view_archived_products'); ?></h3>
                             <ol>
-                                <li>Navigate to the "Archived Items" section from the Menu Panel</li>
-                                <li>Use the search bar to find specific archived products by name if needed.</li>
-                                <li>Filter products by category using the buttons below the search bar.</li>
-                                <li>View the list of archived products, which includes columns for ProductID, <br> Product, Category, Price, Quantity, and Actions.</li>
-                                <li>Select products by checking the checkbox next to the ProductID or <br>use the three dots under Actions.</li>
-                                <li>Perform actions on the selected products like Unarchive or Delete.</li>
+                                <li><?php echo lang('manual2_archived_step1'); ?></li>
+                                <li><?php echo lang('manual2_archived_step2'); ?></li>
+                                <li><?php echo lang('manual2_archived_step3'); ?></li>
+                                <li><?php echo lang('manual2_archived_step4'); ?></li>
+                                <li><?php echo lang('manual2_archived_step5'); ?></li>
+                                <li><?php echo lang('manual2_archived_step6'); ?></li>
                             </ol>
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/a.png" alt="Inventory screenshot">
                         </div>
 
                         <div class="manual-section">
-                            <h3>View Action History</h3>
+                            <h3><?php echo lang('view_action_history'); ?></h3>
                             <ol>
-                                <li>Navigate to the menu panel on the left side of the screen.</li>
-                                <li>Click on the "History" option to access the Action History page.</li>
-                                <li>Use the search bar to find specific actions by user ID, <br>product ID, or action type.</li>
-                                <li>Filter actions using the buttons <br>(e.g., Add, Update, Delete, Archive, Unarchive, Sale).</li>
-                                <li>View the list of recorded actions, including timestamps, user IDs, product IDs, <br>quantities, action types, and descriptions.</li>
-                                <li>Click on View button under Description to view more details if needed.</li>
+                                <li><?php echo lang('manual2_history_step1'); ?></li>
+                                <li><?php echo lang('manual2_history_step2'); ?></li>
+                                <li><?php echo lang('manual2_history_step3'); ?></li>
+                                <li><?php echo lang('manual2_history_step4'); ?></li>
+                                <li><?php echo lang('manual2_history_step5'); ?></li>
+                                <li><?php echo lang('manual2_history_step6'); ?></li>
                             </ol>
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/h.png" alt="Inventory screenshot">
                         </div>
 
                         <div class="manual-section">
-                            <h3>View Sales & Costs</h3>
+                            <h3><?php echo lang('view_sales_costs'); ?></h3>
                             <ol>
-                                <li>Navigate to the menu panel on the left side of the screen.</li>
-                                <li>Click on the "Sales/Costs" option to access the Sales and Costs page.</li>
-                                <li>Hover over the pie chart on different colors to get a quick view <br>of the ammount of Reevenu, Sales and Costs.</li>
-                                <li>The legend shows what each color indicates, green for Revenu, red for <br>Cost and blue for Profit/Loss</li>
-                                <li>Analyze the profit margin by comparing revenue and costs for each product.</li>
-                                <li>Export the sales report if needed using the "Download Report" button.</li>
+                                <li><?php echo lang('manual2_sales_step1'); ?></li>
+                                <li><?php echo lang('manual2_sales_step2'); ?></li>
+                                <li><?php echo lang('manual2_sales_step3'); ?></li>
+                                <li><?php echo lang('manual2_sales_step4'); ?></li>
+                                <li><?php echo lang('manual2_sales_step5'); ?></li>
+                                <li><?php echo lang('manual2_sales_step6'); ?></li>
                             </ol>
                             <img src="/ecommerce/Project/SystemDevelopment/assets/css/images/sc.png" alt="Inventory screenshot">
                         </div>

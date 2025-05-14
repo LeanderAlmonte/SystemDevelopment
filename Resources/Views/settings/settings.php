@@ -100,7 +100,7 @@ class Settings {
                                 <button class="settings-btn" type="submit">
                                     <?php
                                         $isDark = ($_SESSION['theme'] ?? ($userData['theme'] ?? 'Light')) === 'Dark';
-                                        echo $isDark ? lang('switch_to_light') : lang('switch_to_dark');
+                                        echo $isDark ? 'Enable Light Mode' : 'Enable Dark Mode';
                                     ?>
                                 </button>
                             </form>

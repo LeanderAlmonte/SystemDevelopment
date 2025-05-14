@@ -1089,3 +1089,48 @@ input[type="checkbox"]:checked::after {
 .dark-theme .manual-header-content h3 {
     color: #fff !important;
 }
+
+/* Dark mode overrides for manageClient.php */
+.dark-theme .inventory-container,
+.dark-theme .table-container {
+    background-color: #232323 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .inventory-table {
+    background-color: #232323 !important;
+    color: #f4f4f4 !important;
+}
+.dark-theme .inventory-header {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+.dark-theme .header-content h2,
+.dark-theme .header-content span {
+    color: #fff !important;
+}
+.dark-theme .action-btn {
+    background-color: #333 !important;
+    color: #FFDAB9 !important;
+    border: none !important;
+}
+.dark-theme .action-btn:hover {
+    background-color: #E86C2C !important;
+    color: #fff !important;
+}
+.dark-theme .dropdown-content {
+    background-color: #232323 !important;
+    color: #FFDAB9 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5) !important;
+}
+.dark-theme .dropdown-item {
+    background: #333 !important;
+    color: #FFDAB9 !important;
+}
+.dark-theme .dropdown-item:hover {
+    background: #E86C2C !important;
+    color: #fff !important;
+}
+
+.dark-theme .inventory-table td:first-child {
+    color: #fff !important;
+}
