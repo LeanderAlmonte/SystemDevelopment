@@ -165,7 +165,20 @@ return [
     'edit_client' => 'Modifier le client',
     'add_client' => 'Ajouter un client',
     'search_client' => 'Rechercher un client par nom ou email',
-    
-    
+    'disable_2fa' => 'Désactiver l\'authentification à deux facteurs',
+    'disable_2fa_description' => 'Entrez votre code de vérification pour désactiver l\'authentification à deux facteurs',
+    'verification_code' => 'Code de vérification',
+    'enter_verification_code' => 'Entrez le code de vérification',
+    '2fa_disabled_success' => 'L\'authentification à deux facteurs a été désactivée avec succès',
+    'invalid_verification_code' => 'Code de vérification invalide',
+    '2fa_not_enabled' => 'L\'authentification à deux facteurs n\'est pas activée',
+    'enter_current_2fa_code' => 'Entrez votre code de vérification actuel',
+    'enable_2fa' => 'Activer l\'authentification à deux facteurs',
+    'enable_2fa_description' => 'Entrez votre code de vérification pour activer l\'authentification à deux facteurs',
+    'enter_2fa_code' => 'Entrez le code de vérification',
+    '2fa_enabled_success' => 'L\'authentification à deux facteurs a été activée avec succès',
+    '2fa_not_enabled' => 'L\'authentification à deux facteurs n\'est pas activée',
+    'enter_2fa_code' => 'Entrez le code de vérification',
+    '2fa_enabled_success' => 'L\'authentification à deux facteurs a été activée avec succès',
     
 ];
