@@ -3,8 +3,8 @@ namespace Resources\Views\Settings;
 
 // If the theme switch button is clicked, toggle the theme
 if (isset($_POST['switch_theme'])) {
-    // Toggle between 'light' and 'dark'
-    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'light') === 'light' ? 'dark' : 'light';
+    // Toggle between 'Light' and 'Dark'
+    $_SESSION['theme'] = ($_SESSION['theme'] ?? 'Light') === 'Light' ? 'Dark' : 'Light';
     setcookie('theme', $_SESSION['theme'], time() + (86400 * 30), "/"); // Store theme in a cookie for 30 days
     header("Location: " . $_SERVER['PHP_SELF']); // Reload the page to apply the new theme
     exit(); // Stop further script execution
@@ -14,7 +14,7 @@ if (isset($_POST['switch_theme'])) {
 if (isset($_COOKIE['theme'])) {
     $_SESSION['theme'] = $_COOKIE['theme'];
 } elseif (!isset($_SESSION['theme'])) {
-    $_SESSION['theme'] = 'light'; // Default to light theme if no theme is set
+    $_SESSION['theme'] = 'Light'; // Default to Light theme if no theme is set
 }
 
 class Settings {
@@ -30,8 +30,8 @@ class Settings {
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
             <?php
-    // Include dark theme CSS if the selected theme is dark
-    if ($_SESSION['theme'] === 'dark') {
+    // Include dark theme CSS if the selected theme is Dark
+    if ($_SESSION['theme'] === 'Dark') {
         echo '<link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/dark.css">';
     }
     ?>
@@ -142,7 +142,9 @@ class Settings {
                         </div>
                         <div class="settings-option">
                             <span><?php echo lang('theme'); ?></span>
-                            <button class="settings-btn"><?php echo lang('switch_theme'); ?></button>
+                            <form method="POST" action="" style="display:inline;">
+                                <button type="submit" name="switch_theme" class="settings-btn"><?php echo lang('switch_theme'); ?></button>
+                            </form>
                         </div>
 
                         <!-- Support -->
