@@ -225,11 +225,17 @@ class Product {
                 $newCategory = $this->normalizeString($this->category);
                 error_log("Category - Old: '{$oldCategory}', New: '{$newCategory}'");
                 if ($oldCategory != $newCategory) {
+                    // Get user-friendly category names
+                    require_once(dirname(__DIR__) . '/Controllers/ProductController.php');
+                    $productController = new \Controllers\ProductController();
+                    $categories = $productController->getCategories();
+                    $oldLabel = $categories[$oldProduct['category']] ?? $oldProduct['category'];
+                    $newLabel = $categories[$this->category] ?? $this->category;
                     $modifiedFields[] = [
                         'field' => 'category',
                         'old' => $oldProduct['category'],
                         'new' => $this->category,
-                        'description' => "category from '{$oldProduct['category']}' to '{$this->category}'"
+                        'description' => "category from '{$oldLabel}' to '{$newLabel}'"
                     ];
                 }
                 

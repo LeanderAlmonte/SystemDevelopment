@@ -72,6 +72,7 @@ class EditUser {
                         
                         <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=users/update" class="edit-product-form">
                             <input type="hidden" name="userID" value="<?php echo $user['userID']; ?>">
+                            <input type="hidden" name="theme" value="<?php echo htmlspecialchars($user['theme'] ?? 'Light'); ?>">
                             
                             <div class="form-group">
                                 <label for="firstName"><?php echo lang('first_name'); ?></label>
@@ -89,10 +90,10 @@ class EditUser {
                             </div>
 
                             <div class="form-group">
-                                <label for="theme"><?php echo lang('theme'); ?></label>
-                                <select id="theme" name="theme" required>
-                                    <option value="Light" <?php echo $user['theme'] === 'Light' ? 'selected' : ''; ?>><?php echo lang('light'); ?></option>
-                                    <option value="Dark" <?php echo $user['theme'] === 'Dark' ? 'selected' : ''; ?>><?php echo lang('dark'); ?></option>
+                                <label for="userType"><?php echo lang('user_type'); ?></label>
+                                <select id="userType" name="userType" required>
+                                    <option value="Admin" <?php echo $user['userType'] === 'Admin' ? 'selected' : ''; ?>><?php echo lang('admin'); ?></option>
+                                    <option value="Employee" <?php echo $user['userType'] === 'Employee' ? 'selected' : ''; ?>><?php echo lang('employee'); ?></option>
                                 </select>
                             </div>
 

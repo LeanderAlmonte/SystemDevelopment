@@ -76,7 +76,6 @@ class ManageUsers {
                                         <th><?php echo lang('name'); ?></th>
                                         <th><?php echo lang('email'); ?></th>
                                         <th><?php echo lang('user_type'); ?></th>
-                                        <th><?php echo lang('theme'); ?></th>
                                         <th><?php echo lang('actions'); ?></th>
                                     </tr>
                                 </thead>
@@ -90,7 +89,6 @@ class ManageUsers {
                                                 <td><?php echo $user['firstName'] . ' ' . $user['lastName']; ?></td>
                                                 <td><?php echo $user['email']; ?></td>
                                                 <td><?php echo lang(strtolower($user['userType'])); ?></td>
-                                                <td><?php echo lang(strtolower($user['theme'])); ?></td>
                                                 <td class="actions-cell">
                                                     <div class="dropdown">
                                                         <button class="action-btn" onclick="toggleDropdown(this, <?php echo $user['userID']; ?>)">

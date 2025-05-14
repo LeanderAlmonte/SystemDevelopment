@@ -232,4 +232,5 @@ return [
     'edit_client' => 'Edit Client',
     'edit_product' => 'Edit Product',
     'edit_user' => 'Edit User',
+    'name_pattern_error' => 'Only letters, spaces, and hyphens are allowed.',
 ];

@@ -234,6 +234,8 @@ class History {
                 .modal-description {
                     white-space: pre-wrap;
                     word-wrap: break-word;
+                    max-width: none;
+                    overflow: visible;
                 }
 
                 .no-data {
@@ -283,8 +285,8 @@ class History {
 
                 .modal-dialog {
                     margin: 1.75rem auto;
-                    max-width: 500px;
-                    width: 100%;
+                    max-width: 900px;
+                    width: 95%;
                 }
 
                 .modal-content {
@@ -361,7 +363,7 @@ class History {
                             const changesSection = actionDetailsModal.querySelector('.changes-section');
                             const changesContent = actionDetailsModal.querySelector('.changes-content');
                             
-                            modalDescription.textContent = description;
+                            modalDescription.innerText = description;
                             
                             if (oldValue || newValue) {
                                 changesSection.style.display = 'block';

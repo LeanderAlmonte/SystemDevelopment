@@ -56,7 +56,6 @@ class Login {
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" placeholder="Enter your password" required>
                         
-                        <a href="/ecommerce/Project/SystemDevelopment/index.php?url=auths/forgotPassword" class="forgot-password">Forgot Password?</a>
                         <button type="submit" class="submit-button">Login</button>
                     </form>
                     <script>

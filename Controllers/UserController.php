@@ -33,7 +33,20 @@ class UserController {
             exit();
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $result = $this->user->create($_POST);
+            $postData = $_POST;
+            if (!isset($postData['theme']) || empty($postData['theme'])) {
+                $postData['theme'] = 'Light';
+            }
+            // Capitalize first letter of each word in first and last names, including after hyphens
+            $postData['firstName'] = preg_replace_callback('/\b\w|-\w/', function($matches) { return strtoupper($matches[0]); }, strtolower($postData['firstName']));
+            $postData['lastName'] = preg_replace_callback('/\b\w|-\w/', function($matches) { return strtoupper($matches[0]); }, strtolower($postData['lastName']));
+            // Check for duplicate email
+            $existingUser = $this->user->findByEmail($postData['email']);
+            if ($existingUser) {
+                $this->showAddForm('A user with this email already exists.', $postData['firstName'], $postData['lastName']);
+                return;
+            }
+            $result = $this->user->create($postData);
             if (isset($result['error'])) {
                 $this->showAddForm($result['error']);
             } else {
@@ -51,7 +64,7 @@ class UserController {
             exit();
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['userID'] ?? null;
+            $id = $_POST['userId'] ?? null;
             if ($id) {
                 $this->user->setUserID($id);
                 $result = $this->user->delete();
@@ -64,14 +77,14 @@ class UserController {
         }
     }
 
-    private function showAddForm($error = null) {
+    private function showAddForm($error = null, $firstName = '', $lastName = '') {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
             exit();
         }
         require_once(dirname(__DIR__) . '/resources/views/user/addUser.php');
         $view = new \Resources\Views\User\Adduser();
-        $view->render($error);
+        $view->render($error, $firstName, $lastName);
         exit();
     }
 
@@ -88,15 +101,26 @@ class UserController {
             $user->setLastName($_POST['lastName']);
             $user->setEmail($_POST['email']);
             $user->setTheme($_POST['theme']);
+            if (isset($_POST['userType'])) {
+                $user->setUserType($_POST['userType']);
+            }
 
             // Get current user data to preserve userType
             $currentUser = $user->read($_POST['userID']);
             if ($currentUser) {
-                $user->setUserType($currentUser['userType']);
+                // If userType is not set from the form, preserve the old one
+                if (!isset($_POST['userType'])) {
+                    $user->setUserType($currentUser['userType']);
+                }
                 $user->setLanguage($currentUser['language'] ?? 'en');
             }
 
             if ($user->update()) {
+                // If the current user is being edited, update their session role immediately
+                if (isset($_SESSION['userID']) && $_SESSION['userID'] == $_POST['userID'] && isset($_POST['userType'])) {
+                    $_SESSION['userRole'] = $_POST['userType'];
+                    $_SESSION['userType'] = $_POST['userType'];
+                }
                 header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
                 exit();
             } else {

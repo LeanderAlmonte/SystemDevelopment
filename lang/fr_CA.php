@@ -249,4 +249,5 @@ return [
     'edit_client' => 'Modifier le client',
     'edit_product' => 'Modifier le produit',
     'edit_user' => 'Modifier l\'utilisateur',
+    'name_pattern_error' => 'Seules les lettres, les espaces et les tirets sont autorisés.',
 ];

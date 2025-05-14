@@ -72,6 +72,7 @@ class AuthController {
                     $_SESSION['lang'] = $user['language'] ?? 'en';
                     // Store userRole from login form (Employee/Admin), fallback to userType
                     $_SESSION['userRole'] = $user['userType'];
+                    $_SESSION['theme'] = $user['theme'] ?? 'Light';
                     
                     header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
                     exit();
