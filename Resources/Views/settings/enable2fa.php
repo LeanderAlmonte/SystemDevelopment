@@ -14,8 +14,17 @@ class Enable2FA {
             <title>Enable 2FA - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <?php
+            // Include dark theme CSS if the selected theme is Dark
+            if ($_SESSION['theme'] === 'Dark') {
+                echo '<link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/dark.css">';
+            }
+            ?>
         </head>
-        <body>
+        <body<?php 
+            $theme = $_SESSION['theme'] ?? 'Light';
+            echo $theme === 'Dark' ? ' class="dark-theme"' : '';
+        ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -124,6 +133,11 @@ class Enable2FA {
                     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 }
 
+                .dark-theme .2fa-setup {
+                    background: #2d2d2d;
+                    color: #fff;
+                }
+
                 .qr-code {
                     text-align: center;
                     margin: 20px 0;
@@ -142,6 +156,11 @@ class Enable2FA {
                     text-align: center;
                 }
 
+                .dark-theme .secret-key {
+                    background: #3d3d3d;
+                    color: #fff;
+                }
+
                 .secret-key code {
                     font-family: monospace;
                     font-size: 16px;
@@ -154,6 +173,11 @@ class Enable2FA {
                     background: #fff;
                     border-radius: 8px;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+
+                .dark-theme .2fa-info {
+                    background: #2d2d2d;
+                    color: #fff;
                 }
 
                 .2fa-info p {
@@ -170,10 +194,16 @@ class Enable2FA {
                     font-size: 16px;
                 }
 
+                .dark-theme input[type="text"] {
+                    background: #3d3d3d;
+                    color: #fff;
+                    border-color: #444;
+                }
+
                 .settings-btn {
                     width: 100%;
                     padding: 10px;
-                    background-color: #E86C2C;
+                    background-color: #ff6b00;
                     color: white;
                     border: none;
                     border-radius: 4px;
@@ -182,7 +212,7 @@ class Enable2FA {
                 }
 
                 .settings-btn:hover {
-                    background-color: #d15a1a;
+                    background-color: #e65c00;
                 }
 
                 .error-message {
@@ -194,6 +224,12 @@ class Enable2FA {
                     border: 1px solid #ef9a9a;
                 }
 
+                .dark-theme .error-message {
+                    background-color: #3d2d2d;
+                    color: #ff9a9a;
+                    border-color: #ff6b6b;
+                }
+
                 .debug-info {
                     background-color: #e3f2fd;
                     color: #1565c0;
@@ -203,10 +239,20 @@ class Enable2FA {
                     border: 1px solid #90caf9;
                 }
 
+                .dark-theme .debug-info {
+                    background-color: #2d3d4d;
+                    color: #90caf9;
+                    border-color: #1565c0;
+                }
+
                 .debug-info h3 {
                     margin-top: 0;
                     color: #1565c0;
                     font-size: 16px;
+                }
+
+                .dark-theme .debug-info h3 {
+                    color: #90caf9;
                 }
 
                 .debug-content {
@@ -214,6 +260,11 @@ class Enable2FA {
                     padding: 10px;
                     border-radius: 4px;
                     border: 1px solid #90caf9;
+                }
+
+                .dark-theme .debug-content {
+                    background-color: #1d2d3d;
+                    border-color: #1565c0;
                 }
 
                 .debug-content p {

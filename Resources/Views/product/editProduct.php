@@ -1,6 +1,8 @@
 <?php
 namespace resources\views\product;
 
+require_once(__DIR__ . '/../../../lang/lang.php');
+
 class EditProduct {
     public function render($data, $error = null) {
         $product = $data['product'] ?? null;
@@ -10,15 +12,24 @@ class EditProduct {
         }
         ?>
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="<?php echo $_SESSION['lang'] ?? 'en'; ?>">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Edit Product - Eyesightcollectibles</title>
+            <title><?php echo lang('edit_product'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <?php
+            // Include dark theme CSS if the selected theme is Dark
+            if ($_SESSION['theme'] === 'Dark') {
+                echo '<link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/dark.css">';
+            }
+            ?>
         </head>
-        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
+        <body<?php 
+            $theme = $_SESSION['theme'] ?? 'Light';
+            echo $theme === 'Dark' ? ' class="dark-theme"' : '';
+        ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -49,7 +60,12 @@ class EditProduct {
                     </div>
 
                     <div class="edit-product-container">
-                        <h2><?php echo lang('edit'); ?> <?php echo lang('product'); ?></h2>
+                        <div class="inventory-header">
+                            <div class="header-content">
+                                <h2><i class="fas fa-edit"></i> <?php echo lang('edit_product'); ?></h2>
+                            </div>
+                        </div>
+
                         <?php if (isset($error)): ?>
                             <div class="error-message"><?php echo $error; ?></div>
                         <?php endif; ?>
@@ -66,17 +82,17 @@ class EditProduct {
                                 <label for="category"><?php echo lang('category'); ?></label>
                                 <select id="category" name="category" required>
                                     <option value="" disabled><?php echo lang('select_category'); ?></option>
-                                    <option value="Pokemon Japanese" <?php echo $product['category'] === 'pokemon-japanese' ? 'selected' : ''; ?>>Pokemon Japanese</option>
-                                    <option value="Pokemon Korean" <?php echo $product['category'] === 'pokemon-korean' ? 'selected' : ''; ?>>Pokemon Korean</option>
-                                    <option value="pokemon-chinese" <?php echo $product['category'] === 'pokemon-chinese' ? 'selected' : ''; ?>>Pokemon Chinese</option>
-                                    <option value="card-accessories" <?php echo $product['category'] === 'card-accessories' ? 'selected' : ''; ?>>Card Accessories</option>
-                                    <option value="weiss-schwarz" <?php echo $product['category'] === 'weiss-schwarz' ? 'selected' : ''; ?>>Weiss Schwarz</option>
-                                    <option value="kayou-naruto" <?php echo $product['category'] === 'kayou-naruto' ? 'selected' : ''; ?>>Kayou Naruto</option>
-                                    <option value="kayou" <?php echo $product['category'] === 'kayou' ? 'selected' : ''; ?>>Kayou</option>
-                                    <option value="dragon-ball-japanese" <?php echo $product['category'] === 'dragon-ball-japanese' ? 'selected' : ''; ?>>Dragon Ball Japanese</option>
-                                    <option value="one-piece-japanese" <?php echo $product['category'] === 'one-piece-japanese' ? 'selected' : ''; ?>>One Piece Japanese</option>
-                                    <option value="carreda-demon-slayer" <?php echo $product['category'] === 'carreda-demon-slayer' ? 'selected' : ''; ?>>Carreda Demon Slayer</option>
-                                    <option value="pokemon-plush" <?php echo $product['category'] === 'pokemon-plush' ? 'selected' : ''; ?>>Pokemon Plush</option>
+                                    <option value="Pokemon Japanese" <?php echo $product['category'] === 'pokemon-japanese' ? 'selected' : ''; ?>><?php echo lang('pokemon_japanese'); ?></option>
+                                    <option value="Pokemon Korean" <?php echo $product['category'] === 'pokemon-korean' ? 'selected' : ''; ?>><?php echo lang('pokemon_korean'); ?></option>
+                                    <option value="pokemon-chinese" <?php echo $product['category'] === 'pokemon-chinese' ? 'selected' : ''; ?>><?php echo lang('pokemon_chinese'); ?></option>
+                                    <option value="card-accessories" <?php echo $product['category'] === 'card-accessories' ? 'selected' : ''; ?>><?php echo lang('card_accessories'); ?></option>
+                                    <option value="weiss-schwarz" <?php echo $product['category'] === 'weiss-schwarz' ? 'selected' : ''; ?>><?php echo lang('weiss_schwarz'); ?></option>
+                                    <option value="kayou-naruto" <?php echo $product['category'] === 'kayou-naruto' ? 'selected' : ''; ?>><?php echo lang('kayou_naruto'); ?></option>
+                                    <option value="kayou" <?php echo $product['category'] === 'kayou' ? 'selected' : ''; ?>><?php echo lang('kayou'); ?></option>
+                                    <option value="dragon-ball-japanese" <?php echo $product['category'] === 'dragon-ball-japanese' ? 'selected' : ''; ?>><?php echo lang('dragon_ball_japanese'); ?></option>
+                                    <option value="one-piece-japanese" <?php echo $product['category'] === 'one-piece-japanese' ? 'selected' : ''; ?>><?php echo lang('one_piece_japanese'); ?></option>
+                                    <option value="carreda-demon-slayer" <?php echo $product['category'] === 'carreda-demon-slayer' ? 'selected' : ''; ?>><?php echo lang('carreda_demon_slayer'); ?></option>
+                                    <option value="pokemon-plush" <?php echo $product['category'] === 'pokemon-plush' ? 'selected' : ''; ?>><?php echo lang('pokemon_plush'); ?></option>
                                 </select>
                             </div>
 

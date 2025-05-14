@@ -65,26 +65,31 @@ class SettingController {
                     $user->setLanguage($_POST['lang']);
                     $user->update();
                 }
-                header('Location: ' . $_SERVER['REQUEST_URI']);
+                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings');
                 exit;
             }
             // Handle theme change
-            if (isset($_POST['theme'])) {
-                $newTheme = $_POST['theme'] === 'Dark' ? 'Dark' : 'Light';
+            if (isset($_POST['switch_theme'])) {
+                $newTheme = ($_SESSION['theme'] ?? 'Light') === 'Light' ? 'Dark' : 'Light';
                 $_SESSION['theme'] = $newTheme;
+                setcookie('theme', $newTheme, time() + (86400 * 30), "/"); // Store theme in a cookie for 30 days
+                
+                // Update theme in database
                 if (isset($_SESSION['userID'])) {
                     $user = new User();
                     $user->setUserID($_SESSION['userID']);
                     $userData = $user->read($_SESSION['userID']);
-                    $user->setFirstName($userData['firstName']);
-                    $user->setLastName($userData['lastName']);
-                    $user->setEmail($userData['email']);
-                    $user->setUserType($userData['userType']);
-                    $user->setTheme($newTheme);
-                    $user->setLanguage($userData['language']);
-                    $user->update();
+                    if ($userData) {
+                        $user->setFirstName($userData['firstName']);
+                        $user->setLastName($userData['lastName']);
+                        $user->setEmail($userData['email']);
+                        $user->setUserType($userData['userType']);
+                        $user->setTheme($newTheme);
+                        $user->setLanguage($userData['language']);
+                        $user->update();
+                    }
                 }
-                header('Location: ' . $_SERVER['REQUEST_URI']);
+                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings');
                 exit;
             }
         }

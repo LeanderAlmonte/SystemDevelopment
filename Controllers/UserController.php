@@ -51,7 +51,7 @@ class UserController {
             exit();
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['userId'] ?? null;
+            $id = $_POST['userID'] ?? null;
             if ($id) {
                 $this->user->setUserID($id);
                 $result = $this->user->delete();
@@ -80,64 +80,42 @@ class UserController {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
             exit();
         }
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['userID'] ?? null;
-            if ($id) {
-                // Get the current user data
-                $currentUser = $this->user->read($id);
-                
-                $this->user->setUserID($id);
-                $this->user->setFirstName($_POST['firstName']);
-                $this->user->setLastName($_POST['lastName']);
-                $this->user->setEmail($_POST['email']);
-                
-                // Preserve case for userType
-                $userType = $_POST['userType'];
-                if ($userType === 'admin') {
-                    $userType = 'Admin';
-                } elseif ($userType === 'employee') {
-                    $userType = 'Employee';
-                }
-                $this->user->setUserType($userType);
-                
-                // Preserve case for theme
-                $theme = $_POST['theme'];
-                if ($theme === 'light') {
-                    $theme = 'Light';
-                } elseif ($theme === 'dark') {
-                    $theme = 'Dark';
-                }
-                $this->user->setTheme($theme);
-                
-                $result = $this->user->update();
-                if (!$result) {
-                    $this->showEditForm($id, 'Failed to update user');
-                    return;
-                }
-                
+            $user = new User();
+            $user->setUserID($_POST['userID']);
+            $user->setFirstName($_POST['firstName']);
+            $user->setLastName($_POST['lastName']);
+            $user->setEmail($_POST['email']);
+            $user->setTheme($_POST['theme']);
+
+            // Get current user data to preserve userType
+            $currentUser = $user->read($_POST['userID']);
+            if ($currentUser) {
+                $user->setUserType($currentUser['userType']);
+                $user->setLanguage($currentUser['language'] ?? 'en');
+            }
+
+            if ($user->update()) {
                 header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
                 exit();
+            } else {
+                $error = "Failed to update user";
+                $userData = $user->read($_POST['userID']);
+                $view = new \resources\views\user\EditUser();
+                $view->render(['user' => $userData], $error);
             }
         } else {
-            $id = $_GET['id'] ?? null;
-            if ($id) {
-                $this->showEditForm($id);
+            // Handle GET request
+            $user = new User();
+            $userData = $user->read($_GET['id']);
+            if ($userData) {
+                $view = new \resources\views\user\EditUser();
+                $view->render(['user' => $userData]);
             } else {
                 header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=users');
                 exit();
             }
         }
-    }
-
-    private function showEditForm($id, $error = null) {
-        if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
-            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
-            exit();
-        }
-        $data = ['user' => $this->user->read($id)];
-        require(dirname(__DIR__) . '/resources/views/user/editUser.php');
-        $editUser = new \resources\views\user\EditUser();
-        $editUser->render($data, $error);
-        exit();
     }
 }

@@ -246,5 +246,7 @@ return [
     'welcome' => 'Bienvenue',
     'top_best_sellers' => 'Top 5 des meilleures ventes',
     'dashboard' => 'Tableau de bord',
-
+    'edit_client' => 'Modifier le client',
+    'edit_product' => 'Modifier le produit',
+    'edit_user' => 'Modifier l\'utilisateur',
 ];

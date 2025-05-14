@@ -229,4 +229,7 @@ return [
     'support_email_message' => 'If you are experiencing any issues or need assistance, please contact our support team at:',
     'dashboard' => 'Dashboard',
     'sold_products' => 'Sold Products',
+    'edit_client' => 'Edit Client',
+    'edit_product' => 'Edit Product',
+    'edit_user' => 'Edit User',
 ];

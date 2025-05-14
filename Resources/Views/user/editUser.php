@@ -1,6 +1,8 @@
 <?php
 namespace resources\views\user;
 
+require_once(__DIR__ . '/../../../lang/lang.php');
+
 class EditUser {
     public function render($data, $error = null) {
         $user = $data['user'] ?? null;
@@ -10,15 +12,24 @@ class EditUser {
         }
         ?>
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="<?php echo $_SESSION['lang'] ?? 'en'; ?>">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Edit User - Eyesightcollectibles</title>
+            <title><?php echo lang('edit_user'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <?php
+            // Include dark theme CSS if the selected theme is Dark
+            if ($_SESSION['theme'] === 'Dark') {
+                echo '<link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/dark.css">';
+            }
+            ?>
         </head>
-        <body>
+        <body<?php 
+            $theme = $_SESSION['theme'] ?? 'Light';
+            echo $theme === 'Dark' ? ' class="dark-theme"' : '';
+        ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -49,7 +60,12 @@ class EditUser {
                     </div>
 
                     <div class="edit-product-container">
-                        <h2>Edit User</h2>
+                        <div class="inventory-header">
+                            <div class="header-content">
+                                <h2><i class="fas fa-user-edit"></i> <?php echo lang('edit_user'); ?></h2>
+                            </div>
+                        </div>
+
                         <?php if (isset($error)): ?>
                             <div class="error-message"><?php echo $error; ?></div>
                         <?php endif; ?>
@@ -58,39 +74,31 @@ class EditUser {
                             <input type="hidden" name="userID" value="<?php echo $user['userID']; ?>">
                             
                             <div class="form-group">
-                                <label for="firstName">First Name</label>
-                                <input type="text" id="firstName" name="firstName" placeholder="Enter first name" value="<?php echo htmlspecialchars($user['firstName']); ?>" required>
+                                <label for="firstName"><?php echo lang('first_name'); ?></label>
+                                <input type="text" id="firstName" name="firstName" placeholder="<?php echo lang('enter_first_name'); ?>" value="<?php echo htmlspecialchars($user['firstName']); ?>" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="lastName">Last Name</label>
-                                <input type="text" id="lastName" name="lastName" placeholder="Enter last name" value="<?php echo htmlspecialchars($user['lastName']); ?>" required>
+                                <label for="lastName"><?php echo lang('last_name'); ?></label>
+                                <input type="text" id="lastName" name="lastName" placeholder="<?php echo lang('enter_last_name'); ?>" value="<?php echo htmlspecialchars($user['lastName']); ?>" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" placeholder="Enter email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
+                                <label for="email"><?php echo lang('email'); ?></label>
+                                <input type="email" id="email" name="email" placeholder="<?php echo lang('enter_email'); ?>" value="<?php echo htmlspecialchars($user['email']); ?>" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="userType">User Type</label>
-                                <select id="userType" name="userType" required>
-                                    <option value="admin" <?php echo $user['userType'] === 'Admin' ? 'selected' : ''; ?>>Admin</option>
-                                    <option value="employee" <?php echo $user['userType'] === 'Employee' ? 'selected' : ''; ?>>Employee</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="theme">Theme</label>
+                                <label for="theme"><?php echo lang('theme'); ?></label>
                                 <select id="theme" name="theme" required>
-                                    <option value="light" <?php echo $user['theme'] === 'Light' ? 'selected' : ''; ?>>Light</option>
-                                    <option value="dark" <?php echo $user['theme'] === 'Dark' ? 'selected' : ''; ?>>Dark</option>
+                                    <option value="Light" <?php echo $user['theme'] === 'Light' ? 'selected' : ''; ?>><?php echo lang('light'); ?></option>
+                                    <option value="Dark" <?php echo $user['theme'] === 'Dark' ? 'selected' : ''; ?>><?php echo lang('dark'); ?></option>
                                 </select>
                             </div>
 
                             <div class="form-actions">
-                                <button type="button" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=users'">Back</button>
-                                <button type="submit">Update User</button>
+                                <button type="button" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=users'"><?php echo lang('back'); ?></button>
+                                <button type="submit"><?php echo lang('update'); ?> <?php echo lang('user'); ?></button>
                             </div>
                         </form>
                     </div>

@@ -19,8 +19,17 @@ class EditClient {
             <title><?php echo lang('edit_client'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <?php
+            // Include dark theme CSS if the selected theme is Dark
+            if ($_SESSION['theme'] === 'Dark') {
+                echo '<link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/dark.css">';
+            }
+            ?>
         </head>
-        <body>
+        <body<?php 
+            $theme = $_SESSION['theme'] ?? 'Light';
+            echo $theme === 'Dark' ? ' class="dark-theme"' : '';
+        ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">

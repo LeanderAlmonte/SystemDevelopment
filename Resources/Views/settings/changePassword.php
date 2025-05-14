@@ -13,6 +13,12 @@ class ChangePassword {
             <title><?php echo lang('change_password'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <?php
+            // Include dark theme CSS if the selected theme is Dark
+            if ($_SESSION['theme'] === 'Dark') {
+                echo '<link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/dark.css">';
+            }
+            ?>
             <style>
                 .change-password-container {
                     max-width: 500px;
@@ -21,6 +27,11 @@ class ChangePassword {
                     background: #fff;
                     border-radius: 8px;
                     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+
+                .dark-theme .change-password-container {
+                    background: #2d2d2d;
+                    color: #fff;
                 }
 
                 .form-group {
@@ -40,6 +51,12 @@ class ChangePassword {
                     border-radius: 4px;
                 }
 
+                .dark-theme .form-group input {
+                    background-color: #3d3d3d;
+                    color: #fff;
+                    border-color: #444;
+                }
+
                 .form-actions {
                     display: flex;
                     gap: 10px;
@@ -54,14 +71,20 @@ class ChangePassword {
                     cursor: pointer;
                 }
 
+                .dark-theme .form-actions button {
+                    background-color: #3d3d3d;
+                    color: #fff;
+                    border-color: #444;
+                }
+
                 .form-actions button[type="submit"] {
-                    background-color: var(--brown-color);
+                    background-color: #ff6b00;
                     color: white;
                     border: none;
                 }
 
                 .form-actions button[type="submit"]:hover {
-                    background-color: #654321;
+                    background-color: #e65c00;
                 }
 
                 .error-message {
@@ -72,9 +95,18 @@ class ChangePassword {
                     border: 1px solid #f5c6cb;
                     border-radius: 4px;
                 }
+
+                .dark-theme .error-message {
+                    background-color: #3d2d2d;
+                    color: #ff9a9a;
+                    border-color: #ff6b6b;
+                }
             </style>
         </head>
-        <body>
+        <body<?php 
+            $theme = $_SESSION['theme'] ?? 'Light';
+            echo $theme === 'Dark' ? ' class="dark-theme"' : '';
+        ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">

@@ -14,8 +14,17 @@ class Disable2FA {
             <title><?php echo lang('disable_2fa'); ?> - Eyesightcollectibles</title>
             <link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/styles.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+            <?php
+            // Include dark theme CSS if the selected theme is Dark
+            if ($_SESSION['theme'] === 'Dark') {
+                echo '<link rel="stylesheet" href="/ecommerce/Project/SystemDevelopment/assets/css/dark.css">';
+            }
+            ?>
         </head>
-        <body<?php $theme = $_SESSION['theme'] ?? 'Light'; echo $theme === 'Dark' ? ' class="dark-theme"' : ''; ?>>
+        <body<?php 
+            $theme = $_SESSION['theme'] ?? 'Light';
+            echo $theme === 'Dark' ? ' class="dark-theme"' : '';
+        ?>>
             <div class="container">
                 <!-- Menu Panel -->
                 <div class="menu-panel">
@@ -95,6 +104,11 @@ class Disable2FA {
                 border-radius: 4px;
                 font-size: 16px;
             }
+            .dark-theme .form-group input {
+                background-color: #3d3d3d;
+                color: #fff;
+                border-color: #444;
+            }
             .form-actions {
                 display: flex;
                 gap: 10px;
@@ -113,6 +127,11 @@ class Disable2FA {
                 color: #333;
                 border: 1px solid #ddd;
             }
+            .dark-theme .settings-btn:not(.primary) {
+                background-color: #3d3d3d;
+                color: #fff;
+                border-color: #444;
+            }
             .settings-btn.primary {
                 background-color: #ff6b00;
                 color: white;
@@ -129,18 +148,10 @@ class Disable2FA {
                 border-radius: 4px;
                 margin-bottom: 20px;
             }
-            .dark-theme .settings-btn:not(.primary) {
-                background-color: #2d2d2d;
-                color: #fff;
-                border-color: #444;
-            }
-            .dark-theme .form-group input {
-                background-color: #2d2d2d;
-                color: #fff;
-                border-color: #444;
-            }
-            .dark-theme .form-group input::placeholder {
-                color: #888;
+            .dark-theme .error-message {
+                background-color: #3d2d2d;
+                color: #ff9a9a;
+                border-color: #ff6b6b;
             }
         </style>
         </html>
