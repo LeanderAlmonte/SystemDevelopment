@@ -126,21 +126,21 @@ class User{
     // CRUD Operations
     public function read($id = null) {
         try {
-            if ($id !== null) {
-                $query = "SELECT * FROM users WHERE userID = :userID";
-                $stmt = $this->dbConnection->prepare($query);
-                $stmt->bindParam(':userID', $id, PDO::PARAM_INT);
-                $stmt->execute();
-                $user = $stmt->fetch(PDO::FETCH_ASSOC);
-                if ($user) {
-                    $this->setLanguage($user['language'] ?? 'en');
-                }
-                return $user;
-            } else {
-                $query = "SELECT * FROM users";
-                $stmt = $this->dbConnection->prepare($query);
-                $stmt->execute();
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if ($id !== null) {
+            $query = "SELECT * FROM users WHERE userID = :userID";
+            $stmt = $this->dbConnection->prepare($query);
+            $stmt->bindParam(':userID', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($user) {
+                $this->setLanguage($user['language'] ?? 'en');
+            }
+            return $user;
+        } else {
+            $query = "SELECT * FROM users";
+            $stmt = $this->dbConnection->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
         } catch (PDOException $e) {
             error_log("Database error in read: " . $e->getMessage());
@@ -150,30 +150,30 @@ class User{
 
     public function create($data = null) {
         try {
-            if ($data) {
-                $this->setFirstName($data['firstName']);
-                $this->setLastName($data['lastName']);
-                $this->setPassword(password_hash($data['password'], PASSWORD_DEFAULT));
-                $this->setEmail($data['email']);
-                $this->setUserType($data['userType']);
-                $this->setTheme($data['theme']);
-                $this->setTwoFactorEnabled(false);
-                $this->setLanguage($data['language'] ?? 'en');
-            }
+        if ($data) {
+            $this->setFirstName($data['firstName']);
+            $this->setLastName($data['lastName']);
+            $this->setPassword(password_hash($data['password'], PASSWORD_DEFAULT));
+            $this->setEmail($data['email']);
+            $this->setUserType($data['userType']);
+            $this->setTheme($data['theme']);
+            $this->setTwoFactorEnabled(false);
+            $this->setLanguage($data['language'] ?? 'en');
+        }
 
-            $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme, twoFactorEnabled, language) 
-                     VALUES (:firstName, :lastName, :password, :email, :userType, :theme, :twoFactorEnabled, :language)";
-            
-            $stmt = $this->dbConnection->prepare($query);
-            $stmt->bindParam(':firstName', $this->firstName);
-            $stmt->bindParam(':lastName', $this->lastName);
-            $stmt->bindParam(':password', $this->password);
-            $stmt->bindParam(':email', $this->email);
-            $stmt->bindParam(':userType', $this->userType);
-            $stmt->bindParam(':theme', $this->theme);
-            $stmt->bindParam(':twoFactorEnabled', $this->twoFactorEnabled);
-            $stmt->bindParam(':language', $this->language);
-            
+        $query = "INSERT INTO users (firstName, lastName, password, email, userType, theme, twoFactorEnabled, language) 
+                 VALUES (:firstName, :lastName, :password, :email, :userType, :theme, :twoFactorEnabled, :language)";
+        
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':firstName', $this->firstName);
+        $stmt->bindParam(':lastName', $this->lastName);
+        $stmt->bindParam(':password', $this->password);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':userType', $this->userType);
+        $stmt->bindParam(':theme', $this->theme);
+        $stmt->bindParam(':twoFactorEnabled', $this->twoFactorEnabled);
+        $stmt->bindParam(':language', $this->language);
+        
             if ($stmt->execute()) {
                 return ['success' => true];
             } else {

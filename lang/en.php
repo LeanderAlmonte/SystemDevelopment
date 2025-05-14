@@ -157,5 +157,16 @@ return [
     'phone' => 'Phone Number',
     'edit_client' => 'Edit Client',
     'search_client' => 'Search for client by name or email',
-    
+    'disable_2fa' => 'Disable Two-Factor Authentication',
+    'disable_2fa_description' => 'Enter your verification code to disable 2FA',
+    'verification_code' => 'Verification Code',
+    'enter_verification_code' => 'Enter verification code',
+    '2fa_disabled_success' => 'Two-factor authentication has been disabled successfully',
+    'invalid_verification_code' => 'Invalid verification code',
+    '2fa_not_enabled' => 'Two-factor authentication is not enabled',
+    'enter_current_2fa_code' => 'Enter your current verification code',
+    'enable_2fa' => 'Enable Two-Factor Authentication',
+    'enable_2fa_description' => 'Enter your verification code to enable 2FA',
+    'enter_2fa_code' => 'Enter verification code',
+    '2fa_enabled_success' => 'Two-factor authentication has been enabled successfully',
 ];

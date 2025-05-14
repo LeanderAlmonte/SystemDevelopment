@@ -72,9 +72,9 @@ class Settings {
                         <div class="settings-option">
                             <span>Two-Factor Authentication</span>
                             <?php if ($_SESSION['twoFactorEnabled']): ?>
-                                <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/disable2fa'">Disable 2FA</button>
+                                <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/disable2fa'"><?php echo lang('disable_2fa'); ?></button>
                             <?php else: ?>
-                                <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/enable2fa'">Enable 2FA</button>
+                                <button class="settings-btn" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=settings/enable2fa'"><?php echo lang('enable_2fa'); ?></button>
                             <?php endif; ?>
                         </div>
 

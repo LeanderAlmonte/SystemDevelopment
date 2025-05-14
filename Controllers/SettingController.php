@@ -6,12 +6,14 @@ use Models\User;
 use RobThree\Auth\TwoFactorAuth;
 use Resources\Views\Settings\Settings;
 use Resources\Views\Settings\Enable2FA;
+use Resources\Views\Settings\Disable2FA;
 use Resources\Views\Settings\ChangePassword;
 use Core\TwoFA\EndroidQRCodeProvider;
 
 require_once(dirname(__DIR__) . '/Models/User.php');
 require_once(dirname(__DIR__) . '/Resources/Views/Settings/Settings.php');
 require_once(dirname(__DIR__) . '/Resources/Views/Settings/Enable2FA.php');
+require_once(dirname(__DIR__) . '/Resources/Views/Settings/Disable2FA.php');
 require_once(dirname(__DIR__) . '/Resources/Views/Settings/ChangePassword.php');
 require_once(dirname(__DIR__) . '/Core/TwoFA/EndroidQRCodeProvider.php');
 require_once(dirname(__DIR__) . '/lang/lang.php');
@@ -20,6 +22,7 @@ class SettingController {
     private User $user;
     private Settings $settingsView;
     private Enable2FA $enable2FAView;
+    private Disable2FA $disable2FAView;
     private ChangePassword $changePasswordView;
     private TwoFactorAuth $tfa;
     private EndroidQRCodeProvider $qrCodeProvider;
@@ -28,6 +31,7 @@ class SettingController {
         $this->user = new User();
         $this->settingsView = new Settings();
         $this->enable2FAView = new Enable2FA();
+        $this->disable2FAView = new Disable2FA();
         $this->changePasswordView = new ChangePassword();
         $this->qrCodeProvider = new EndroidQRCodeProvider();
         $this->tfa = new TwoFactorAuth($this->qrCodeProvider, 'Eyesightcollectibles');
@@ -139,38 +143,41 @@ class SettingController {
     }
 
     public function disable2FA() {
-        if (!isset($_SESSION['userID'])) {
+        if (!isset($_SESSION['userId'])) {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
-            exit();
+            exit;
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $code = $_POST['code'] ?? '';
-            $userData = $this->user->read($_SESSION['userID']);
-
-            if (empty($code)) {
-                $_SESSION['error'] = 'Please enter the verification code.';
+            
+            // Verify the code
+            if ($this->verifyCode($code)) {
+                // Update user's 2FA status in database
+                $this->user->update2FASettings($_SESSION['userId'], null, false);
+                
+                // Set success message
+                $_SESSION['success'] = lang('2fa_disabled_success');
+                
+                // Redirect back to settings
                 header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings');
-                exit();
-            }
-
-            if ($this->tfa->verifyCode($userData['secretKey'], $code)) {
-                // Update user's 2FA settings
-                if ($this->user->update2FASettings($_SESSION['userID'], null, false)) {
-                    $_SESSION['twoFactorEnabled'] = false;
-                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings');
-                    exit();
-                } else {
-                    $_SESSION['error'] = 'Failed to disable 2FA. Please try again.';
-                    header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings');
-                    exit();
-                }
+                exit;
             } else {
-                $_SESSION['error'] = 'Invalid verification code. Please try again.';
-                header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings');
-                exit();
+                // Show error message
+                $this->disable2FAView->render(lang('invalid_verification_code'));
+                return;
             }
         }
+
+        // Check if 2FA is enabled
+        if (!$this->user->is2FAEnabled($_SESSION['userId'])) {
+            $_SESSION['error'] = lang('2fa_not_enabled');
+            header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings');
+            exit;
+        }
+
+        // Show the disable 2FA form
+        $this->disable2FAView->render();
     }
 
     public function changePassword() {
