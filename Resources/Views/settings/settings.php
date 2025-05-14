@@ -90,10 +90,6 @@ class Settings {
                             </form>
                         </div>
                         <div class="settings-option">
-                            <span><?php echo lang('notification_settings'); ?></span>
-                            <button class="settings-btn">Configure</button>
-                        </div>
-                        <div class="settings-option">
                             <span><?php echo lang('theme'); ?></span>
                             <form method="POST" action="" style="display:inline;">
                                 <input type="hidden" name="theme" value="<?php echo ($_SESSION['theme'] ?? ($userData['theme'] ?? 'Light')) === 'Dark' ? 'Light' : 'Dark'; ?>">
@@ -110,7 +106,23 @@ class Settings {
                         <h2><?php echo lang('support'); ?></h2>
                         <div class="settings-option">
                             <span><?php echo lang('contact_support'); ?></span>
-                            <button class="settings-btn"><?php echo lang('contact'); ?></button>
+                            <button class="settings-btn" onclick="showContactModal()"><?php echo lang('contact'); ?></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Support Modal -->
+            <div id="contactModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-envelope"></i> <?php echo lang('contact_support'); ?></h3>
+                        <span class="close" onclick="closeContactModal()">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <p><?php echo lang('support_email_message'); ?></p>
+                        <div class="support-email">
+                            <a href="mailto:support@eyesightcollectibles.com">support@eyesightcollectibles.com</a>
                         </div>
                     </div>
                 </div>
@@ -125,7 +137,113 @@ class Settings {
                     border: 1px solid #c3e6cb;
                     border-radius: 4px;
                 }
+
+                /* Modal Styles */
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 1000;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0,0,0,0.5);
+                }
+
+                .modal-content {
+                    background-color: #fefefe;
+                    margin: 15% auto;
+                    padding: 20px;
+                    border-radius: 8px;
+                    width: 80%;
+                    max-width: 500px;
+                    position: relative;
+                    animation: modalSlideIn 0.3s ease-out;
+                }
+
+                .dark-theme .modal-content {
+                    background-color: #2d2d2d;
+                    color: #fff;
+                }
+
+                .modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid #ddd;
+                }
+
+                .dark-theme .modal-header {
+                    border-bottom-color: #444;
+                }
+
+                .modal-header h3 {
+                    margin: 0;
+                    color: #ff6b00;
+                }
+
+                .close {
+                    color: #aaa;
+                    font-size: 28px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+
+                .close:hover {
+                    color: #ff6b00;
+                }
+
+                .modal-body {
+                    padding: 10px 0;
+                }
+
+                .support-email {
+                    margin-top: 20px;
+                    text-align: center;
+                }
+
+                .support-email a {
+                    color: #ff6b00;
+                    text-decoration: none;
+                    font-size: 18px;
+                    font-weight: 500;
+                }
+
+                .support-email a:hover {
+                    text-decoration: underline;
+                }
+
+                @keyframes modalSlideIn {
+                    from {
+                        transform: translateY(-100px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
             </style>
+
+            <script>
+                function showContactModal() {
+                    document.getElementById('contactModal').style.display = 'block';
+                }
+
+                function closeContactModal() {
+                    document.getElementById('contactModal').style.display = 'none';
+                }
+
+                // Close modal when clicking outside
+                window.onclick = function(event) {
+                    var modal = document.getElementById('contactModal');
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                }
+            </script>
         </body>
         </html>
         <?php

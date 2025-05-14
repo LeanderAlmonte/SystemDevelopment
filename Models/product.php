@@ -276,13 +276,13 @@ class Product {
                 
                 // Create separate action records for each modified field
                 foreach ($modifiedFields as $field) {
-                    $actionData = [
+                $actionData = [
                         'userID' => $_SESSION['userID'] ?? 1,
-                        'productID' => $this->productID,
+                    'productID' => $this->productID,
                         'clientID' => 0,
-                        'timeStamp' => date('Y-m-d H:i:s'),
-                        'quantity' => $this->quantity,
-                        'actionType' => 'UPDATE',
+                    'timeStamp' => date('Y-m-d H:i:s'),
+                    'quantity' => $this->quantity,
+                    'actionType' => 'UPDATE',
                         'description' => "{$fullName} updated product {$this->productName}'s {$field['description']}",
                         'oldValue' => json_encode([$field['field'] => $field['old']]),
                         'newValue' => json_encode([$field['field'] => $field['new']])
