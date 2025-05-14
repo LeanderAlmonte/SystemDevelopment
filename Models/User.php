@@ -293,4 +293,13 @@ class User{
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->execute([$userID]);
     }
+
+    public function is2FAEnabled($userID) {
+        $query = "SELECT twoFactorEnabled FROM users WHERE userID = :userID";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result && $result['twoFactorEnabled'] == 1;
+    }
 }

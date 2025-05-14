@@ -44,6 +44,7 @@ class SettingController {
         }
 
         $userData = $this->user->read($_SESSION['userID']);
+        $_SESSION['twoFactorEnabled'] = $userData['twoFactorEnabled'] ?? false;
         $this->settingsView->render($userData);
     }
 
@@ -143,7 +144,7 @@ class SettingController {
     }
 
     public function disable2FA() {
-        if (!isset($_SESSION['userId'])) {
+        if (!isset($_SESSION['userID'])) {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
             exit;
         }
@@ -151,10 +152,14 @@ class SettingController {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $code = $_POST['code'] ?? '';
             
-            // Verify the code
-            if ($this->verifyCode($code)) {
+            // Get the user's secret key
+            $userData = $this->user->read($_SESSION['userID']);
+            $secret = $userData['secretKey'];
+            
+            // Verify the code using the tfa instance
+            if ($this->tfa->verifyCode($secret, $code)) {
                 // Update user's 2FA status in database
-                $this->user->update2FASettings($_SESSION['userId'], null, false);
+                $this->user->update2FASettings($_SESSION['userID'], null, false);
                 
                 // Set success message
                 $_SESSION['success'] = lang('2fa_disabled_success');
@@ -170,7 +175,7 @@ class SettingController {
         }
 
         // Check if 2FA is enabled
-        if (!$this->user->is2FAEnabled($_SESSION['userId'])) {
+        if (!$this->user->is2FAEnabled($_SESSION['userID'])) {
             $_SESSION['error'] = lang('2fa_not_enabled');
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=settings');
             exit;
