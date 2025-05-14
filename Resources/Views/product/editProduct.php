@@ -82,17 +82,16 @@ class EditProduct {
                                 <label for="category"><?php echo lang('category'); ?></label>
                                 <select id="category" name="category" required>
                                     <option value="" disabled><?php echo lang('select_category'); ?></option>
-                                    <option value="Pokemon Japanese" <?php echo $product['category'] === 'pokemon-japanese' ? 'selected' : ''; ?>><?php echo lang('pokemon_japanese'); ?></option>
-                                    <option value="Pokemon Korean" <?php echo $product['category'] === 'pokemon-korean' ? 'selected' : ''; ?>><?php echo lang('pokemon_korean'); ?></option>
-                                    <option value="pokemon-chinese" <?php echo $product['category'] === 'pokemon-chinese' ? 'selected' : ''; ?>><?php echo lang('pokemon_chinese'); ?></option>
-                                    <option value="card-accessories" <?php echo $product['category'] === 'card-accessories' ? 'selected' : ''; ?>><?php echo lang('card_accessories'); ?></option>
-                                    <option value="weiss-schwarz" <?php echo $product['category'] === 'weiss-schwarz' ? 'selected' : ''; ?>><?php echo lang('weiss_schwarz'); ?></option>
-                                    <option value="kayou-naruto" <?php echo $product['category'] === 'kayou-naruto' ? 'selected' : ''; ?>><?php echo lang('kayou_naruto'); ?></option>
-                                    <option value="kayou" <?php echo $product['category'] === 'kayou' ? 'selected' : ''; ?>><?php echo lang('kayou'); ?></option>
-                                    <option value="dragon-ball-japanese" <?php echo $product['category'] === 'dragon-ball-japanese' ? 'selected' : ''; ?>><?php echo lang('dragon_ball_japanese'); ?></option>
-                                    <option value="one-piece-japanese" <?php echo $product['category'] === 'one-piece-japanese' ? 'selected' : ''; ?>><?php echo lang('one_piece_japanese'); ?></option>
-                                    <option value="carreda-demon-slayer" <?php echo $product['category'] === 'carreda-demon-slayer' ? 'selected' : ''; ?>><?php echo lang('carreda_demon_slayer'); ?></option>
-                                    <option value="pokemon-plush" <?php echo $product['category'] === 'pokemon-plush' ? 'selected' : ''; ?>><?php echo lang('pokemon_plush'); ?></option>
+                                    <?php
+                                    $productController = new \Controllers\ProductController();
+                                    $categories = $productController->getCategories();
+                                    foreach ($categories as $value => $label) {
+                                        if ($value !== 'all') {
+                                            $selected = ($product['category'] === $value) ? 'selected' : '';
+                                            echo "<option value=\"$value\" $selected>$label</option>";
+                                        }
+                                    }
+                                    ?>
                                 </select>
                             </div>
 

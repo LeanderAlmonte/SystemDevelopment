@@ -2,10 +2,12 @@
 namespace Resources\Views\Settings;
 
 // Check if the theme is stored in a cookie, otherwise use session
-if (isset($_COOKIE['theme'])) {
-    $_SESSION['theme'] = $_COOKIE['theme'];
-} elseif (!isset($_SESSION['theme'])) {
-    $_SESSION['theme'] = 'Light'; // Default to Light theme if no theme is set
+if (!isset($_SESSION['theme'])) {
+    if (isset($_COOKIE['theme'])) {
+        $_SESSION['theme'] = $_COOKIE['theme'];
+    } else {
+        $_SESSION['theme'] = 'Light'; // Default to Light theme if no theme is set
+    }
 }
 
 class Settings {

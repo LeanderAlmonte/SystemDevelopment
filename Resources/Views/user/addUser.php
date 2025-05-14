@@ -4,7 +4,7 @@ namespace Resources\Views\User;
 use Controllers\UserController;
 
 class Adduser {
-    public function render($error = null) {
+    public function render($error = null, $firstName = '', $lastName = '') {
 require_once __DIR__ . '/../../../lang/lang.php';
 ?>
 <!DOCTYPE html>
@@ -59,29 +59,34 @@ require_once __DIR__ . '/../../../lang/lang.php';
                             </div>
             </div>
 
-                <?php if (isset($error)): ?>
-                    <div class="error-message"><?php echo $error; ?></div>
+                <?php if (isset($error) && $error): ?>
+                    <div class="error-message" style="color: #b30000; background: #ffeaea; border: 1px solid #ffb3b3; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                        <?php echo htmlspecialchars($error); ?>
+                    </div>
                 <?php endif; ?>
                 
-                        <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=users" class="add-product-form">
+                        <form method="POST" action="/ecommerce/Project/SystemDevelopment/index.php?url=users" class="add-product-form" autocomplete="off">
+                    <!-- Dummy fields to prevent browser autofill -->
+                    <input type="text" name="fakeusernameremembered" style="display:none">
+                    <input type="password" name="fakepasswordremembered" style="display:none">
                     <div class="form-group">
                         <label for="firstName"><?php echo lang('first_name'); ?></label>
-                                <input type="text" id="firstName" name="firstName" placeholder="<?php echo lang('first_name'); ?>" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
+                                <input type="text" id="firstName" name="firstName" placeholder="<?php echo lang('first_name'); ?>" value="<?php echo htmlspecialchars($firstName); ?>" required pattern="^[A-Za-z\s\-]+$" oninput="this.setCustomValidity('');" oninvalid="setNameInvalidMessage(this)">
                     </div>
 
                     <div class="form-group">
                         <label for="lastName"><?php echo lang('last_name'); ?></label>
-                                <input type="text" id="lastName" name="lastName" placeholder="<?php echo lang('last_name'); ?>" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
+                                <input type="text" id="lastName" name="lastName" placeholder="<?php echo lang('last_name'); ?>" value="<?php echo htmlspecialchars($lastName); ?>" required pattern="^[A-Za-z\s\-]+$" oninput="this.setCustomValidity('');" oninvalid="setNameInvalidMessage(this)">
                     </div>
 
                     <div class="form-group">
                         <label for="email"><?php echo lang('email'); ?></label>
-                                <input type="email" id="email" name="email" placeholder="<?php echo lang('email'); ?>" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
+                                <input type="email" id="email" name="email" placeholder="<?php echo lang('email'); ?>" required autocomplete="new-email" oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
                     </div>
 
                     <div class="form-group">
                         <label for="password"><?php echo lang('password'); ?></label>
-                                <input type="password" id="password" name="password" placeholder="<?php echo lang('password'); ?>" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
+                                <input type="password" id="password" name="password" placeholder="<?php echo lang('password'); ?>" required autocomplete="new-password" oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
                     </div>
 
                     <div class="form-group">
@@ -93,15 +98,6 @@ require_once __DIR__ . '/../../../lang/lang.php';
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="theme"><?php echo lang('theme'); ?></label>
-                                <select id="theme" name="theme" required oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
-                            <option value="" disabled selected><?php echo lang('select_theme'); ?></option>
-                            <option value="Light"><?php echo lang('light'); ?></option>
-                            <option value="Dark"><?php echo lang('dark'); ?></option>
-                        </select>
-                    </div>
-
                     <div class="form-actions">
                         <button type="button" onclick="window.location.href='/ecommerce/Project/SystemDevelopment/index.php?url=users'"><?php echo lang('back'); ?></button>
                         <button type="submit"><?php echo lang('add_user_btn'); ?></button>
@@ -110,6 +106,18 @@ require_once __DIR__ . '/../../../lang/lang.php';
             </div>
         </div>
     </div>
+    <script>
+    // Localized messages from PHP
+    const namePatternError = '<?php echo lang('name_pattern_error'); ?>';
+    const pleaseFillOutField = '<?php echo lang('please_fill_out_this_field'); ?>';
+    function setNameInvalidMessage(input) {
+        if (input.validity.patternMismatch) {
+            input.setCustomValidity(namePatternError);
+        } else {
+            input.setCustomValidity(pleaseFillOutField);
+        }
+    }
+    </script>
 </body>
 </html> 
         <?php
