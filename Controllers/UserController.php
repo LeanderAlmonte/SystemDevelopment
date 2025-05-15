@@ -17,6 +17,7 @@ class UserController {
         $this->user = new User();
     }
 
+    // Get all users (users page)
     public function read() {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
@@ -27,6 +28,7 @@ class UserController {
         $manageUsers->render($data);
     }
 
+    // Create a new user (add user page)
     public function create() {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
@@ -58,6 +60,7 @@ class UserController {
         }
     }
 
+    // Delete a user (users page)
     public function delete() {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
@@ -77,6 +80,7 @@ class UserController {
         }
     }
 
+    // Show add user form (add user page)
     private function showAddForm($error = null, $firstName = '', $lastName = '') {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
@@ -88,6 +92,7 @@ class UserController {
         exit();
     }
 
+    // Update a user (edit user page)
     public function update() {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');

@@ -170,6 +170,7 @@ class SalesCosts {
             </style>
 
             <script>
+                // Sales/Costs Pie Chart
                 document.addEventListener('DOMContentLoaded', function() {
                     const ctx = document.getElementById('profitLossChart').getContext('2d');
                     

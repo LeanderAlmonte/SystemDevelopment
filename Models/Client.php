@@ -147,6 +147,7 @@ class Client {
         }
     }
 
+    // Search clients
     public function search($searchTerm) {
         $searchTerm = "%$searchTerm%";
         $query = "SELECT * FROM clients 
@@ -161,6 +162,7 @@ class Client {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Get client by email
     public function getClientByEmail($email) {
         $query = "SELECT * FROM clients WHERE email = :email";
         $stmt = $this->dbConnection->prepare($query);
@@ -169,6 +171,7 @@ class Client {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Get client by phone number
     public function getClientByPhone($phoneNumber) {
         $query = "SELECT * FROM clients WHERE phoneNumber = :phoneNumber";
         $stmt = $this->dbConnection->prepare($query);

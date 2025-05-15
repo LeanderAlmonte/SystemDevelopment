@@ -233,4 +233,5 @@ return [
     'edit_product' => 'Edit Product',
     'edit_user' => 'Edit User',
     'name_pattern_error' => 'Only letters, spaces, and hyphens are allowed.',
+    'please_enter_valid_email' => 'Please enter a valid email address.',
 ];

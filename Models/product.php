@@ -440,6 +440,7 @@ class Product {
         }
     }
 
+    // Get archived products (archived products page)   
     public function getArchivedProducts() {
         $query = "SELECT * FROM products WHERE isArchived = 1";
         $stmt = $this->dbConnection->prepare($query);
@@ -447,6 +448,7 @@ class Product {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Get sold products (sold products page)
     public function getSoldProducts() {
         $query = "SELECT * FROM products WHERE isSold = 1";
         $stmt = $this->dbConnection->prepare($query);
@@ -454,6 +456,7 @@ class Product {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Get most stocked products (home page)
     public function getMostStocked($limit = 5) {
         $query = "SELECT productID, productName, quantity 
                  FROM products 
@@ -467,6 +470,7 @@ class Product {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Update quantity for sale (Process Order Function)
     public function updateQuantityForSale($productID, $newQuantity) {
         $query = "UPDATE products 
                  SET quantity = :quantity 
@@ -483,10 +487,12 @@ class Product {
         }
     }
 
+    // Normalize strings for comparison
     private function normalizeString($string) {
         return strtolower(trim($string));
     }
 
+    // Normalize numbers for comparison
     private function normalizeNumber($number) {
         return floatval($number);
     }

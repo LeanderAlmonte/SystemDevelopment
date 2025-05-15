@@ -14,6 +14,7 @@ class HistoryController {
         $this->historyView = new History();
     }
 
+    // Get all actions (history page)
     public function read() {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
@@ -26,6 +27,7 @@ class HistoryController {
         $this->historyView->render($actions);
     }
 
+    // Get actions by user ID (history page)
     public function getByUser($userID) {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
@@ -35,6 +37,7 @@ class HistoryController {
         $this->historyView->render($actions);
     }
 
+    // Get actions by product ID (history page)
     public function getByProduct($productID) {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');
@@ -44,6 +47,7 @@ class HistoryController {
         $this->historyView->render($actions);
     }
 
+    // Get actions by client ID (history page)
     public function getByClient($clientID) {
         if (!isset($_SESSION['userRole']) || $_SESSION['userRole'] !== 'Admin') {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=dashboards');

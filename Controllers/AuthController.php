@@ -28,16 +28,19 @@ class AuthController {
         $this->tfa = new TwoFactorAuth($this->qrCodeProvider, 'Eyesightcollectibles');
     }
 
+    // Login page (login page)
     public function read() {
         $this->loginView->render();
     }
 
+    // Logout (login page)
     public function logout() {
         session_destroy();
         header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
         exit();
     }
 
+    // Login functionality (login page)
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
@@ -124,12 +127,14 @@ class AuthController {
         }
     }
 
+    // Forgot password (login page) (not implemented)
     public function forgotPassword() {
         require_once dirname(__DIR__) . '/Resources/Views/Auth/ForgotPassword.php';
         $view = new \Resources\Views\Auth\ForgotPassword();
         $view->render();
     }
 
+    // Send reset link (forgot password page) (not implemented)
     public function sendResetLink() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'] ?? '';
@@ -179,6 +184,7 @@ class AuthController {
         }
     }
 
+    // Reset password (forgot password page) (not implemented)
     public function resetPassword() {
         $email = $_GET['email'] ?? '';
         $token = $_GET['token'] ?? '';

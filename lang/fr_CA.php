@@ -250,4 +250,5 @@ return [
     'edit_product' => 'Modifier le produit',
     'edit_user' => 'Modifier l\'utilisateur',
     'name_pattern_error' => 'Seules les lettres, les espaces et les tirets sont autorisés.',
+    'please_enter_valid_email' => 'Veuillez entrer une adresse courriel valide.',
 ];

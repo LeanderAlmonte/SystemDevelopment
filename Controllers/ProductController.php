@@ -374,7 +374,7 @@ class ProductController {
             $action->create($quantityActionData);
 
             $_SESSION['success'] = "Order processed successfully";
-            header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products/soldProducts");
+            header("Location: /ecommerce/Project/SystemDevelopment/index.php?url=products");
             exit;
         }
 
