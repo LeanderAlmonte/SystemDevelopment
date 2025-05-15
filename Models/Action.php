@@ -237,6 +237,7 @@ class Action {
         }
     }
 
+    // Get actions by user ID
     public function getByUserID($userID) {
         $query = "SELECT * FROM actions WHERE userID = :userID ORDER BY timeStamp DESC";
         $stmt = $this->dbConnection->prepare($query);
@@ -245,6 +246,7 @@ class Action {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Get actions by product ID
     public function getByProductID($productID) {
         $query = "SELECT * FROM actions WHERE productID = :productID ORDER BY timeStamp DESC";
         $stmt = $this->dbConnection->prepare($query);
@@ -253,6 +255,7 @@ class Action {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Get actions by client ID
     public function getByClientID($clientID) {
         $query = "SELECT * FROM actions WHERE clientID = :clientID ORDER BY timeStamp DESC";
         $stmt = $this->dbConnection->prepare($query);

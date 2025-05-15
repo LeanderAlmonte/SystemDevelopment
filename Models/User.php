@@ -151,6 +151,11 @@ class User{
     public function create($data = null) {
         try {
         if ($data) {
+            // Validate email format
+            if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL) || strpos($data['email'], '@') === false) {
+                return ['error' => 'Please enter a valid email address'];
+            }
+
             $this->setFirstName($data['firstName']);
             $this->setLastName($data['lastName']);
             $this->setPassword(password_hash($data['password'], PASSWORD_DEFAULT));
@@ -244,6 +249,7 @@ class User{
         }
     }
 
+    // Find user by email for login
     public function findByEmail($email) {
         $query = "SELECT * FROM users WHERE email = :email";
         $stmt = $this->dbConnection->prepare($query);
@@ -252,6 +258,7 @@ class User{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Delete user
     public function delete() {
         $query = "DELETE FROM users WHERE userID = :userID";
         $stmt = $this->dbConnection->prepare($query);
@@ -268,6 +275,7 @@ class User{
         }
     }
 
+    // Get user by ID
     public function getUserById($userId) {
         $query = "SELECT * FROM users WHERE userID = :userID";
         $stmt = $this->dbConnection->prepare($query);
@@ -276,24 +284,28 @@ class User{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    // Save reset token for password reset (unimplemented)
     public function saveResetToken($userID, $token, $expiry) {
         $sql = "UPDATE users SET token = ?, tokenExpiry = ? WHERE userID = ?";
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->execute([$token, $expiry, $userID]);
     }
 
+    // Update user password
     public function updatePassword($userID, $hashedPassword) {
         $sql = "UPDATE users SET password = ? WHERE userID = ?";
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->execute([$hashedPassword, $userID]);
     }
 
+    // Clear reset token (unimplemented)
     public function clearResetToken($userID) {
         $sql = "UPDATE users SET token = NULL, tokenExpiry = NULL WHERE userID = ?";
         $stmt = $this->dbConnection->prepare($sql);
         $stmt->execute([$userID]);
     }
 
+    // Check if 2FA is enabled for a user
     public function is2FAEnabled($userID) {
         $query = "SELECT twoFactorEnabled FROM users WHERE userID = :userID";
         $stmt = $this->dbConnection->prepare($query);

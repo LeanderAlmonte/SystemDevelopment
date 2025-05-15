@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-group">
                         <label for="email"><?php echo lang('email'); ?></label>
-                        <input type="email" id="email" name="email" placeholder="<?php echo lang('enter_email'); ?>" required>
+                        <input type="email" id="email" name="email" placeholder="<?php echo lang('enter_email'); ?>" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}" oninvalid="this.setCustomValidity('<?php echo lang('please_enter_valid_email'); ?>')" oninput="this.setCustomValidity('')">
                     </div>
 
                     <div class="form-group">

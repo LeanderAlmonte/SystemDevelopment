@@ -18,12 +18,14 @@ class ClientController {
         $this->client = new Client();
     }
 
+    // Get all clients (clients page)
     public function read() {
         $data = $this->client->read();
         $manageClients = new ManageClients();
         $manageClients->render($data);
     }
 
+    // Create a new client (add client page)
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $this->client->create($_POST);
@@ -53,11 +55,13 @@ class ClientController {
         }
     }
 
+    // Show add client form (add client page)
     private function showAddForm($error = null) {
         require(dirname(__DIR__) . '/resources/views/client/addClient.php');
         exit();
     }
 
+    // Update a client (edit client page)
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $result = $this->client->update($_POST);
@@ -78,6 +82,7 @@ class ClientController {
         }
     }
 
+    // Show edit client form (edit client page)
     private function showEditForm($id, $error = null) {
         $client = $this->client->read($id);
         if (!$client) {

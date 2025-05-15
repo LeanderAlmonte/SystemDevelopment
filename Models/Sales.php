@@ -208,6 +208,7 @@ class Sales {
         }
     }
 
+    // Get sales by date range (not used)
     public function getSalesByDateRange($startDate, $endDate) {
         $query = "SELECT s.*, p.productName, c.clientName 
                  FROM sales s 
@@ -222,6 +223,7 @@ class Sales {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Get total sales
     public function getTotalSales() {
         $query = "SELECT SUM(salePrice) as totalSales FROM sales";
         $stmt = $this->dbConnection->prepare($query);
@@ -229,6 +231,7 @@ class Sales {
         return $stmt->fetch(PDO::FETCH_ASSOC)['totalSales'] ?? 0;
     }
 
+    // Get total sales by date range (not used)
     public function getTotalSalesByDateRange($startDate, $endDate) {
         $query = "SELECT SUM(salePrice) as totalSales 
                  FROM sales 
@@ -240,6 +243,7 @@ class Sales {
         return $stmt->fetch(PDO::FETCH_ASSOC)['totalSales'] ?? 0;
     }
 
+    // Get aggregated sales for sold products
     public function getAggregatedSales() {
         $query = "SELECT 
             p.productID,
@@ -257,6 +261,8 @@ class Sales {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Sales/Costs page
+    // Get total revenue
     public function getTotalRevenue() {
         $query = "SELECT SUM(quantitySold * salePrice) as totalRevenue FROM sales";
         $stmt = $this->dbConnection->prepare($query);
@@ -264,6 +270,7 @@ class Sales {
         return $stmt->fetch(PDO::FETCH_ASSOC)['totalRevenue'] ?? 0;
     }
 
+    // Get total costs
     public function getTotalCosts() {
         $query = "SELECT SUM(s.quantitySold * p.paidPrice) as totalCosts
                  FROM sales s
@@ -273,6 +280,7 @@ class Sales {
         return $stmt->fetch(PDO::FETCH_ASSOC)['totalCosts'] ?? 0;
     }
 
+    // Get financial summary (revenue, costs, profit)
     public function getFinancialSummary() {
         $revenue = $this->getTotalRevenue();
         $costs = $this->getTotalCosts();
@@ -285,6 +293,7 @@ class Sales {
         ];
     }
 
+    // Get top sellers (home page)
     public function getTopSellers($limit = 5) {
         $query = "SELECT p.productID, p.productName, SUM(s.quantitySold) as totalSold
                  FROM sales s

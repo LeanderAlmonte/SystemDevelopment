@@ -37,6 +37,7 @@ class SettingController {
         $this->tfa = new TwoFactorAuth($this->qrCodeProvider, 'Eyesightcollectibles');
     }
 
+    // Get user data (settings page)    
     public function read() {
         if (!isset($_SESSION['userID'])) {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
@@ -48,6 +49,7 @@ class SettingController {
         $this->settingsView->render($userData);
     }
 
+    // Update user settings (settings page) (I18N)
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['lang'])) {
@@ -95,6 +97,7 @@ class SettingController {
         }
     }
 
+    // Enable 2FA (settings page)
     public function enable2FA() {
         if (!isset($_SESSION['userID'])) {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
@@ -111,6 +114,7 @@ class SettingController {
         }
     }
 
+    // Verify 2FA (settings page)
     public function verify2FA() {
         if (!isset($_SESSION['userID'])) {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
@@ -148,6 +152,7 @@ class SettingController {
         }
     }
 
+    // Disable 2FA (settings page)
     public function disable2FA() {
         if (!isset($_SESSION['userID'])) {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');
@@ -190,6 +195,7 @@ class SettingController {
         $this->disable2FAView->render();
     }
 
+    // Change password (settings page)
     public function changePassword() {
         if (!isset($_SESSION['userID'])) {
             header('Location: /ecommerce/Project/SystemDevelopment/index.php?url=auths/login');

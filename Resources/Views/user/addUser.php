@@ -81,7 +81,7 @@ require_once __DIR__ . '/../../../lang/lang.php';
 
                     <div class="form-group">
                         <label for="email"><?php echo lang('email'); ?></label>
-                                <input type="email" id="email" name="email" placeholder="<?php echo lang('email'); ?>" required autocomplete="new-email" oninvalid="this.setCustomValidity('<?php echo lang('please_fill_out_this_field'); ?>')" oninput="this.setCustomValidity('')">
+                                <input type="email" id="email" name="email" placeholder="<?php echo lang('email'); ?>" required pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}" autocomplete="new-email" oninvalid="this.setCustomValidity('<?php echo lang('please_enter_valid_email'); ?>')" oninput="this.setCustomValidity('')">
                     </div>
 
                     <div class="form-group">
